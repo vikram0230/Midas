@@ -23,22 +23,13 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { UserProfile } from "../user-profile";
+import Image from "next/image";
 
 const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "AI Playground",
-    href: "/playground",
-    description: "Interact with the AI in the playground.",
-  },
   {
     title: "Dashboard",
     href: "/dashboard",
     description: "Access your personal dashboard.",
-  },
-  {
-    title: "Blog",
-    href: "/blog",
-    description: "Read my interesting blog posts.",
   },
 ];
 
@@ -64,7 +55,7 @@ export default function NavBar() {
             <SheetContent side="left" className="w-[300px]">
               <SheetHeader className="pb-6 border-b">
                 <SheetTitle className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-blue-600" />
+                  <Image src="/midasLogo.png" alt="Midas" width={32} height={32} />
                   <span>Midas</span>
                 </SheetTitle>
               </SheetHeader>
@@ -142,7 +133,7 @@ export default function NavBar() {
             </SheetContent>
           </Dialog>
           <Link href="/" prefetch={true} className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-blue-600" />
+            <Image src="/midasLogo.png" alt="Midas" width={32} height={32} />
             <span className="font-semibold">Midas</span>
           </Link>
         </div>
@@ -150,7 +141,7 @@ export default function NavBar() {
         {/* Logo - Desktop */}
         <div className="hidden lg:flex items-center gap-2">
           <Link href="/" prefetch={true} className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-blue-600" />
+            <Image src="/midasLogo.png" alt="Midas" width={32} height={32} />
             <span className="font-semibold">Midas</span>
           </Link>
         </div>
@@ -180,17 +171,6 @@ export default function NavBar() {
 
           <Link href="/dashboard" prefetch={true}>
             <Button variant="ghost">Dashboard</Button>
-          </Link>
-          <Link href="/playground" prefetch={true}>
-            <Button variant="ghost">AI Playground</Button>
-          </Link>
-          <Link
-            href="https://github.com/michaelshimeles/nextjs14-starter-template"
-            prefetch={true}
-          >
-            <Button variant="ghost" size="icon">
-              <Github className="h-5 w-5" />
-            </Button>
           </Link>
         </div>
 

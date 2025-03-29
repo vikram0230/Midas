@@ -42,6 +42,13 @@ export async function POST(req: Request) {
   const role =
     messages?.[messages?.length - 1].role === "user" ? "user" : "assistant";
 
+  // For Gemini models, default to GPT-4o for now
+  let actualModel = model;
+  if (model.startsWith('gemini:')) {
+    console.log("Gemini model selected, defaulting to GPT-4o");
+    actualModel = "openai:gpt-4o";
+  }
+
   const enhancedModel = wrapLanguageModel({
     model: groq("deepseek-r1-distill-llama-70b"),
     middleware: extractReasoningMiddleware({ tagName: "think" }),
@@ -49,9 +56,9 @@ export async function POST(req: Request) {
 
   const result = streamText({
     model:
-      model === "deepseek:deepseek-reasoner"
+      actualModel === "deepseek:deepseek-reasoner"
         ? enhancedModel
-        : registry.languageModel(model),
+        : registry.languageModel(actualModel),
     messages,
     temperature: temperature || 0.7,
     maxTokens: maxTokens || 1000,

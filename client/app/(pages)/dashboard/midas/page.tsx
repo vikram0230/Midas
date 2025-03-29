@@ -1,7 +1,5 @@
 "use client";
 
-import ModeToggle from "@/components/mode-toggle";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -27,11 +25,15 @@ import {
   Share,
   Sparkles,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+import { useUser } from '@clerk/nextjs';
 
 interface Message {
   role: "user" | "assistant";
@@ -48,10 +50,15 @@ interface CodeProps {
 }
 
 export default function PlaygroundPage() {
-  const [model, setModel] = useState("deepseek:deepseek-reasoner");
+  const [model, setModel] = useState("gemini:gemini-2.0-flash");
   const [systemPrompt, setSystemPrompt] = useState("");
   const [expandedReasoning, setExpandedReasoning] = useState<number[]>([]);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const { user } = useUser();
+  const userId = user?.id || "";
+  
+  // Fetch transactions data
+  const transactions = useQuery(api.transactions.getTransactionsByUser, { userId });
 
   // Model parameters
   const [temperature, setTemperature] = useState(0.7);
@@ -59,6 +66,36 @@ export default function PlaygroundPage() {
   const [topP, setTopP] = useState(0.9);
   const [frequencyPenalty, setFrequencyPenalty] = useState(0.0);
   const [presencePenalty, setPresencePenalty] = useState(0.0);
+
+  // Generate system prompt with transaction data
+  useEffect(() => {
+    if (transactions && transactions.length > 0) {
+      const transactionData = JSON.stringify(transactions, null, 2);
+      const newSystemPrompt = `
+You are Midas, a financial AI assistant. You have access to the user's transaction data.
+Your goal is to provide helpful insights, answer questions, and give financial advice based on their transaction history.
+
+Here is the user's transaction data:
+${transactionData}
+
+When analyzing this data, consider:
+1. Spending patterns and categories
+2. Budget recommendations
+3. Savings opportunities
+4. Financial insights and trends
+
+Always be helpful, accurate, and provide specific advice based on the actual transaction data.
+If asked about something not in the transaction data, be honest about what you don't know.
+      `;
+      setSystemPrompt(newSystemPrompt);
+    } else {
+      setSystemPrompt(`
+You are Midas, a financial AI assistant. 
+I don't have access to your transaction data yet, but I can still provide general financial advice.
+Ask me about budgeting, saving strategies, investment basics, or other financial topics!
+      `);
+    }
+  }, [transactions]);
 
   const toggleReasoning = (index: number) => {
     setExpandedReasoning((prev) =>
@@ -128,42 +165,6 @@ export default function PlaygroundPage() {
     <div className="flex flex-col lg:flex-row h-screen dark:bg-black bg-white dark:text-white text-black">
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col h-[65vh] lg:h-screen">
-        <header className="flex items-center justify-between py-3 px-4 border-b dark:border-zinc-800 border-zinc-200">
-          <div className="flex items-center gap-3">
-            <Link prefetch={true} href="/">
-              <div className="flex items-center gap-2">
-                <Bot className="w-5 h-5" />
-                <h1 className="text-sm font-medium">AI Playground</h1>
-              </div>
-            </Link>
-            <Badge
-              variant="outline"
-              className="text-xs dark:border-zinc-800 border-zinc-200"
-            >
-              {model?.split(":")[1] === "deepseek-reasoner" ? "deepseek-r" : model?.split(":")[1]}
-            </Badge>
-          </div>
-          <div className="flex items-center gap-2">
-            <ModeToggle />
-            <Button
-              size="sm"
-              variant="outline"
-              className="h-8 text-xs dark:border-zinc-800 border-zinc-200 dark:hover:bg-zinc-900 hover:bg-zinc-100 hidden sm:inline-flex"
-            >
-              <Share className="w-3.5 h-3.5 mr-1.5" />
-              Share
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="h-8 text-xs dark:border-zinc-800 border-zinc-200 dark:hover:bg-zinc-900 hover:bg-zinc-100 hidden sm:inline-flex"
-            >
-              <Download className="w-3.5 h-3.5 mr-1.5" />
-              Export
-            </Button>
-          </div>
-        </header>
-
         <ScrollArea className="flex-1 p-4">
           <div className="max-w-3xl mx-auto space-y-6">
             <AnimatePresence>
@@ -270,33 +271,34 @@ export default function PlaygroundPage() {
           </div>
         </ScrollArea>
 
-        <div className="p-4 border-t dark:border-zinc-800 border-zinc-200">
-          <div className="max-w-3xl mx-auto">
+        
+        <div className="sticky bottom-0 p-4 border-t dark:border-zinc-800 border-zinc-200 bg-background">
+            <div className="max-w-3xl mx-auto">
             <div className="relative">
-              <Textarea
+                <Textarea
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
+                    if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
                     handleSubmit();
-                  }
+                    }
                 }}
-                placeholder="Send a message..."
-                className="min-h-[60px] lg:min-h-[100px] bg-transparent dark:bg-zinc-900/50 bg-white border dark:border-zinc-800 border-zinc-200 focus:border-zinc-400 dark:focus:border-zinc-600"
-              />
-              <div className="absolute bottom-3 right-3">
+                placeholder="Ask Midas about your finances..."
+                className="min-h-[60px] lg:min-h-[80px] bg-transparent dark:bg-zinc-900/50 bg-white border dark:border-zinc-800 border-zinc-200 focus:border-zinc-400 dark:focus:border-zinc-600"
+                />
+                <div className="absolute bottom-3 right-3">
                 <Button
-                  size="sm"
-                  onClick={handleSubmit}
-                  disabled={isLoading || !input.trim()}
-                  className="h-8 bg-white hover:bg-zinc-200 text-black"
+                    size="sm"
+                    onClick={handleSubmit}
+                    disabled={isLoading || !input.trim()}
+                    className="h-8 bg-white hover:bg-zinc-200 text-black"
                 >
-                  <ArrowUp className="w-4 h-4" />
+                    <ArrowUp className="w-4 h-4" />
                 </Button>
-              </div>
+                </div>
             </div>
-          </div>
+            </div>
         </div>
       </div>
 
@@ -327,28 +329,8 @@ export default function PlaygroundPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="openai:gpt-4o">gpt-4o</SelectItem>
-                      <SelectItem value="openai:gpt-4">gpt-4</SelectItem>
-                      <SelectItem value="openai:gpt-3.5-turbo">
-                        gpt-3.5 turbo
-                      </SelectItem>
-                      <SelectItem value="openai:gpt-4-turbo">
-                        gpt-4 turbo
-                      </SelectItem>
-                      <SelectItem value="deepseek:deepseek-chat">
-                        deepseek chat
-                      </SelectItem>
-                      <SelectItem value="deepseek:deepseek-coder">
-                        deepseek coder
-                      </SelectItem>
-                      <SelectItem value="deepseek:deepseek-reasoner">
-                        deepseek-r
-                      </SelectItem>
-                      <SelectItem value="groq:deepseek-r1-distill-llama-70b">
-                        deepseek-r1-distill-llama-70b
-                      </SelectItem>
                       <SelectItem value="gemini:gemini-2.0-flash">
-                        Gemini 2.0 Flash
+                        midas-v1
                       </SelectItem>
                     </SelectContent>
                   </Select>

@@ -24,6 +24,20 @@ export const getUserByToken = query({
     },
 });
 
+// Add a new query to get user by userId
+export const getUserById = query({
+    args: { userId: v.string() },
+    handler: async (ctx, args) => {
+        // Get the user from the database
+        const user = await ctx.db
+            .query("users")
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .first();
+        
+        return user;
+    },
+});
+
 export const store = mutation({
     args: {},
     handler: async (ctx) => {
@@ -53,8 +67,12 @@ export const store = mutation({
             name: identity.name!,
             email: identity.email!,
             userId: identity.subject,
+            accountId: undefined, // Make accountId optional - will be set when user connects to Plaid
             tokenIdentifier: identity.subject,
             createdAt: new Date().toISOString(),
+            weeklyBudget: 500, // Default budget values
+            biweeklyBudget: 1000,
+            monthlyBudget: 2000,
         });
     },
 });

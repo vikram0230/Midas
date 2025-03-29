@@ -4,10 +4,12 @@ import clsx from 'clsx'
 import {
   HomeIcon,
   Settings,
-  LucideIcon
+  LucideIcon,
+  Sparkles
 } from "lucide-react"
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 
 interface NavItem {
   label: string;
@@ -22,10 +24,15 @@ const navItems: NavItem[] = [
     icon: HomeIcon
   },
   {
+    label: "Midas",
+    href: "/dashboard/midas",
+    icon: Sparkles
+  },
+  {
     label: "Settings",
     href: "/dashboard/settings",
     icon: Settings
-  }
+  },
 ]
 
 export default function DashboardSideBar() {
@@ -36,6 +43,7 @@ export default function DashboardSideBar() {
       <div className="flex h-full flex-col">
         <div className="flex h-[3.45rem] items-center border-b px-4">
           <Link prefetch={true} className="flex items-center gap-2 font-semibold hover:cursor-pointer" href="/">
+            <Image src="/midasLogo.png" alt="Midas" width={32} height={32} />
             <span>Midas</span>
           </Link>
         </div>

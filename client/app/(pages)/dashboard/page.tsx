@@ -1,217 +1,183 @@
-import { Button } from "@/components/ui/button";
+'use client';
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Activity, Code, Star, TrendingUp, Users, Zap } from "lucide-react";
 import Link from "next/link";
+import TransactionGraphs from "./_components/transaction-graphs";
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+import { useUser } from '@clerk/nextjs';
+import ConnectPlaidBanner from "./_components/connect-plaid-banner";
 
-export default async function Dashboard() {
+export default function Dashboard() {
+  const { user } = useUser();
+  const userId = user?.id || "";
+  const transactions = useQuery(api.transactions.getTransactionsByUser, { userId });
+  
+  // Calculate total spending
+  const totalSpending = transactions?.reduce((sum, tx) => sum + tx.amount, 0) || 0;
+  
+  // Calculate categories
+  const categories = transactions?.reduce((acc, tx) => {
+    if (!acc[tx.category]) {
+      acc[tx.category] = 0;
+    }
+    acc[tx.category] += tx.amount;
+    return acc;
+  }, {} as Record<string, number>) || {};
+  
+  // Find top category
+  let topCategory = 'None';
+  let topAmount = 0;
+  
+  Object.entries(categories).forEach(([category, amount]) => {
+    if (amount > topAmount) {
+      topCategory = category;
+      topAmount = amount;
+    }
+  });
+  
   return (
     <div className="flex flex-col gap-6 p-6">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground mt-2">
-          Welcome to your dashboard overview.
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <p className="text-muted-foreground">
+          Welcome to your financial dashboard
         </p>
       </div>
+      
+      {/* Connect Plaid Banner - only shown if user hasn't connected */}
+      <ConnectPlaidBanner />
 
       {/* Quick Stats Row */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
-            <Code className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Spending</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              +2 from last month
+            <div className="text-2xl font-bold">${totalSpending.toFixed(2)}</div>
+            <p className="text-xs text-muted-foreground">
+              All time spending
             </p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">1,234</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              +15% increase
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Performance</CardTitle>
-            <Zap className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">98.2%</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              +2.1% from average
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Engagement</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Top Category</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">89%</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              +5% this week
+            <div className="text-2xl font-bold">{topCategory}</div>
+            <p className="text-xs text-muted-foreground">
+              ${topAmount.toFixed(2)} spent
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Transactions</CardTitle>
+            <Zap className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{transactions?.length || 0}</div>
+            <p className="text-xs text-muted-foreground">
+              Total transactions
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Average Transaction</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              ${transactions?.length ? (totalSpending / transactions.length).toFixed(2) : '0.00'}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Average per transaction
             </p>
           </CardContent>
         </Card>
       </div>
+
+      {/* Transaction Graphs */}
+      <TransactionGraphs />
 
       {/* Featured Section */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="lg:col-span-4">
           <CardHeader>
-            <CardTitle>Project Growth</CardTitle>
+            <CardTitle>Recent Activity</CardTitle>
             <CardDescription>
-              Your project creation and completion rate
+              Your recent financial transactions
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-[200px] flex items-end gap-2">
-              {[40, 25, 45, 30, 60, 75, 65, 45, 50, 65, 70, 80].map((height, i) => (
-                <div
-                  key={i}
-                  className="bg-primary/10 hover:bg-primary/20 rounded-md w-full transition-colors"
-                  style={{ height: `${height}%` }}
-                />
-              ))}
-            </div>
-            <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-              <span>Jan</span>
-              <span>Feb</span>
-              <span>Mar</span>
-              <span>Apr</span>
-              <span>May</span>
-              <span>Jun</span>
-              <span>Jul</span>
-              <span>Aug</span>
-              <span>Sep</span>
-              <span>Oct</span>
-              <span>Nov</span>
-              <span>Dec</span>
-            </div>
+            {transactions && transactions.length > 0 ? (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Merchant</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead className="text-right">Amount</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {transactions.slice(0, 5).map((tx) => (
+                    <TableRow key={tx._id}>
+                      <TableCell>{new Date(tx.date).toLocaleDateString()}</TableCell>
+                      <TableCell>{tx.merchant_name || tx.name || 'Unknown'}</TableCell>
+                      <TableCell>{tx.category}</TableCell>
+                      <TableCell className="text-right">${tx.amount.toFixed(2)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <p className="text-center py-4">No recent transactions</p>
+            )}
           </CardContent>
         </Card>
-
         <Card className="lg:col-span-3">
           <CardHeader>
-            <CardTitle>Recent Achievements</CardTitle>
+            <CardTitle>Category Breakdown</CardTitle>
             <CardDescription>
-              Latest milestones reached
+              Your spending by category
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="bg-primary/10 p-2 rounded-full">
-                  <Star className="h-4 w-4 text-primary" />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <p className="text-sm font-medium">First 1000 Users</p>
-                  <Progress value={100} />
-                </div>
+            {Object.keys(categories).length > 0 ? (
+              <div className="space-y-4">
+                {Object.entries(categories)
+                  .sort(([, a], [, b]) => b - a)
+                  .map(([category, amount]) => (
+                    <div key={category} className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium leading-none">{category}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {((amount / totalSpending) * 100).toFixed(1)}% of total
+                        </p>
+                      </div>
+                      <div className="font-medium">${amount.toFixed(2)}</div>
+                    </div>
+                  ))}
               </div>
-              <div className="flex items-center gap-4">
-                <div className="bg-primary/10 p-2 rounded-full">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <p className="text-sm font-medium">50 Projects Created</p>
-                  <Progress value={75} />
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="bg-primary/10 p-2 rounded-full">
-                  <Zap className="h-4 w-4 text-primary" />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <p className="text-sm font-medium">Premium Features</p>
-                  <Progress value={45} />
-                </div>
-              </div>
-            </div>
+            ) : (
+              <p className="text-center py-4">No category data available</p>
+            )}
           </CardContent>
-        </Card>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>
-              Common tasks and shortcuts
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Button asChild variant="outline" className="w-full justify-start gap-2">
-              <Link href="/dashboard/projects">
-                <Code className="h-4 w-4" />
-                New Project
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="w-full justify-start gap-2">
-              <Link href="/dashboard/settings">
-                <Users className="h-4 w-4" />
-                Invite Team
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="lg:col-span-3">
-          <CardHeader>
-            <CardTitle>Latest Updates</CardTitle>
-            <CardDescription>Recent changes and notifications</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[
-                {
-                  title: "New Feature Released",
-                  description: "Enhanced project analytics and reporting tools are now available.",
-                  time: "2 hours ago"
-                },
-                {
-                  title: "System Update",
-                  description: "Performance improvements and bug fixes deployed.",
-                  time: "5 hours ago"
-                },
-                {
-                  title: "Community Milestone",
-                  description: "Over 1,000 projects created using Midas!",
-                  time: "1 day ago"
-                }
-              ].map((update, i) => (
-                <div key={i} className="flex justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-medium">{update.title}</p>
-                    <p className="text-sm text-muted-foreground">{update.description}</p>
-                  </div>
-                  <p className="text-xs text-muted-foreground whitespace-nowrap">{update.time}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button variant="ghost" className="w-full">View All Updates</Button>
-          </CardFooter>
         </Card>
       </div>
     </div>
