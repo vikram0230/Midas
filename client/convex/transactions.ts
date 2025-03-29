@@ -170,3 +170,36 @@ export const storeTransaction = mutation({
     });
   },
 });
+
+/**
+ * Update all transaction dates to Feb-March 2025
+ */
+export const updateTransactionDatesToCurrentYear = mutation({
+  handler: async (ctx) => {
+    // Get all transactions
+    const transactions = await ctx.db.query("transactions").collect();
+    
+    // Current year is 2025
+    const currentYear = 2025;
+    
+    // Update each transaction with a date in Feb-March 2025
+    for (const transaction of transactions) {
+      const originalDate = new Date(transaction.date);
+      
+      // Generate a random date between Feb 1, 2025 and March 29, 2025
+      const startDate = new Date(2025, 1, 1); // Feb 1, 2025
+      const endDate = new Date(2025, 2, 29);  // March 29, 2025
+      
+      const randomTimestamp = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
+      const newDate = new Date(randomTimestamp);
+      
+      // Format the date as YYYY-MM-DD
+      const formattedDate = newDate.toISOString().split('T')[0];
+      
+      // Update the transaction with the new date
+      await ctx.db.patch(transaction._id, { date: formattedDate });
+    }
+    
+    return { success: true, updatedCount: transactions.length };
+  },
+});

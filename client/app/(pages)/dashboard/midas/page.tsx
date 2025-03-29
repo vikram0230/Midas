@@ -13,6 +13,7 @@ import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useChat } from "ai/react";
+import { Message } from "ai";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUp,
@@ -21,12 +22,8 @@ import {
   ChevronUp,
   Copy,
   Check,
-  Download,
-  Share,
   Sparkles,
 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -34,13 +31,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
-
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-  reasoning?: string;
-  timestamp: Date;
-}
+import Image from "next/image";
 
 interface CodeProps {
   node?: any;
@@ -155,6 +146,16 @@ export default function PlaygroundPage() {
     setTimeout(() => setCopiedCode(null), 2000);
   };
 
+  // Create initial welcome message
+  const initialMessages: Message[] = [
+    {
+      id: "welcome-message",
+      role: "assistant",
+      content: "👋 Hi there! I'm Midas, your personal financial AI assistant. I can help you understand your spending patterns, provide budget recommendations, and answer questions about your finances. How can I help you today?",
+      createdAt: new Date(),
+    },
+  ];
+
   const { messages, isLoading, input, handleInputChange, handleSubmit } =
     useChat({
       body: {
@@ -166,6 +167,7 @@ export default function PlaygroundPage() {
         presencePenalty,
         systemPrompt,
       },
+      initialMessages,
     });
     
 
@@ -216,70 +218,92 @@ export default function PlaygroundPage() {
             <AnimatePresence>
               {messages.map((message, index) => (
                 <motion.div
-                  key={index}
+                  key={message.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className={`flex items-start gap-3 ${
-                    message.role === "assistant"
-                      ? "flex-row"
-                      : "flex-row-reverse"
-                  }`}
+                  className={`flex ${
+                    message.role === "user" ? "justify-end" : "justify-start"
+                  } mb-4`}
                 >
-                  <div className="flex flex-col gap-2 max-w-[480px]">
-                    {message.reasoning && (
-                      <div
-                        className={`${
-                          message.role === "user"
-                            ? "bg-[#007AFF] text-white"
-                            : "bg-[#E9E9EB] dark:bg-[#1C1C1E] text-black dark:text-white"
-                        } rounded-[20px] ${
-                          message.role === "user"
-                            ? "rounded-br-[8px]"
-                            : "rounded-bl-[8px]"
-                        }`}
-                      >
-                        <button
-                          onClick={() => toggleReasoning(index)}
-                          className="w-full flex items-center justify-between px-3 py-2"
-                        >
+                  <div
+                    className="flex gap-3 dark:bg-zinc-900/50 bg-white rounded-lg p-4"
+                  >
+                    {message.role === "assistant" && (
+                      <div className="w-6 h-6 rounded-full border dark:border-zinc-800 border-zinc-200 flex items-center justify-center">
+                        <Image
+                          src="/midasLogo.png"
+                          width={24}
+                          height={24}
+                          alt="Midas"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <div className="flex gap-1 mt-[0.5rem]">
+                        <span className="text-xs font-medium opacity-70">
+                          {message.createdAt ? new Date(message.createdAt).toLocaleTimeString() : new Date().toLocaleTimeString()}
+                        </span>
+                        {message.role === "assistant" && (
                           <span className="text-xs font-medium opacity-70">
-                            Reasoning
+                            Midas
                           </span>
-                          {expandedReasoning.includes(index) ? (
-                            <ChevronUp className="w-3 h-3 opacity-70" />
-                          ) : (
-                            <ChevronDown className="w-3 h-3 opacity-70" />
-                          )}
-                        </button>
-                        {expandedReasoning.includes(index) && (
-                          <div className="px-3 pb-3 text-[12px] opacity-70">
-                            <ReactMarkdown components={components}>
-                              {message.reasoning}
-                            </ReactMarkdown>
-                          </div>
                         )}
                       </div>
-                    )}
-                    {message.content && (
-                      <div
-                        className={`${
-                          message.role === "user"
-                            ? "bg-[#007AFF] text-white"
-                            : "bg-[#E9E9EB] dark:bg-[#1C1C1E] text-black dark:text-white"
-                        } rounded-[20px] ${
-                          message.role === "user"
-                            ? "rounded-br-[8px]"
-                            : "rounded-bl-[8px]"
-                        } px-3 py-2`}
-                      >
-                        <div className="text-[14px]">
-                          <ReactMarkdown components={components}>
-                            {message.content}
-                          </ReactMarkdown>
+                      {message.reasoning && (
+                        <div
+                          className={`${
+                            message.role === "user"
+                              ? "bg-[#007AFF] text-white"
+                              : "bg-[#E9E9EB] dark:bg-[#1C1C1E] text-black dark:text-white"
+                          } rounded-[20px] ${
+                            message.role === "user"
+                              ? "rounded-br-[8px]"
+                              : "rounded-bl-[8px]"
+                          }`}
+                        >
+                          <button
+                            onClick={() => toggleReasoning(index)}
+                            className="w-full flex items-center justify-between px-3 py-2"
+                          >
+                            <span className="text-xs font-medium opacity-70">
+                              Reasoning
+                            </span>
+                            {expandedReasoning.includes(index) ? (
+                              <ChevronUp className="w-3 h-3 opacity-70" />
+                            ) : (
+                              <ChevronDown className="w-3 h-3 opacity-70" />
+                            )}
+                          </button>
+                          {expandedReasoning.includes(index) && (
+                            <div className="px-3 pb-3 text-[12px] opacity-70">
+                              <ReactMarkdown components={components}>
+                                {message.reasoning}
+                              </ReactMarkdown>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    )}
+                      )}
+                      {message.content && (
+                        <div
+                          className={`${
+                            message.role === "user"
+                              ? "bg-[#007AFF] text-white"
+                              : "bg-[#E9E9EB] dark:bg-[#1C1C1E] text-black dark:text-white"
+                          } rounded-[20px] ${
+                            message.role === "user"
+                              ? "rounded-br-[8px]"
+                              : "rounded-bl-[8px]"
+                          } px-3 py-2`}
+                        >
+                          <div className="text-[14px]">
+                            <ReactMarkdown components={components}>
+                              {message.content}
+                            </ReactMarkdown>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -294,7 +318,12 @@ export default function PlaygroundPage() {
                   className="flex gap-3 dark:bg-zinc-900/50 bg-white rounded-lg p-4"
                 >
                   <div className="w-6 h-6 rounded-full border dark:border-zinc-800 border-zinc-200 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4" />
+                    <Image
+                      src="/midasLogo.png"
+                      width={24}
+                      height={24}
+                      alt="Midas"
+                    />
                   </div>
                   <div className="flex-1">
                     <div className="flex gap-1 mt-[0.5rem]">
