@@ -10,10 +10,30 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useUser } from '@clerk/nextjs';
-import { Bell, Globe, Lock, Mail, Moon, Palette, Shield } from "lucide-react";
+import { Bell, Globe, Lock, Mail, Moon, Palette, Shield, DollarSign } from "lucide-react";
+import { api } from "@/convex/_generated/api";
+import { useQuery, useMutation } from "convex/react";
+import { useState, useEffect } from "react";
 
 export default function SettingsPage() {
   const user = useUser();
+  const userData = useQuery(api.users.getUserByToken, { 
+    tokenIdentifier: user.user?.id || "" 
+  });
+  const updateBudgets = useMutation(api.users.updateBudgets);
+  const [budgets, setBudgets] = useState({
+    weeklyBudget: userData?.weeklyBudget,
+    biweeklyBudget: userData?.biweeklyBudget,
+    monthlyBudget: userData?.monthlyBudget,
+  });
+
+  useEffect(() => {
+    setBudgets({
+      weeklyBudget: userData?.weeklyBudget,
+      biweeklyBudget: userData?.biweeklyBudget,
+      monthlyBudget: userData?.monthlyBudget,
+    });
+  }, [userData]);
 
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -77,6 +97,61 @@ export default function SettingsPage() {
                 <CardDescription>Manage your account preferences</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* Budget Settings */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="h-5 w-5" />
+                    <Label>Budget Settings</Label>
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <div className="space-y-2">
+                      <Label htmlFor="weeklyBudget">Weekly Budget</Label>
+                      <Input
+                        id="weeklyBudget"
+                        type="number"
+                        placeholder="Enter amount"
+                        value={budgets.weeklyBudget || ""}
+                        onChange={(e) => setBudgets(prev => ({
+                          ...prev,
+                          weeklyBudget: e.target.value ? Number(e.target.value) : undefined
+                        }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="biweeklyBudget">Bi-weekly Budget</Label>
+                      <Input
+                        id="biweeklyBudget"
+                        type="number"
+                        placeholder="Enter amount"
+                        value={budgets.biweeklyBudget || ""}
+                        onChange={(e) => setBudgets(prev => ({
+                          ...prev,
+                          biweeklyBudget: e.target.value ? Number(e.target.value) : undefined
+                        }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="monthlyBudget">Monthly Budget</Label>
+                      <Input
+                        id="monthlyBudget"
+                        type="number"
+                        placeholder="Enter amount"
+                        value={budgets.monthlyBudget || ""}
+                        onChange={(e) => setBudgets(prev => ({
+                          ...prev,
+                          monthlyBudget: e.target.value ? Number(e.target.value) : undefined
+                        }))}
+                      />
+                    </div>
+                  </div>
+                  <Button 
+                    onClick={() => updateBudgets(budgets)}
+                    className="mt-2"
+                  >
+                    Save Budget Settings
+                  </Button>
+                </div>
+                <Separator />
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Language</Label>

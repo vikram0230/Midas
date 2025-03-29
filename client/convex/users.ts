@@ -76,3 +76,36 @@ export const store = mutation({
         });
     },
 });
+
+export const updateBudgets = mutation({
+    args: {
+        weeklyBudget: v.optional(v.number()),
+        biweeklyBudget: v.optional(v.number()),
+        monthlyBudget: v.optional(v.number()),
+    },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) {
+            throw new Error("Not authenticated");
+        }
+
+        const user = await ctx.db
+            .query("users")
+            .withIndex("by_token", (q) =>
+                q.eq("tokenIdentifier", identity.subject)
+            )
+            .unique();
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        const updates: any = {};
+        if (args.weeklyBudget !== undefined) updates.weeklyBudget = args.weeklyBudget;
+        if (args.biweeklyBudget !== undefined) updates.biweeklyBudget = args.biweeklyBudget;
+        if (args.monthlyBudget !== undefined) updates.monthlyBudget = args.monthlyBudget;
+
+        await ctx.db.patch(user._id, updates);
+        return user._id;
+    },
+});
