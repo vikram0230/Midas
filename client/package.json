@@ -78,6 +78,7 @@
     "next": "latest",
     "next-themes": "^0.3.0",
     "next-view-transitions": "^0.3.4",
+    "nodemailer": "^6.10.0",
     "react": "latest",
     "react-day-picker": "^8.10.1",
     "react-dom": "latest",
@@ -97,6 +98,7 @@
   },
   "devDependencies": {
     "@types/node": "latest",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
