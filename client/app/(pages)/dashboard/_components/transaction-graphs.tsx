@@ -30,7 +30,7 @@ const DEFAULT_MONTHLY_BUDGET = 2000
 type Transaction = {
   _id: string
   transaction_id: string
-  userId: string
+  account_id: string
   amount: number
   date: string
   category: string
@@ -53,11 +53,12 @@ export default function TransactionGraphs() {
   const { user } = useUser()
   const userId = user?.id || ""
   
-  // Get transactions for the current user
-  const transactions = useQuery(api.transactions.getTransactionsByUser, { userId })
-  
-  // Get user data to access budget settings
+  // Get user data to access budget settings and accountId
   const userData = useQuery(api.users.getUserById, { userId })
+  
+  // Get transactions for the user's account
+  // We use getTransactionsByUser which handles the accountId lookup internally
+  const transactions = useQuery(api.transactions.getTransactionsByUser, { userId })
 
   const [timeRange, setTimeRange] = useState<TimeRange>("weekly")
   const [graphType, setGraphType] = useState<GraphType>("daily")

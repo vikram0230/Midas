@@ -21,24 +21,26 @@ export default function Dashboard() {
   const { user } = useUser();
   const userId = user?.id || "";
   const transactions = useQuery(api.transactions.getTransactionsByUser, { userId });
+  const userData = useQuery(api.users.getUserById, { userId });
   
   // Calculate total spending
   const totalSpending = transactions?.reduce((sum, tx) => sum + tx.amount, 0) || 0;
   
-  // Calculate categories
-  const categories = transactions?.reduce((acc, tx) => {
-    if (!acc[tx.category]) {
-      acc[tx.category] = 0;
+  // Calculate spending by category
+  const spendingByCategory = transactions?.reduce((categories, tx) => {
+    const category = tx.category.split(' > ')[0]; // Get top-level category
+    if (!categories[category]) {
+      categories[category] = 0;
     }
-    acc[tx.category] += tx.amount;
-    return acc;
+    categories[category] += tx.amount;
+    return categories;
   }, {} as Record<string, number>) || {};
   
   // Find top category
   let topCategory = 'None';
   let topAmount = 0;
   
-  Object.entries(categories).forEach(([category, amount]) => {
+  Object.entries(spendingByCategory).forEach(([category, amount]) => {
     if (amount > topAmount) {
       topCategory = category;
       topAmount = amount;
@@ -158,9 +160,9 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {Object.keys(categories).length > 0 ? (
+            {Object.keys(spendingByCategory).length > 0 ? (
               <div className="space-y-4">
-                {Object.entries(categories)
+                {Object.entries(spendingByCategory)
                   .sort(([, a], [, b]) => b - a)
                   .map(([category, amount]) => (
                     <div key={category} className="flex items-center justify-between">

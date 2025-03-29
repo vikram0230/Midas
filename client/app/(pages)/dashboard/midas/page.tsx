@@ -57,7 +57,8 @@ export default function PlaygroundPage() {
   const { user } = useUser();
   const userId = user?.id || "";
   
-  // Fetch transactions data
+  // Get user and transaction data
+  const userData = useQuery(api.users.getUserById, { userId });
   const transactions = useQuery(api.transactions.getTransactionsByUser, { userId });
 
   // Model parameters
@@ -69,33 +70,78 @@ export default function PlaygroundPage() {
 
   // Generate system prompt with transaction data
   useEffect(() => {
-    if (transactions && transactions.length > 0) {
-      const transactionData = JSON.stringify(transactions, null, 2);
-      const newSystemPrompt = `
-You are Midas, a financial AI assistant. You have access to the user's transaction data.
-Your goal is to provide helpful insights, answer questions, and give financial advice based on their transaction history.
-
-Here is the user's transaction data:
-${transactionData}
-
-When analyzing this data, consider:
-1. Spending patterns and categories
-2. Budget recommendations
-3. Savings opportunities
-4. Financial insights and trends
-
-Always be helpful, accurate, and provide specific advice based on the actual transaction data.
-If asked about something not in the transaction data, be honest about what you don't know.
-      `;
-      setSystemPrompt(newSystemPrompt);
-    } else {
-      setSystemPrompt(`
-You are Midas, a financial AI assistant. 
-I don't have access to your transaction data yet, but I can still provide general financial advice.
-Ask me about budgeting, saving strategies, investment basics, or other financial topics!
-      `);
+    if (!transactions || transactions.length === 0) {
+      setSystemPrompt(
+        `You are Midas, a financial AI assistant. You help users understand their finances and make better financial decisions. 
+        Currently, the user has no transaction data available. Encourage them to connect their bank account to get personalized insights.`
+      );
+      return;
     }
-  }, [transactions]);
+
+    // Calculate total spending
+    const totalSpending = transactions.reduce((sum, tx) => sum + tx.amount, 0);
+    
+    // Calculate spending by category
+    const spendingByCategory = transactions.reduce((categories, tx) => {
+      const category = tx.category.split(' > ')[0]; // Get top-level category
+      if (!categories[category]) {
+        categories[category] = 0;
+      }
+      categories[category] += tx.amount;
+      return categories;
+    }, {} as Record<string, number>);
+    
+    // Sort categories by amount spent
+    const sortedCategories = Object.entries(spendingByCategory)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5); // Top 5 categories
+    
+    // Get recent transactions
+    const recentTransactions = [...transactions]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 10); // Last 10 transactions
+    
+    // Format transaction data for the system prompt
+    const transactionData = {
+      totalSpending,
+      topCategories: sortedCategories,
+      recentTransactions: recentTransactions.map(tx => ({
+        date: tx.date,
+        amount: tx.amount,
+        category: tx.category,
+        merchant: tx.merchant_name || tx.name || 'Unknown'
+      })),
+      budgets: {
+        weekly: userData?.weeklyBudget || 500,
+        biweekly: userData?.biweeklyBudget || 1000,
+        monthly: userData?.monthlyBudget || 2000
+      }
+    };
+    
+    // Create system prompt with transaction data
+    const prompt = `You are Midas, a financial AI assistant. You help users understand their finances and make better financial decisions.
+    
+    Here is the user's financial data:
+    
+    Total Spending: $${totalSpending.toFixed(2)}
+    
+    Top Spending Categories:
+    ${sortedCategories.map(([category, amount]) => `- ${category}: $${amount.toFixed(2)}`).join('\n')}
+    
+    Recent Transactions:
+    ${recentTransactions.map(tx => `- ${new Date(tx.date).toLocaleDateString()}: $${tx.amount.toFixed(2)} at ${tx.merchant_name || tx.name || 'Unknown'} (${tx.category})`).join('\n')}
+    
+    User's Budget Settings:
+    - Weekly Budget: $${transactionData.budgets.weekly}
+    - Bi-weekly Budget: $${transactionData.budgets.biweekly}
+    - Monthly Budget: $${transactionData.budgets.monthly}
+    
+    Use this information to provide personalized financial insights, budget recommendations, and answer questions about the user's spending patterns. If the user asks about a specific category or time period not mentioned above, you can tell them you don't have that information.
+    
+    Always be helpful, supportive, and non-judgmental about the user's spending habits. Focus on providing actionable advice to help them improve their financial well-being.`;
+    
+    setSystemPrompt(prompt);
+  }, [transactions, userData]);
 
   const toggleReasoning = (index: number) => {
     setExpandedReasoning((prev) =>
