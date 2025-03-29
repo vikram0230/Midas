@@ -1,15 +1,16 @@
 "use client"
 
-import { useQuery } from "convex/react"
+import { useQuery, useMutation } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { useUser } from "@clerk/nextjs"
-import { format, parseISO, subDays, eachDayOfInterval } from "date-fns"
+import { format, parseISO, subDays, eachDayOfInterval, addDays } from "date-fns"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
 import { 
   BarChart, 
   Bar, 
@@ -19,7 +20,8 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer
+  ResponsiveContainer,
+  Legend
 } from "recharts"
 import { formatCategory } from "@/lib/utils"
 
@@ -49,6 +51,12 @@ type DailySpending = {
   cumulative: number
   formattedDate: string
   budget?: number
+  isPredicted?: boolean
+}
+
+type PredictedData = {
+  predictedTransactions: any[]
+  predictedDailyData: DailySpending[]
 }
 
 type TimeRange = "weekly" | "biweekly" | "monthly"
@@ -67,6 +75,12 @@ export default function TransactionGraphs() {
 
   const [timeRange, setTimeRange] = useState<TimeRange>("weekly")
   const [graphType, setGraphType] = useState<GraphType>("daily")
+  const [showPredictions, setShowPredictions] = useState(false)
+  const [isPredicting, setIsPredicting] = useState(false)
+  const [predictedData, setPredictedData] = useState<{
+    predictedTransactions: any[],
+    predictedDailyData: DailySpending[]
+  } | null>(null)
 
   // Initialize with empty arrays
   const [weeklyData, setWeeklyData] = useState<DailySpending[]>([])
@@ -220,17 +234,169 @@ export default function TransactionGraphs() {
 
   // Get the appropriate data based on selected time range
   const getData = () => {
+    let data = [] as DailySpending[];
+    
     switch (timeRange) {
       case "weekly":
-        return weeklyData
+        data = weeklyData;
+        break;
       case "biweekly":
-        return biWeeklyData
+        data = biWeeklyData;
+        break;
       case "monthly":
-        return monthlyData
+        data = monthlyData;
+        break;
       default:
-        return weeklyData
+        data = weeklyData;
     }
+    
+    // If predictions are enabled and we have predicted data, append it
+    if (showPredictions && predictedData?.predictedDailyData) {
+      // Get the last date from our actual data
+      const lastDate = data.length > 0 ? new Date(data[data.length - 1].date) : new Date();
+      
+      // Filter predicted data to only include dates after our last actual date
+      const filteredPredictions = predictedData.predictedDailyData.filter(item => {
+        const predDate = new Date(item.date);
+        return predDate > lastDate;
+      });
+      
+      // If we're showing cumulative data, adjust the cumulative values to continue from our last actual value
+      if (graphType === "cumulative" && data.length > 0 && filteredPredictions.length > 0) {
+        const lastCumulative = data[data.length - 1].cumulative;
+        
+        // Adjust each prediction's cumulative value
+        filteredPredictions.forEach((item, index) => {
+          if (index === 0) {
+            item.cumulative = lastCumulative + item.amount;
+          } else {
+            item.cumulative = filteredPredictions[index - 1].cumulative + item.amount;
+          }
+        });
+      }
+      
+      // Combine actual and predicted data
+      return [...data, ...filteredPredictions];
+    }
+    
+    return data;
   }
+
+  // Function to generate sample predicted data
+  // In a real implementation, this would be an API call to localhost:8000
+  const fetchPredictions = async () => {
+    setIsPredicting(true);
+    
+    try {
+      // Get the current data to find the last date
+      const currentData = getData();
+      const lastDate = currentData.length > 0 
+        ? new Date(currentData[currentData.length - 1].date)
+        : new Date();
+      
+      // For now, we'll generate sample predicted data
+      // In a real implementation, this would be:
+      // const response = await fetch('http://localhost:8000/predict', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     userId,
+      //     timeRange,
+      //     startDate: lastDate.toISOString()
+      //   })
+      // });
+      // const data = await response.json();
+      
+      // Generate sample predicted data
+      const predictedTransactions = [];
+      const predictedDailyData = [];
+      let cumulativeAmount = 0;
+      
+      // Determine number of days to predict based on timeRange
+      let daysToPredict = 7;
+      if (timeRange === "biweekly") {
+        daysToPredict = 14;
+      } else if (timeRange === "monthly") {
+        daysToPredict = 30;
+      }
+      
+      // Sample categories and amounts based on typical spending
+      const sampleCategories = [
+        { category: "Food & Dining", avgAmount: 25 },
+        { category: "Shopping", avgAmount: 50 },
+        { category: "Transportation", avgAmount: 15 },
+        { category: "Entertainment", avgAmount: 35 },
+        { category: "Bills & Utilities", avgAmount: 75 }
+      ];
+      
+      for (let i = 0; i < daysToPredict; i++) {
+        const currentDate = addDays(lastDate, i + 1); // Start from the day after last date
+        const dateStr = format(currentDate, "yyyy-MM-dd");
+        const formattedDate = format(currentDate, "MMM dd");
+        
+        // Randomly determine how many transactions to generate for this day (1-3)
+        const transactionsForDay = Math.floor(Math.random() * 3) + 1;
+        
+        let dailyTotal = 0;
+        
+        for (let j = 0; j < transactionsForDay; j++) {
+          // Randomly select a category
+          const randomCategory = sampleCategories[Math.floor(Math.random() * sampleCategories.length)];
+          
+          // Add some randomness to the amount (±20%)
+          const randomFactor = 0.8 + (Math.random() * 0.4); // Between 0.8 and 1.2
+          const amount = randomCategory.avgAmount * randomFactor;
+          
+          // Create a predicted transaction
+          predictedTransactions.push({
+            transaction_id: 10000 + predictedTransactions.length, // Use high IDs to avoid conflicts
+            account_id: userData?.accountId || "unknown",
+            date: dateStr,
+            amount: amount,
+            category: randomCategory.category,
+            vendor_name: `Predicted ${randomCategory.category}`,
+            isPredicted: true
+          });
+          
+          dailyTotal += amount;
+        }
+        
+        cumulativeAmount += dailyTotal;
+        
+        // Add to daily data for graphing
+        predictedDailyData.push({
+          date: dateStr,
+          formattedDate: formattedDate,
+          amount: dailyTotal,
+          cumulative: cumulativeAmount,
+          isPredicted: true
+        });
+      }
+      
+      // Set the predicted data
+      setPredictedData({
+        predictedTransactions,
+        predictedDailyData
+      });
+      
+      setShowPredictions(true);
+    } catch (error) {
+      console.error("Error generating predictions:", error);
+    } finally {
+      setIsPredicting(false);
+    }
+  };
+
+  // Toggle predictions on/off
+  const togglePredictions = () => {
+    if (showPredictions) {
+      // Hide predictions
+      setShowPredictions(false);
+    } else {
+      // Show predictions
+      fetchPredictions();
+    }
+  };
 
   // Get the appropriate budget based on selected time range
   const getBudget = () => {
@@ -282,9 +448,12 @@ export default function TransactionGraphs() {
   const currentData = getData()
 
   // Custom tooltip formatter
-  const formatTooltip = (value: number) => {
-    return [`$${value.toFixed(2)}`, "Amount"]
-  }
+  const formatTooltip = (value: number, name: string, props: any) => {
+    // Check if this is a predicted value
+    const isPredicted = props.payload && props.payload.isPredicted;
+    const label = isPredicted ? `${name} (Predicted)` : name;
+    return [`$${value.toFixed(2)}`, label];
+  };
 
   // Render bar chart using Recharts
   const renderBarChart = () => {
@@ -332,11 +501,15 @@ export default function TransactionGraphs() {
         <div className="flex flex-col h-[300px] items-center justify-center">
           <p className="text-muted-foreground">Not enough data for a line chart</p>
         </div>
-      )
+      );
     }
 
     // Calculate daily budget
-    const dailyBudget = getBudget() / currentData.length
+    const dailyBudget = getBudget() / currentData.length;
+    
+    // Identify where actual data ends and predictions begin
+    const predictedStartIndex = currentData.findIndex(item => item.isPredicted);
+    const hasPredictions = predictedStartIndex !== -1;
 
     return (
       <ResponsiveContainer width="100%" height={250}>
@@ -355,26 +528,50 @@ export default function TransactionGraphs() {
             axisLine={{ stroke: '#e5e7eb' }}
           />
           <Tooltip formatter={formatTooltip} />
+          <Legend />
+          
+          {/* Actual spending line */}
           <Line 
             type="monotone" 
             dataKey="cumulative" 
+            name="Actual Spending"
             stroke="#3b82f6" 
             strokeWidth={2} 
             dot={{ r: 3, fill: "#3b82f6", stroke: "#fff", strokeWidth: 1 }} 
             activeDot={{ r: 5 }}
           />
+          
+          {/* Budget line */}
           <Line 
             type="monotone" 
             dataKey="budget" 
+            name="Budget"
             stroke="#94a3b8" 
             strokeWidth={2} 
             strokeDasharray="5 5" 
             dot={false}
           />
+          
+          {/* Predicted spending line (only if we have predictions) */}
+          {hasPredictions && (
+            <Line 
+              type="monotone" 
+              dataKey="cumulative" 
+              name="Predicted Spending"
+              stroke="#f97316" 
+              strokeWidth={2}
+              strokeDasharray="3 3"
+              dot={{ r: 3, fill: "#f97316", stroke: "#fff", strokeWidth: 1 }} 
+              activeDot={{ r: 5 }}
+              // Only show this line for predicted data points
+              isAnimationActive={true}
+              connectNulls={true}
+            />
+          )}
         </LineChart>
       </ResponsiveContainer>
-    )
-  }
+    );
+  };
 
   return (
     <div className="grid gap-4">
@@ -402,6 +599,15 @@ export default function TransactionGraphs() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
+            <Button 
+              variant={showPredictions ? "default" : "outline"} 
+              size="sm" 
+              onClick={togglePredictions}
+              disabled={isPredicting}
+              className="h-8 text-xs"
+            >
+              {isPredicting ? "Loading..." : (showPredictions ? "Hide Predictions" : "Predict")}
+            </Button>
           </div>
         </CardHeader>
         <CardContent className="px-2 pb-2">

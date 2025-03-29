@@ -23,8 +23,9 @@ import {
   Copy,
   Check,
   Sparkles,
+  BarChart,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
@@ -32,6 +33,11 @@ import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
 import Image from "next/image";
+import { Chart, registerables } from 'chart.js';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
+// Register Chart.js components
+Chart.register(...registerables);
 
 interface CodeProps {
   node?: any;
@@ -40,7 +46,7 @@ interface CodeProps {
   children?: React.ReactNode;
 }
 
-export default function PlaygroundPage() {
+export default function Midas() {
   const [model, setModel] = useState("gemini:gemini-2.0-flash");
   const [systemPrompt, setSystemPrompt] = useState("");
   const [expandedReasoning, setExpandedReasoning] = useState<number[]>([]);
@@ -51,6 +57,13 @@ export default function PlaygroundPage() {
   // Get user and transaction data
   const userData = useQuery(api.users.getUserById, { userId });
   const transactions = useQuery(api.transactions.getTransactionsByUser, { userId });
+
+  // Graph related states
+  const [graphData, setGraphData] = useState<any>(null);
+  const [showGraph, setShowGraph] = useState(false);
+  const [graphType, setGraphType] = useState<'bar' | 'pie' | 'line'>('bar');
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const chartInstanceRef = useRef<Chart | null>(null);
 
   // Model parameters
   const [temperature, setTemperature] = useState(0.7);
@@ -64,7 +77,20 @@ export default function PlaygroundPage() {
     if (!transactions || transactions.length === 0) {
       setSystemPrompt(
         `You are Midas, a financial AI assistant. You help users understand their finances and make better financial decisions. 
-        Currently, the user has no transaction data available. Encourage them to connect their bank account to get personalized insights.`
+        Currently, the user has no transaction data available. Encourage them to connect their bank account to get personalized insights.
+        
+        If the user asks for a graph or visualization, tell them you can generate a simple graph for them. When they ask for a specific graph (spending by category, spending over time, etc.), respond with a message that includes the text "[GENERATE_GRAPH:type]" where type is one of: bar, pie, or line. This will trigger the UI to display the appropriate graph.
+        
+        IMPORTANT: When users ask how their finances "look like" or request to "see" their spending, automatically generate an appropriate visualization:
+        - For general questions about overall finances or spending patterns, include "[GENERATE_GRAPH:pie]" in your response
+        - For questions about spending trends or changes over time, include "[GENERATE_GRAPH:line]" in your response
+        - For questions about spending categories or budget comparisons, include "[GENERATE_GRAPH:bar]" in your response
+        
+        Always explain what the graph shows and how it relates to their financial situation.
+        
+        Use this information to provide personalized financial insights, budget recommendations, and answer questions about the user's spending patterns. If the user asks about a specific category or time period not mentioned above, you can tell them you don't have that information.
+        
+        Always be helpful, supportive, and non-judgmental about the user's spending habits. Focus on providing actionable advice to help them improve their financial well-being.`
       );
       return;
     }
@@ -129,22 +155,162 @@ export default function PlaygroundPage() {
     
     Use this information to provide personalized financial insights, budget recommendations, and answer questions about the user's spending patterns. If the user asks about a specific category or time period not mentioned above, you can tell them you don't have that information.
     
-    Always be helpful, supportive, and non-judgmental about the user's spending habits. Focus on providing actionable advice to help them improve their financial well-being.`;
+    Always be helpful, supportive, and non-judgmental about the user's spending habits. Focus on providing actionable advice to help them improve their financial well-being.
+    
+    If the user asks for a graph or visualization, tell them you can generate a simple graph for them. When they ask for a specific graph (spending by category, spending over time, etc.), respond with a message that includes the text "[GENERATE_GRAPH:type]" where type is one of: bar, pie, or line. This will trigger the UI to display the appropriate graph.
+    
+    IMPORTANT: When users ask how their finances "look like" or request to "see" their spending, automatically generate an appropriate visualization:
+    - For general questions about overall finances or spending patterns, include "[GENERATE_GRAPH:pie]" in your response
+    - For questions about spending trends or changes over time, include "[GENERATE_GRAPH:line]" in your response
+    - For questions about spending categories or budget comparisons, include "[GENERATE_GRAPH:bar]" in your response
+    
+    Always explain what the graph shows and how it relates to their financial situation.`;
     
     setSystemPrompt(prompt);
   }, [transactions, userData]);
 
-  const toggleReasoning = (index: number) => {
-    setExpandedReasoning((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
+  // Function to generate graph data based on transaction data
+  const generateGraphData = (type: 'bar' | 'pie' | 'line') => {
+    if (!transactions || transactions.length === 0) {
+      return null;
+    }
+
+    // Calculate spending by category for bar/pie chart
+    if (type === 'bar' || type === 'pie') {
+      const spendingByCategory = transactions.reduce((categories, tx) => {
+        const category = tx.category.split(' > ')[0]; // Get top-level category
+        if (!categories[category]) {
+          categories[category] = 0;
+        }
+        categories[category] += tx.amount;
+        return categories;
+      }, {} as Record<string, number>);
+      
+      // Sort categories by amount spent and get top 5
+      const sortedCategories = Object.entries(spendingByCategory)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5); // Top 5 categories
+      
+      return {
+        labels: sortedCategories.map(([category]) => category),
+        datasets: [
+          {
+            label: 'Spending by Category',
+            data: sortedCategories.map(([_, amount]) => amount),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+              'rgba(255, 206, 86, 0.6)',
+              'rgba(75, 192, 192, 0.6)',
+              'rgba(153, 102, 255, 0.6)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+            ],
+            borderWidth: 1,
+          },
+        ],
+      };
+    }
+    
+    // Calculate spending over time for line chart
+    if (type === 'line') {
+      // Group transactions by date
+      const spendingByDate = transactions.reduce((dates, tx) => {
+        const date = new Date(tx.date).toLocaleDateString();
+        if (!dates[date]) {
+          dates[date] = 0;
+        }
+        dates[date] += tx.amount;
+        return dates;
+      }, {} as Record<string, number>);
+      
+      // Sort dates chronologically
+      const sortedDates = Object.entries(spendingByDate)
+        .sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime())
+        .slice(-10); // Last 10 days with transactions
+      
+      return {
+        labels: sortedDates.map(([date]) => date),
+        datasets: [
+          {
+            label: 'Spending Over Time',
+            data: sortedDates.map(([_, amount]) => amount),
+            fill: false,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            tension: 0.1,
+          },
+        ],
+      };
+    }
+    
+    return null;
   };
 
-  const handleCopyCode = async (code: string) => {
-    await navigator.clipboard.writeText(code);
-    setCopiedCode(code);
-    setTimeout(() => setCopiedCode(null), 2000);
+  // Function to render chart
+  const renderChart = () => {
+    if (!canvasRef.current || !graphData) return;
+    
+    // Destroy previous chart instance if it exists
+    if (chartInstanceRef.current) {
+      chartInstanceRef.current.destroy();
+    }
+    
+    // Create new chart
+    chartInstanceRef.current = new Chart(canvasRef.current, {
+      type: graphType,
+      data: graphData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              color: document.documentElement.classList.contains('dark') ? 'white' : 'black',
+            },
+          },
+          title: {
+            display: true,
+            text: graphType === 'line' ? 'Spending Over Time' : 'Spending by Category',
+            color: document.documentElement.classList.contains('dark') ? 'white' : 'black',
+          },
+        },
+        scales: graphType !== 'pie' ? {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: (value) => `$${value}`,
+              color: document.documentElement.classList.contains('dark') ? 'white' : 'black',
+            },
+            grid: {
+              color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            },
+          },
+          x: {
+            ticks: {
+              color: document.documentElement.classList.contains('dark') ? 'white' : 'black',
+            },
+            grid: {
+              color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            },
+          },
+        } : undefined,
+      },
+    });
   };
+
+  // Effect to render chart when graphData or graphType changes
+  useEffect(() => {
+    if (showGraph && graphData) {
+      renderChart();
+    }
+  }, [showGraph, graphData, graphType]);
 
   // Create initial welcome message
   const initialMessages: Message[] = [
@@ -169,7 +335,37 @@ export default function PlaygroundPage() {
       },
       initialMessages,
     });
-    
+
+  // Check for graph generation requests in messages
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'assistant') {
+        const content = lastMessage.content || '';
+        const graphMatch = content.match(/\[GENERATE_GRAPH:(bar|pie|line)\]/i);
+        
+        if (graphMatch) {
+          const requestedType = graphMatch[1] as 'bar' | 'pie' | 'line';
+          setGraphType(requestedType);
+          const data = generateGraphData(requestedType);
+          setGraphData(data);
+          setShowGraph(true);
+        }
+      }
+    }
+  }, [messages]);
+
+  const toggleReasoning = (index: number) => {
+    setExpandedReasoning((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+  };
+
+  const handleCopyCode = async (code: string) => {
+    await navigator.clipboard.writeText(code);
+    setCopiedCode(code);
+    setTimeout(() => setCopiedCode(null), 2000);
+  };
 
   const components = {
     code({ node, inline, className, children, ...props }: CodeProps) {
@@ -298,7 +494,7 @@ export default function PlaygroundPage() {
                         >
                           <div className="text-[14px]">
                             <ReactMarkdown components={components}>
-                              {message.content}
+                              {message.content.replace(/\[GENERATE_GRAPH:(bar|pie|line)\]/i, '')}
                             </ReactMarkdown>
                           </div>
                         </div>
@@ -308,6 +504,75 @@ export default function PlaygroundPage() {
                 </motion.div>
               ))}
             </AnimatePresence>
+
+            {/* Graph Section */}
+            {showGraph && graphData && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                transition={{ duration: 0.3 }}
+                className="mb-4"
+              >
+                <Collapsible
+                  open={showGraph}
+                  onOpenChange={setShowGraph}
+                  className="w-full dark:bg-zinc-900/50 bg-white rounded-lg border dark:border-zinc-800 border-zinc-200 overflow-hidden"
+                >
+                  <CollapsibleTrigger className="flex items-center justify-between w-full p-4">
+                    <div className="flex items-center gap-2">
+                      <BarChart className="w-5 h-5" />
+                      <span className="font-medium">
+                        {graphType === 'line' ? 'Spending Over Time' : 'Spending by Category'}
+                      </span>
+                    </div>
+                    <ChevronUp className="w-4 h-4" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="p-4 h-[300px]">
+                      <canvas ref={canvasRef} />
+                    </div>
+                    <div className="flex justify-between p-4 border-t dark:border-zinc-800 border-zinc-200">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setGraphType('bar');
+                          const data = generateGraphData('bar');
+                          setGraphData(data);
+                        }}
+                        className={graphType === 'bar' ? 'bg-primary text-primary-foreground' : ''}
+                      >
+                        Bar Chart
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setGraphType('pie');
+                          const data = generateGraphData('pie');
+                          setGraphData(data);
+                        }}
+                        className={graphType === 'pie' ? 'bg-primary text-primary-foreground' : ''}
+                      >
+                        Pie Chart
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setGraphType('line');
+                          const data = generateGraphData('line');
+                          setGraphData(data);
+                        }}
+                        className={graphType === 'line' ? 'bg-primary text-primary-foreground' : ''}
+                      >
+                        Line Chart
+                      </Button>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              </motion.div>
+            )}
 
             {/* Only show loading when isLoading is true AND there's no message being streamed */}
             {isLoading &&
