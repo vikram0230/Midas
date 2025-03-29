@@ -1,201 +1,201 @@
-transaction_id,account_id,amount,iso_currency_code,unofficial_currency_code,category,category_id,date,authorized_date,location_address,location_city,location_region,location_postal_code,location_country,location_lat,location_lon,name,merchant_name,payment_channel,pending,pending_transaction_id,account_owner,transaction_code,category_functional
-67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-09-09,2024-09-08,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
-67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-09-10,2024-09-09,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
-67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-09-11,2024-09-10,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
-67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-09-12,2024-09-11,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
-67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-09-13,2024-09-12,,,,,,,Netflix,Netflix,online,false,,,,,other
-67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-09-14,2024-09-13,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
-67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-09-15,2024-09-14,,,,,,,Amazon,Amazon,online,false,,,,,other
-67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-09-16,2024-09-15,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
-67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-09-17,2024-09-16,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
-67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2024-09-18,2024-09-17,,,,,,,Coursera,Coursera,online,false,,,,,other
-67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-09-19,2024-09-18,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
-67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-09-20,2024-09-19,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
-67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-09-21,2024-09-20,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
-67890,120.5,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-09-22,2024-09-21,456 Verizon Ave,San Francisco,CA,94103.0,US,37.7768,-122.4212,Verizon,Verizon,online,False,,,,utilities
-67890,18.5,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-09-23,2024-09-22,,,,,,,Hulu,Hulu,online,false,,,,,other
-67890,20.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-09-24,2024-09-23,456 Wellness Ave,San Francisco,CA,94103.0,US,37.7772,-122.4216,Walgreens,Walgreens,in store,False,,,,health
-67890,99.99,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-09-25,2024-09-24,150 Target Dr,San Francisco,CA,94103.0,US,37.7775,-122.4219,Target Store,Target Store,in store,False,,,,shopping
-67890,50.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-09-26,2024-09-25,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
-67890,40.5,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-09-27,2024-09-26,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
-67890,150.0,USD,,"[""Services"""," ""Education""]",24000000,2024-09-28,2024-09-27,,,,,,,Udemy,Udemy,online,false,,,,,other
-67890,9.99,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-09-29,2024-09-28,789 Mission St,San Francisco,CA,94107.0,US,37.7751,-122.4196,Chipotle,Chipotle,in store,False,,,,food and drink
-67890,32.1,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-09-30,2024-09-29,300 Mission St,San Francisco,CA,94105.0,US,37.7762,-122.4206,Safeway,Safeway,in store,False,,,,groceries
-67890,450.0,USD,,"[""Travel"""," ""Hotels""]",22001000,2024-10-01,2024-10-01,1010 Howard St,San Francisco,CA,94103.0,US,37.787,-122.3960,Marriott,Marriott,online,False,,,,travel
-67890,75.25,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-10-02,2024-10-01,789 PG&E Blvd,San Francisco,CA,94107.0,US,37.7769,-122.4213,PG&E,PG&E,online,False,,,,utilities
-67890,11.0,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-10-03,2024-10-02,,,,,,,AMC Theatres,AMC Theatres,online,false,,,,,other
-67890,35.5,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-10-04,2024-10-03,789 Care Blvd,San Francisco,CA,94107.0,US,37.7773,-122.4217,Rite Aid,Rite Aid,in store,False,,,,health
-67890,150.25,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-10-05,2024-10-04,250 Walmart Way,San Francisco,CA,94105.0,US,37.7776,-122.4220,Walmart,Walmart,in store,False,,,,shopping
-67890,42.75,USD,,"[""Travel"""," ""Gas""]",22002000,2024-10-06,2024-10-05,901 Energy St,San Francisco,CA,94109.0,US,37.778,-122.4224,Exxon,Exxon,in store,False,,,,travel
-67890,15.75,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-10-07,2024-10-06,300 Style Ave,San Francisco,CA,94105.0,US,37.7783,-122.4227,The Body Shop,The Body Shop,in store,False,,,,personal care
-67890,50.0,USD,,"[""Services"""," ""Education""]",24000000,2024-10-08,2024-10-07,,,,,,,LinkedIn Learning,LinkedIn Learning,online,false,,,,,other
-67890,22.3,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-10-09,2024-10-08,321 Castro St,San Francisco,CA,94110.0,US,37.7752,-122.4197,In-N-Out Burger,In-N-Out Burger,in store,False,,,,food and drink
-67890,55.55,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-10-10,2024-10-09,400 Van Ness Ave,San Francisco,CA,94109.0,US,37.7763,-122.4207,Kroger,Kroger,in store,False,,,,groceries
-67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-10-11,2024-10-10,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
-67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-10-12,2024-10-11,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
-67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-10-13,2024-10-12,,,,,,,Spotify,Spotify,online,false,,,,,other
-67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-10-14,2024-10-13,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
-67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-10-15,2024-10-14,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
-67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-10-16,2024-10-15,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
-67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-10-17,2024-10-16,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
-67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2024-10-18,2024-10-17,,,,,,,Coursera,Coursera,online,false,,,,,other
-67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-10-19,2024-10-18,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
-67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-10-20,2024-10-19,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
-67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-10-21,2024-10-20,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
-67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-10-22,2024-10-21,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
-67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-10-23,2024-10-22,,,,,,,Netflix,Netflix,online,false,,,,,other
-67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-10-24,2024-10-23,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
-67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-10-25,2024-10-24,,,,,,,Amazon,Amazon,online,false,,,,,other
-67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-10-26,2024-10-25,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
-67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-10-27,2024-10-26,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
-67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2024-10-28,2024-10-27,,,,,,,Udemy,Udemy,online,false,,,,,other
-67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-10-29,2024-10-28,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
-67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-10-30,2024-10-29,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
-67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-10-31,2024-10-31,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
-67890,120.5,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-11-01,2024-11-01,456 Verizon Ave,San Francisco,CA,94103.0,US,37.7768,-122.4212,Verizon,Verizon,online,False,,,,utilities
-67890,18.5,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-11-02,2024-11-01,,,,,,,Hulu,Hulu,online,false,,,,,other
-67890,20.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-11-03,2024-11-02,456 Wellness Ave,San Francisco,CA,94103.0,US,37.7772,-122.4216,Walgreens,Walgreens,in store,False,,,,health
-67890,99.99,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-11-04,2024-11-03,150 Target Dr,San Francisco,CA,94103.0,US,37.7775,-122.4219,Target Store,Target Store,in store,False,,,,shopping
-67890,50.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-11-05,2024-11-04,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
-67890,40.5,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-11-06,2024-11-05,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
-67890,150.0,USD,,"[""Services"""," ""Education""]",24000000,2024-11-07,2024-11-06,,,,,,,LinkedIn Learning,LinkedIn Learning,online,false,,,,,other
-67890,9.99,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-11-08,2024-11-07,789 Mission St,San Francisco,CA,94107.0,US,37.7751,-122.4196,Chipotle,Chipotle,in store,False,,,,food and drink
-67890,32.1,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-11-09,2024-11-08,300 Mission St,San Francisco,CA,94105.0,US,37.7762,-122.4206,Safeway,Safeway,in store,False,,,,groceries
-67890,450.0,USD,,"[""Travel"""," ""Hotels""]",22001000,2024-11-10,2024-11-09,1010 Howard St,San Francisco,CA,94103.0,US,37.787,-122.3960,Marriott,Marriott,online,False,,,,travel
-67890,75.25,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-11-11,2024-11-10,789 PG&E Blvd,San Francisco,CA,94107.0,US,37.7769,-122.4213,PG&E,PG&E,online,False,,,,utilities
-67890,11.0,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-11-12,2024-11-11,,,,,,,AMC Theatres,AMC Theatres,online,false,,,,,other
-67890,35.5,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-11-13,2024-11-12,789 Care Blvd,San Francisco,CA,94107.0,US,37.7773,-122.4217,Rite Aid,Rite Aid,in store,False,,,,health
-67890,150.25,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-11-14,2024-11-13,250 Walmart Way,San Francisco,CA,94105.0,US,37.7776,-122.4220,Walmart,Walmart,in store,False,,,,shopping
-67890,42.75,USD,,"[""Travel"""," ""Gas""]",22002000,2024-11-15,2024-11-14,901 Energy St,San Francisco,CA,94109.0,US,37.778,-122.4224,Exxon,Exxon,in store,False,,,,travel
-67890,15.75,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-11-16,2024-11-15,300 Style Ave,San Francisco,CA,94105.0,US,37.7783,-122.4227,The Body Shop,The Body Shop,in store,False,,,,personal care
-67890,50.0,USD,,"[""Services"""," ""Education""]",24000000,2024-11-17,2024-11-16,,,,,,,Udemy,Udemy,online,false,,,,,other
-67890,22.3,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-11-18,2024-11-17,321 Castro St,San Francisco,CA,94110.0,US,37.7752,-122.4197,In-N-Out Burger,In-N-Out Burger,in store,False,,,,food and drink
-67890,55.55,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-11-19,2024-11-18,400 Van Ness Ave,San Francisco,CA,94109.0,US,37.7763,-122.4207,Kroger,Kroger,in store,False,,,,groceries
-67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-11-20,2024-11-19,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
-67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-11-21,2024-11-20,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
-67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-11-22,2024-11-21,,,,,,,Spotify,Spotify,online,false,,,,,other
-67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-11-23,2024-11-22,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
-67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-11-24,2024-11-23,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
-67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-11-25,2024-11-24,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
-67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-11-26,2024-11-25,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
-67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2024-11-27,2024-11-26,,,,,,,Coursera,Coursera,online,false,,,,,other
-67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-11-28,2024-11-27,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
-67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-11-29,2024-11-28,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
-67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-11-30,2024-11-29,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
-67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-12-01,2024-12-01,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
-67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-12-02,2024-12-01,,,,,,,Netflix,Netflix,online,false,,,,,other
-67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-12-03,2024-12-02,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
-67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-12-04,2024-12-03,,,,,,,Amazon,Amazon,online,false,,,,,other
-67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-12-05,2024-12-04,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
-67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-12-06,2024-12-05,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
-67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2024-12-07,2024-12-06,,,,,,,Udemy,Udemy,online,false,,,,,other
-67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-12-08,2024-12-07,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
-67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-12-09,2024-12-08,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
-67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-12-10,2024-12-09,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
-67890,120.5,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-12-11,2024-12-10,456 Verizon Ave,San Francisco,CA,94103.0,US,37.7768,-122.4212,Verizon,Verizon,online,False,,,,utilities
-67890,18.5,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-12-12,2024-12-11,,,,,,,Hulu,Hulu,online,false,,,,,other
-67890,20.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-12-13,2024-12-12,456 Wellness Ave,San Francisco,CA,94103.0,US,37.7772,-122.4216,Walgreens,Walgreens,in store,False,,,,health
-67890,99.99,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-12-14,2024-12-13,150 Target Dr,San Francisco,CA,94103.0,US,37.7775,-122.4219,Target Store,Target Store,in store,False,,,,shopping
-67890,50.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-12-15,2024-12-14,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
-67890,40.5,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-12-16,2024-12-15,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
-67890,150.0,USD,,"[""Services"""," ""Education""]",24000000,2024-12-17,2024-12-16,,,,,,,LinkedIn Learning,LinkedIn Learning,online,false,,,,,other
-67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-12-18,2024-12-17,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
-67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-12-19,2024-12-18,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
-67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-12-20,2024-12-19,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
-67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-12-21,2024-12-20,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
-67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-12-22,2024-12-21,,,,,,,Netflix,Netflix,online,false,,,,,other
-67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-12-23,2024-12-22,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
-67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-12-24,2024-12-23,,,,,,,Amazon,Amazon,online,false,,,,,other
-67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-12-25,2024-12-24,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
-67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-12-26,2024-12-25,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
-67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2024-12-27,2024-12-26,,,,,,,Coursera,Coursera,online,false,,,,,other
-67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-12-28,2024-12-27,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
-67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-12-29,2024-12-28,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
-67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-12-30,2024-12-29,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
-67890,120.5,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-12-31,2024-12-30,456 Verizon Ave,San Francisco,CA,94103.0,US,37.7768,-122.4212,Verizon,Verizon,online,False,,,,utilities
-67890,18.5,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-01-01,2025-01-01,,,,,,,AMC Theatres,AMC Theatres,online,false,,,,,other
-67890,20.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-01-02,2025-01-01,456 Wellness Ave,San Francisco,CA,94103.0,US,37.7772,-122.4216,Walgreens,Walgreens,in store,False,,,,health
-67890,99.99,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-01-03,2025-01-02,150 Target Dr,San Francisco,CA,94103.0,US,37.7775,-122.4219,Target Store,Target Store,in store,False,,,,shopping
-67890,50.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-01-04,2025-01-03,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
-67890,40.5,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-01-05,2025-01-04,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
-67890,150.0,USD,,"[""Services"""," ""Education""]",24000000,2025-01-06,2025-01-05,,,,,,,Udemy,Udemy,online,false,,,,,other
-67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-01-07,2025-01-06,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
-67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-01-08,2025-01-07,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
-67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-01-09,2025-01-08,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
-67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-01-10,2025-01-09,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
-67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-01-11,2025-01-10,,,,,,,Netflix,Netflix,online,false,,,,,other
-67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-01-12,2025-01-11,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
-67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-01-13,2025-01-12,,,,,,,Amazon,Amazon,online,false,,,,,other
-67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-01-14,2025-01-13,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
-67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-01-15,2025-01-14,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
-67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2025-01-16,2025-01-15,,,,,,,Coursera,Coursera,online,false,,,,,other
-67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-01-17,2025-01-16,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
-67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-01-18,2025-01-17,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
-67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-01-19,2025-01-18,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
-67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-01-20,2025-01-19,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
-67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-01-21,2025-01-20,,,,,,,Spotify,Spotify,online,false,,,,,other
-67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-01-22,2025-01-21,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
-67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-01-23,2025-01-22,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
-67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-01-24,2025-01-23,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
-67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-01-25,2025-01-24,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
-67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2025-01-26,2025-01-25,,,,,,,Udemy,Udemy,online,false,,,,,other
-67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-01-27,2025-01-26,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
-67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-01-28,2025-01-27,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
-67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-01-29,2025-01-28,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
-67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-01-30,2025-01-29,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
-67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-01-31,2025-01-30,,,,,,,Netflix,Netflix,online,false,,,,,other
-67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-02-01,2025-02-01,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
-67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-02-02,2025-02-01,,,,,,,Amazon,Amazon,online,false,,,,,other
-67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-02-03,2025-02-02,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
-67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-02-04,2025-02-03,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
-67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2025-02-05,2025-02-04,,,,,,,Coursera,Coursera,online,false,,,,,other
-67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-02-06,2025-02-05,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
-67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-02-07,2025-02-06,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
-67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-02-08,2025-02-07,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
-67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-02-09,2025-02-08,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
-67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-02-10,2025-02-09,,,,,,,Spotify,Spotify,online,false,,,,,other
-67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-02-11,2025-02-10,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
-67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-02-12,2025-02-11,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
-67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-02-13,2025-02-12,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
-67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-02-14,2025-02-13,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
-67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2025-02-15,2025-02-14,,,,,,,Udemy,Udemy,online,false,,,,,other
-67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-02-16,2025-02-15,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
-67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-02-17,2025-02-16,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
-67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-02-18,2025-02-17,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
-67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-02-19,2025-02-18,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
-67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-02-20,2025-02-19,,,,,,,Netflix,Netflix,online,false,,,,,other
-67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-02-21,2025-02-20,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
-67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-02-22,2025-02-21,,,,,,,Amazon,Amazon,online,false,,,,,other
-67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-02-23,2025-02-22,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
-67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-02-24,2025-02-23,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
-67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2025-02-25,2025-02-24,,,,,,,Coursera,Coursera,online,false,,,,,other
-67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-02-26,2025-02-25,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
-67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-02-27,2025-02-26,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
-67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-02-28,2025-02-27,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
-67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-03-01,2025-03-01,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
-67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-03-02,2025-03-01,,,,,,,Spotify,Spotify,online,false,,,,,other
-67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-03-03,2025-03-02,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
-67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-03-04,2025-03-03,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
-67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-03-05,2025-03-04,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
-67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-03-06,2025-03-05,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
-67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2025-03-07,2025-03-06,,,,,,,Udemy,Udemy,online,false,,,,,other
-67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-03-08,2025-03-07,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
-67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-03-09,2025-03-08,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
-67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-03-10,2025-03-09,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
-67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-03-11,2025-03-10,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
-67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-03-12,2025-03-11,,,,,,,Netflix,Netflix,online,false,,,,,other
-67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-03-13,2025-03-12,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
-67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-03-14,2025-03-13,,,,,,,Amazon,Amazon,online,false,,,,,other
-67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-03-15,2025-03-14,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
-67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-03-16,2025-03-15,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
-67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2025-03-17,2025-03-16,,,,,,,Coursera,Coursera,online,false,,,,,other
-67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-03-18,2025-03-17,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
-67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-03-19,2025-03-18,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
-67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-03-20,2025-03-19,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
-67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-03-21,2025-03-20,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
-67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-03-22,2025-03-21,,,,,,,Spotify,Spotify,online,false,,,,,other
-67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-03-23,2025-03-22,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
-67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-03-24,2025-03-23,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
-67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-03-25,2025-03-24,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
-67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-03-26,2025-03-25,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
-67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2025-03-27,2025-03-26,,,,,,,Udemy,Udemy,online,false,,,,,other
+,transaction_id,account_id,amount,iso_currency_code,unofficial_currency_code,category,category_id,date,authorized_date,location_address,location_city,location_region,location_postal_code,location_country,location_lat,location_lon,name,merchant_name,payment_channel,pending,pending_transaction_id,account_owner,transaction_code,category_functional
+tx0001,67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-09-09,2024-09-08,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
+tx0002,67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-09-10,2024-09-09,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
+tx0003,67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-09-11,2024-09-10,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
+tx0004,67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-09-12,2024-09-11,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
+tx0005,67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-09-13,2024-09-12,,,,,,,Netflix,Netflix,online,false,,,,,other
+tx0006,67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-09-14,2024-09-13,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
+tx0007,67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-09-15,2024-09-14,,,,,,,Amazon,Amazon,online,false,,,,,other
+tx0008,67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-09-16,2024-09-15,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
+tx0009,67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-09-17,2024-09-16,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
+tx0010,67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2024-09-18,2024-09-17,,,,,,,Coursera,Coursera,online,false,,,,,other
+tx0011,67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-09-19,2024-09-18,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
+tx0012,67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-09-20,2024-09-19,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
+tx0013,67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-09-21,2024-09-20,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
+tx0014,67890,120.5,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-09-22,2024-09-21,456 Verizon Ave,San Francisco,CA,94103.0,US,37.7768,-122.4212,Verizon,Verizon,online,False,,,,utilities
+tx0015,67890,18.5,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-09-23,2024-09-22,,,,,,,Hulu,Hulu,online,false,,,,,other
+tx0016,67890,20.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-09-24,2024-09-23,456 Wellness Ave,San Francisco,CA,94103.0,US,37.7772,-122.4216,Walgreens,Walgreens,in store,False,,,,health
+tx0017,67890,99.99,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-09-25,2024-09-24,150 Target Dr,San Francisco,CA,94103.0,US,37.7775,-122.4219,Target Store,Target Store,in store,False,,,,shopping
+tx0018,67890,50.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-09-26,2024-09-25,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
+tx0019,67890,40.5,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-09-27,2024-09-26,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
+tx0020,67890,150.0,USD,,"[""Services"""," ""Education""]",24000000,2024-09-28,2024-09-27,,,,,,,Udemy,Udemy,online,false,,,,,other
+tx0021,67890,9.99,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-09-29,2024-09-28,789 Mission St,San Francisco,CA,94107.0,US,37.7751,-122.4196,Chipotle,Chipotle,in store,False,,,,food and drink
+tx0022,67890,32.1,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-09-30,2024-09-29,300 Mission St,San Francisco,CA,94105.0,US,37.7762,-122.4206,Safeway,Safeway,in store,False,,,,groceries
+tx0023,67890,450.0,USD,,"[""Travel"""," ""Hotels""]",22001000,2024-10-01,2024-10-01,1010 Howard St,San Francisco,CA,94103.0,US,37.787,-122.3960,Marriott,Marriott,online,False,,,,travel
+tx0024,67890,75.25,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-10-02,2024-10-01,789 PG&E Blvd,San Francisco,CA,94107.0,US,37.7769,-122.4213,PG&E,PG&E,online,False,,,,utilities
+tx0025,67890,11.0,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-10-03,2024-10-02,,,,,,,AMC Theatres,AMC Theatres,online,false,,,,,other
+tx0026,67890,35.5,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-10-04,2024-10-03,789 Care Blvd,San Francisco,CA,94107.0,US,37.7773,-122.4217,Rite Aid,Rite Aid,in store,False,,,,health
+tx0027,67890,150.25,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-10-05,2024-10-04,250 Walmart Way,San Francisco,CA,94105.0,US,37.7776,-122.4220,Walmart,Walmart,in store,False,,,,shopping
+tx0028,67890,42.75,USD,,"[""Travel"""," ""Gas""]",22002000,2024-10-06,2024-10-05,901 Energy St,San Francisco,CA,94109.0,US,37.778,-122.4224,Exxon,Exxon,in store,False,,,,travel
+tx0029,67890,15.75,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-10-07,2024-10-06,300 Style Ave,San Francisco,CA,94105.0,US,37.7783,-122.4227,The Body Shop,The Body Shop,in store,False,,,,personal care
+tx0030,67890,50.0,USD,,"[""Services"""," ""Education""]",24000000,2024-10-08,2024-10-07,,,,,,,LinkedIn Learning,LinkedIn Learning,online,false,,,,,other
+tx0031,67890,22.3,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-10-09,2024-10-08,321 Castro St,San Francisco,CA,94110.0,US,37.7752,-122.4197,In-N-Out Burger,In-N-Out Burger,in store,False,,,,food and drink
+tx0032,67890,55.55,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-10-10,2024-10-09,400 Van Ness Ave,San Francisco,CA,94109.0,US,37.7763,-122.4207,Kroger,Kroger,in store,False,,,,groceries
+tx0033,67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-10-11,2024-10-10,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
+tx0034,67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-10-12,2024-10-11,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
+tx0035,67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-10-13,2024-10-12,,,,,,,Spotify,Spotify,online,false,,,,,other
+tx0036,67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-10-14,2024-10-13,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
+tx0037,67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-10-15,2024-10-14,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
+tx0038,67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-10-16,2024-10-15,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
+tx0039,67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-10-17,2024-10-16,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
+tx0040,67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2024-10-18,2024-10-17,,,,,,,Coursera,Coursera,online,false,,,,,other
+tx0041,67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-10-19,2024-10-18,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
+tx0042,67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-10-20,2024-10-19,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
+tx0043,67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-10-21,2024-10-20,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
+tx0044,67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-10-22,2024-10-21,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
+tx0045,67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-10-23,2024-10-22,,,,,,,Netflix,Netflix,online,false,,,,,other
+tx0046,67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-10-24,2024-10-23,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
+tx0047,67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-10-25,2024-10-24,,,,,,,Amazon,Amazon,online,false,,,,,other
+tx0048,67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-10-26,2024-10-25,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
+tx0049,67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-10-27,2024-10-26,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
+tx0050,67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2024-10-28,2024-10-27,,,,,,,Udemy,Udemy,online,false,,,,,other
+tx0051,67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-10-29,2024-10-28,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
+tx0052,67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-10-30,2024-10-29,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
+tx0053,67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-10-31,2024-10-31,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
+tx0054,67890,120.5,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-11-01,2024-11-01,456 Verizon Ave,San Francisco,CA,94103.0,US,37.7768,-122.4212,Verizon,Verizon,online,False,,,,utilities
+tx0055,67890,18.5,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-11-02,2024-11-01,,,,,,,Hulu,Hulu,online,false,,,,,other
+tx0056,67890,20.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-11-03,2024-11-02,456 Wellness Ave,San Francisco,CA,94103.0,US,37.7772,-122.4216,Walgreens,Walgreens,in store,False,,,,health
+tx0057,67890,99.99,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-11-04,2024-11-03,150 Target Dr,San Francisco,CA,94103.0,US,37.7775,-122.4219,Target Store,Target Store,in store,False,,,,shopping
+tx0058,67890,50.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-11-05,2024-11-04,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
+tx0059,67890,40.5,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-11-06,2024-11-05,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
+tx0060,67890,150.0,USD,,"[""Services"""," ""Education""]",24000000,2024-11-07,2024-11-06,,,,,,,LinkedIn Learning,LinkedIn Learning,online,false,,,,,other
+tx0061,67890,9.99,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-11-08,2024-11-07,789 Mission St,San Francisco,CA,94107.0,US,37.7751,-122.4196,Chipotle,Chipotle,in store,False,,,,food and drink
+tx0062,67890,32.1,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-11-09,2024-11-08,300 Mission St,San Francisco,CA,94105.0,US,37.7762,-122.4206,Safeway,Safeway,in store,False,,,,groceries
+tx0063,67890,450.0,USD,,"[""Travel"""," ""Hotels""]",22001000,2024-11-10,2024-11-09,1010 Howard St,San Francisco,CA,94103.0,US,37.787,-122.3960,Marriott,Marriott,online,False,,,,travel
+tx0064,67890,75.25,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-11-11,2024-11-10,789 PG&E Blvd,San Francisco,CA,94107.0,US,37.7769,-122.4213,PG&E,PG&E,online,False,,,,utilities
+tx0065,67890,11.0,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-11-12,2024-11-11,,,,,,,AMC Theatres,AMC Theatres,online,false,,,,,other
+tx0066,67890,35.5,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-11-13,2024-11-12,789 Care Blvd,San Francisco,CA,94107.0,US,37.7773,-122.4217,Rite Aid,Rite Aid,in store,False,,,,health
+tx0067,67890,150.25,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-11-14,2024-11-13,250 Walmart Way,San Francisco,CA,94105.0,US,37.7776,-122.4220,Walmart,Walmart,in store,False,,,,shopping
+tx0068,67890,42.75,USD,,"[""Travel"""," ""Gas""]",22002000,2024-11-15,2024-11-14,901 Energy St,San Francisco,CA,94109.0,US,37.778,-122.4224,Exxon,Exxon,in store,False,,,,travel
+tx0069,67890,15.75,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-11-16,2024-11-15,300 Style Ave,San Francisco,CA,94105.0,US,37.7783,-122.4227,The Body Shop,The Body Shop,in store,False,,,,personal care
+tx0070,67890,50.0,USD,,"[""Services"""," ""Education""]",24000000,2024-11-17,2024-11-16,,,,,,,Udemy,Udemy,online,false,,,,,other
+tx0071,67890,22.3,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-11-18,2024-11-17,321 Castro St,San Francisco,CA,94110.0,US,37.7752,-122.4197,In-N-Out Burger,In-N-Out Burger,in store,False,,,,food and drink
+tx0072,67890,55.55,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-11-19,2024-11-18,400 Van Ness Ave,San Francisco,CA,94109.0,US,37.7763,-122.4207,Kroger,Kroger,in store,False,,,,groceries
+tx0073,67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-11-20,2024-11-19,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
+tx0074,67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-11-21,2024-11-20,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
+tx0075,67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-11-22,2024-11-21,,,,,,,Spotify,Spotify,online,false,,,,,other
+tx0076,67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-11-23,2024-11-22,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
+tx0077,67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-11-24,2024-11-23,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
+tx0078,67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-11-25,2024-11-24,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
+tx0079,67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-11-26,2024-11-25,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
+tx0080,67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2024-11-27,2024-11-26,,,,,,,Coursera,Coursera,online,false,,,,,other
+tx0081,67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-11-28,2024-11-27,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
+tx0082,67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-11-29,2024-11-28,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
+tx0083,67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-11-30,2024-11-29,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
+tx0084,67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-12-01,2024-12-01,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
+tx0085,67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-12-02,2024-12-01,,,,,,,Netflix,Netflix,online,false,,,,,other
+tx0086,67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-12-03,2024-12-02,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
+tx0087,67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-12-04,2024-12-03,,,,,,,Amazon,Amazon,online,false,,,,,other
+tx0088,67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-12-05,2024-12-04,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
+tx0089,67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-12-06,2024-12-05,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
+tx0090,67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2024-12-07,2024-12-06,,,,,,,Udemy,Udemy,online,false,,,,,other
+tx0091,67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-12-08,2024-12-07,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
+tx0092,67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-12-09,2024-12-08,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
+tx0093,67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-12-10,2024-12-09,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
+tx0094,67890,120.5,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-12-11,2024-12-10,456 Verizon Ave,San Francisco,CA,94103.0,US,37.7768,-122.4212,Verizon,Verizon,online,False,,,,utilities
+tx0095,67890,18.5,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-12-12,2024-12-11,,,,,,,Hulu,Hulu,online,false,,,,,other
+tx0096,67890,20.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-12-13,2024-12-12,456 Wellness Ave,San Francisco,CA,94103.0,US,37.7772,-122.4216,Walgreens,Walgreens,in store,False,,,,health
+tx0097,67890,99.99,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-12-14,2024-12-13,150 Target Dr,San Francisco,CA,94103.0,US,37.7775,-122.4219,Target Store,Target Store,in store,False,,,,shopping
+tx0098,67890,50.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-12-15,2024-12-14,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
+tx0099,67890,40.5,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-12-16,2024-12-15,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
+tx0100,67890,150.0,USD,,"[""Services"""," ""Education""]",24000000,2024-12-17,2024-12-16,,,,,,,LinkedIn Learning,LinkedIn Learning,online,false,,,,,other
+tx0101,67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-12-18,2024-12-17,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
+tx0102,67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-12-19,2024-12-18,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
+tx0103,67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-12-20,2024-12-19,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
+tx0104,67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-12-21,2024-12-20,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
+tx0105,67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2024-12-22,2024-12-21,,,,,,,Netflix,Netflix,online,false,,,,,other
+tx0106,67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2024-12-23,2024-12-22,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
+tx0107,67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2024-12-24,2024-12-23,,,,,,,Amazon,Amazon,online,false,,,,,other
+tx0108,67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2024-12-25,2024-12-24,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
+tx0109,67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2024-12-26,2024-12-25,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
+tx0110,67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2024-12-27,2024-12-26,,,,,,,Coursera,Coursera,online,false,,,,,other
+tx0111,67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2024-12-28,2024-12-27,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
+tx0112,67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2024-12-29,2024-12-28,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
+tx0113,67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2024-12-30,2024-12-29,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
+tx0114,67890,120.5,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2024-12-31,2024-12-30,456 Verizon Ave,San Francisco,CA,94103.0,US,37.7768,-122.4212,Verizon,Verizon,online,False,,,,utilities
+tx0115,67890,18.5,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-01-01,2025-01-01,,,,,,,AMC Theatres,AMC Theatres,online,false,,,,,other
+tx0116,67890,20.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-01-02,2025-01-01,456 Wellness Ave,San Francisco,CA,94103.0,US,37.7772,-122.4216,Walgreens,Walgreens,in store,False,,,,health
+tx0117,67890,99.99,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-01-03,2025-01-02,150 Target Dr,San Francisco,CA,94103.0,US,37.7775,-122.4219,Target Store,Target Store,in store,False,,,,shopping
+tx0118,67890,50.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-01-04,2025-01-03,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
+tx0119,67890,40.5,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-01-05,2025-01-04,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
+tx0120,67890,150.0,USD,,"[""Services"""," ""Education""]",24000000,2025-01-06,2025-01-05,,,,,,,Udemy,Udemy,online,false,,,,,other
+tx0121,67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-01-07,2025-01-06,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
+tx0122,67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-01-08,2025-01-07,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
+tx0123,67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-01-09,2025-01-08,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
+tx0124,67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-01-10,2025-01-09,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
+tx0125,67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-01-11,2025-01-10,,,,,,,Netflix,Netflix,online,false,,,,,other
+tx0126,67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-01-12,2025-01-11,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
+tx0127,67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-01-13,2025-01-12,,,,,,,Amazon,Amazon,online,false,,,,,other
+tx0128,67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-01-14,2025-01-13,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
+tx0129,67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-01-15,2025-01-14,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
+tx0130,67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2025-01-16,2025-01-15,,,,,,,Coursera,Coursera,online,false,,,,,other
+tx0131,67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-01-17,2025-01-16,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
+tx0132,67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-01-18,2025-01-17,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
+tx0133,67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-01-19,2025-01-18,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
+tx0134,67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-01-20,2025-01-19,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
+tx0135,67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-01-21,2025-01-20,,,,,,,Spotify,Spotify,online,false,,,,,other
+tx0136,67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-01-22,2025-01-21,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
+tx0137,67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-01-23,2025-01-22,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
+tx0138,67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-01-24,2025-01-23,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
+tx0139,67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-01-25,2025-01-24,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
+tx0140,67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2025-01-26,2025-01-25,,,,,,,Udemy,Udemy,online,false,,,,,other
+tx0141,67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-01-27,2025-01-26,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
+tx0142,67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-01-28,2025-01-27,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
+tx0143,67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-01-29,2025-01-28,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
+tx0144,67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-01-30,2025-01-29,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
+tx0145,67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-01-31,2025-01-30,,,,,,,Netflix,Netflix,online,false,,,,,other
+tx0146,67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-02-01,2025-02-01,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
+tx0147,67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-02-02,2025-02-01,,,,,,,Amazon,Amazon,online,false,,,,,other
+tx0148,67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-02-03,2025-02-02,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
+tx0149,67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-02-04,2025-02-03,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
+tx0150,67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2025-02-05,2025-02-04,,,,,,,Coursera,Coursera,online,false,,,,,other
+tx0151,67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-02-06,2025-02-05,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
+tx0152,67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-02-07,2025-02-06,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
+tx0153,67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-02-08,2025-02-07,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
+tx0154,67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-02-09,2025-02-08,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
+tx0155,67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-02-10,2025-02-09,,,,,,,Spotify,Spotify,online,false,,,,,other
+tx0156,67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-02-11,2025-02-10,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
+tx0157,67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-02-12,2025-02-11,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
+tx0158,67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-02-13,2025-02-12,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
+tx0159,67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-02-14,2025-02-13,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
+tx0160,67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2025-02-15,2025-02-14,,,,,,,Udemy,Udemy,online,false,,,,,other
+tx0161,67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-02-16,2025-02-15,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
+tx0162,67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-02-17,2025-02-16,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
+tx0163,67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-02-18,2025-02-17,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
+tx0164,67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-02-19,2025-02-18,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
+tx0165,67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-02-20,2025-02-19,,,,,,,Netflix,Netflix,online,false,,,,,other
+tx0166,67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-02-21,2025-02-20,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
+tx0167,67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-02-22,2025-02-21,,,,,,,Amazon,Amazon,online,false,,,,,other
+tx0168,67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-02-23,2025-02-22,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
+tx0169,67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-02-24,2025-02-23,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
+tx0170,67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2025-02-25,2025-02-24,,,,,,,Coursera,Coursera,online,false,,,,,other
+tx0171,67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-02-26,2025-02-25,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
+tx0172,67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-02-27,2025-02-26,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
+tx0173,67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-02-28,2025-02-27,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
+tx0174,67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-03-01,2025-03-01,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
+tx0175,67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-03-02,2025-03-01,,,,,,,Spotify,Spotify,online,false,,,,,other
+tx0176,67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-03-03,2025-03-02,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
+tx0177,67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-03-04,2025-03-03,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
+tx0178,67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-03-05,2025-03-04,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
+tx0179,67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-03-06,2025-03-05,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
+tx0180,67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2025-03-07,2025-03-06,,,,,,,Udemy,Udemy,online,false,,,,,other
+tx0181,67890,12.5,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-03-08,2025-03-07,123 Main St,San Francisco,CA,94105.0,US,37.7749,-122.4194,Taco Bell,Taco Bell,in store,False,,,,food and drink
+tx0182,67890,45.2,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-03-09,2025-03-08,100 Market St,San Francisco,CA,94105.0,US,37.776,-122.4204,Whole Foods,Whole Foods,in store,False,,,,groceries
+tx0183,67890,250.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-03-10,2025-03-09,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,United Airlines,United Airlines,online,False,,,,travel
+tx0184,67890,90.0,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-03-11,2025-03-10,1 Comcast Center,San Francisco,CA,94105.0,US,37.7767,-122.4211,Comcast,Comcast,online,False,,,,utilities
+tx0185,67890,14.99,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-03-12,2025-03-11,,,,,,,Netflix,Netflix,online,false,,,,,other
+tx0186,67890,10.0,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-03-13,2025-03-12,123 Health St,San Francisco,CA,94105.0,US,37.7771,-122.4215,CVS Pharmacy,CVS Pharmacy,in store,False,,,,health
+tx0187,67890,55.0,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-03-14,2025-03-13,,,,,,,Amazon,Amazon,online,false,,,,,other
+tx0188,67890,35.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-03-15,2025-03-14,789 Gas Rd,San Francisco,CA,94107.0,US,37.7778,-122.4222,Shell,Shell,in store,False,,,,travel
+tx0189,67890,25.0,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-03-16,2025-03-15,100 Beauty Ln,San Francisco,CA,94103.0,US,37.7781,-122.4225,Sephora,Sephora,in store,False,,,,personal care
+tx0190,67890,75.0,USD,,"[""Services"""," ""Education""]",24000000,2025-03-17,2025-03-16,,,,,,,Coursera,Coursera,online,false,,,,,other
+tx0191,67890,15.75,USD,,"[""Food and Drink"""," ""Restaurants""]",13005000,2025-03-18,2025-03-17,456 Market St,San Francisco,CA,94103.0,US,37.775,-122.4195,McDonald's,McDonald's,in store,False,,,,food and drink
+tx0192,67890,67.8,USD,,"[""Shops"""," ""Groceries""]",13001000,2025-03-19,2025-03-18,200 Castro St,San Francisco,CA,94114.0,US,37.7761,-122.4205,Trader Joe's,Trader Joe's,in store,False,,,,groceries
+tx0193,67890,300.0,USD,,"[""Travel"""," ""Airlines""]",22000000,2025-03-20,2025-03-19,Terminal 1 SFO Airport,San Francisco,CA,94128.0,US,37.6213,-122.3790,Delta Airlines,Delta Airlines,online,False,,,,travel
+tx0194,67890,110.1,USD,,"[""Bills and Utilities"""," ""Utilities""]",18000000,2025-03-21,2025-03-20,321 AT&T Rd,San Francisco,CA,94110.0,US,37.777,-122.4214,AT&T,AT&T,online,False,,,,utilities
+tx0195,67890,16.75,USD,,"[""Recreation"""," ""Entertainment""]",19000000,2025-03-22,2025-03-21,,,,,,,Spotify,Spotify,online,false,,,,,other
+tx0196,67890,27.99,USD,,"[""Health"""," ""Pharmacy""]",15000000,2025-03-23,2025-03-22,321 Pharmacy Rd,San Francisco,CA,94110.0,US,37.7774,-122.4218,Costco Pharmacy,Costco Pharmacy,in store,False,,,,groceries
+tx0197,67890,80.45,USD,,"[""Shops"""," ""General Merchandise""]",13002000,2025-03-24,2025-03-23,350 Best Buy Blvd,San Francisco,CA,94107.0,US,37.7777,-122.4221,Best Buy,Best Buy,in store,False,,,,shopping
+tx0198,67890,60.0,USD,,"[""Travel"""," ""Gas""]",22002000,2025-03-25,2025-03-24,890 Fuel Ave,San Francisco,CA,94108.0,US,37.7779,-122.4223,Chevron,Chevron,in store,False,,,,travel
+tx0199,67890,30.2,USD,,"[""Shops"""," ""Personal Care""]",13006000,2025-03-26,2025-03-25,200 Glam St,San Francisco,CA,94104.0,US,37.7782,-122.4226,Ulta,Ulta,in store,False,,,,personal care
+tx0200,67890,125.0,USD,,"[""Services"""," ""Education""]",24000000,2025-03-27,2025-03-26,,,,,,,Udemy,Udemy,online,false,,,,,other

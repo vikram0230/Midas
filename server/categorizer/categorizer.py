@@ -11,7 +11,7 @@ def categorize_transactions(file_path, output_path='data/categorized_transaction
     transactions['category_functional'] = transactions.apply(
         lambda row: categorize_by_merchant(row['merchant_name']), axis=1)
     
-    transactions.to_csv(output_path, index=False)
+    transactions.to_csv(output_path, index=True)
     return transactions
 
 def categorize_by_merchant(merchant):
