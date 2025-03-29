@@ -36,49 +36,33 @@ export default defineSchema({
         credits: v.optional(v.string()),
         tokenIdentifier: v.string(),
     }).index("by_token", ["tokenIdentifier"]),
-    plans: defineTable({
-        key: v.string(),
-        name: v.string(),
-        description: v.string(),
-        polarProductId: v.string(),
-        prices: v.object({
-            month: v.optional(intervalPricesValidator),
-            year: v.optional(intervalPricesValidator),
-        }),
+    
+    transactions: defineTable({
+        transaction_id: v.string(), // Unique transaction identifier (e.g., "tx0001")
+        account_id: v.string(), // Account identifier (e.g., "67890")
+        amount: v.number(), // Transaction amount
+        iso_currency_code: v.string(), // ISO currency code (e.g., "USD")
+        unofficial_currency_code: v.optional(v.string()), // Optional unofficial currency code
+        category: v.string(), // Category name (e.g., "Food and Drink")
+        category_id: v.optional(v.number()), // Numeric category identifier
+        date: v.string(), // Transaction date (stored as ISO string)
+        authorized_date: v.string(), // Authorized date
+        location_address: v.optional(v.string()), // Address where transaction occurred
+        location_city: v.optional(v.string()), // City of the transaction
+        location_region: v.optional(v.string()), // Region or state
+        location_postal_code: v.optional(v.string()), // Postal code
+        location_country: v.optional(v.string()), // Country code (e.g., "US")
+        location_lat: v.optional(v.number()), // Latitude coordinate
+        location_lon: v.optional(v.number()), // Longitude coordinate
+        name: v.optional(v.string()), // Transaction name (e.g., merchant name)
+        merchant_name: v.optional(v.string()), // Official merchant name
+        payment_channel: v.optional(v.string()), // Payment channel (e.g., "in store", "online")
+        pending: v.boolean(), // Whether the transaction is pending
+        pending_transaction_id: v.optional(v.string()), // Identifier for a related pending transaction
+        account_owner: v.optional(v.string()), // Account owner information
+        transaction_code: v.optional(v.string()), // Additional transaction code
+        userId: v.string(), // Foreign key to connect to users table
     })
-        .index("key", ["key"])
-        .index("polarProductId", ["polarProductId"]),
-    subscriptions: defineTable({
-        userId: v.optional(v.string()),
-        polarId: v.optional(v.string()),
-        polarPriceId: v.optional(v.string()),
-        currency: v.optional(v.string()),
-        interval: v.optional(v.string()),
-        status: v.optional(v.string()),
-        currentPeriodStart: v.optional(v.number()),
-        currentPeriodEnd: v.optional(v.number()),
-        cancelAtPeriodEnd: v.optional(v.boolean()),
-        amount: v.optional(v.number()),
-        startedAt: v.optional(v.number()),
-        endsAt: v.optional(v.number()),
-        endedAt: v.optional(v.number()),
-        canceledAt: v.optional(v.number()),
-        customerCancellationReason: v.optional(v.string()),
-        customerCancellationComment: v.optional(v.string()),
-        metadata: v.optional(v.any()),
-        customFieldData: v.optional(v.any()),
-        customerId: v.optional(v.string()),
-    })
-        .index("userId", ["userId"])
-        .index("polarId", ["polarId"]),
-    webhookEvents: defineTable({
-        type: v.string(),
-        polarEventId: v.string(),
-        createdAt: v.string(),
-        modifiedAt: v.string(),
-        data: v.any(),
-    })
-        .index("type", ["type"])
-        .index("polarEventId", ["polarEventId"]),
-
+    .index("by_user", ["userId"]) // Index to efficiently query transactions by user
+    .index("by_transaction_id", ["transaction_id"]), // Index for looking up by transaction_id
 })
