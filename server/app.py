@@ -8,7 +8,6 @@
 # Endpoint 2 (POST) - Realtime Insert data into convex db (Params: data)
     # Flow
     # 1. Get data from Plaid Real Time
-    # 2. Call categorizer model to categorize data
     # 3. Insert data into convex db
 
 # Endpoint 3 (POST) - What if analysis (Params: data)
