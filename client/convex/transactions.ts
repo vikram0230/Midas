@@ -171,3 +171,31 @@ export const updateTransactionDatesToCurrentYear = mutation({
     return { success: true, updatedCount: transactions.length };
   },
 });
+
+export const getTransactions = query({
+  args: {
+    userId: v.string(),
+    startDate: v.string(),
+    endDate: v.string()
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+    if (!user || !user.accountId) {
+      return [];
+    }
+    return await ctx.db
+      .query("transactions")
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("account_id"), user.accountId),
+          q.gte(q.field("date"), args.startDate),
+          q.lte(q.field("date"), args.endDate)
+        )
+      )
+      .collect();
+  },
+});
+
