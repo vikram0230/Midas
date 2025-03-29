@@ -15,3 +15,8 @@
     # 1. Get data from request on decrease, increase, and no change
     # 2. Call prediction model to predict future data with parameters
     # 3. Return data
+
+# Endpoint 4 (POST) Anomaly
+    # Flow
+    # 1. Call convex db to find anomalies in data
+    # 2. Return data
