@@ -28,15 +28,28 @@ export const getTransactionsByUser = query({
 });
 
 /**
- * Get a specific transaction by its ID
+ * Get transactions by account ID
  */
-export const getTransactionById = query({
-  args: { transactionId: v.string() },
+export const getTransactionsByAccountId = query({
+  args: { accountId: v.string() },
   handler: async (ctx, args) => {
     return await ctx.db
       .query("transactions")
-      .withIndex("by_transaction_id", (q) => q.eq("transaction_id", args.transactionId))
-      .unique();
+      .filter((q) => q.eq(q.field("account_id"), args.accountId))
+      .collect();
+  },
+});
+
+/**
+ * Get transaction by ID
+ */
+export const getTransactionById = query({
+  args: { transactionId: v.number() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("transactions")
+      .filter((q) => q.eq(q.field("transaction_id"), args.transactionId))
+      .first();
   },
 });
 
@@ -64,20 +77,7 @@ export const getMyTransactions = query({
     // Get all transactions for this user
     return await ctx.db
       .query("transactions")
-      .withIndex("by_user", (q) => q.eq("userId", user.userId))
-      .collect();
-  },
-});
-
-/**
- * Get transactions by account ID
- */
-export const getTransactionsByAccountId = query({
-  args: { accountId: v.string() },
-  handler: async (ctx, args) => {
-    return await ctx.db
-      .query("transactions")
-      .filter((q) => q.eq(q.field("account_id"), args.accountId))
+      .withIndex("by_user", (q) => q.eq("userId", user.userId || ""))
       .collect();
   },
 });
@@ -87,55 +87,15 @@ export const getTransactionsByAccountId = query({
  */
 export const storeTransaction = mutation({
   args: {
-    transaction_id: v.string(),
+    transaction_id: v.number(),
     account_id: v.string(),
-    account_owner: v.optional(v.string()),
+    date: v.string(),
+    time: v.optional(v.string()),
+    activity: v.optional(v.string()),
     amount: v.number(),
     category: v.string(),
-    category_id: v.optional(v.number()),
-    check_number: v.optional(v.string()),
-    counterparty_confidence_level: v.optional(v.string()),
-    counterparty_entity_id: v.optional(v.string()),
-    counterparty_logo_url: v.optional(v.string()),
-    counterparty_name: v.optional(v.string()),
-    counterparty_phone_number: v.optional(v.string()),
-    counterparty_type: v.optional(v.string()),
-    counterparty_website: v.optional(v.string()),
-    date: v.string(),
-    datetime: v.optional(v.string()),
-    iso_currency_code: v.string(),
-    location_address: v.optional(v.string()),
-    location_city: v.optional(v.string()),
-    location_country: v.optional(v.string()),
-    location_lat: v.optional(v.number()),
-    location_lon: v.optional(v.number()),
-    location_postal_code: v.optional(v.string()),
-    location_region: v.optional(v.string()),
-    location_store_number: v.optional(v.number()),
-    logo_url: v.optional(v.string()),
-    merchant_entity_id: v.optional(v.string()),
-    merchant_name: v.optional(v.string()),
-    name: v.optional(v.string()),
-    payment_channel: v.optional(v.string()),
-    payment_meta_by_order_of: v.optional(v.string()),
-    payment_meta_payee: v.optional(v.string()),
-    payment_meta_payer: v.optional(v.string()),
-    payment_meta_payment_method: v.optional(v.string()),
-    payment_meta_payment_processor: v.optional(v.string()),
-    payment_meta_ppd_id: v.optional(v.string()),
-    payment_meta_reason: v.optional(v.string()),
-    payment_meta_reference_number: v.optional(v.string()),
-    pending: v.union(v.boolean(), v.string()),
-    pending_transaction_id: v.optional(v.string()),
-    personal_finance_category_confidence_level: v.optional(v.string()),
-    personal_finance_category_detailed: v.optional(v.string()),
-    personal_finance_category_primary: v.optional(v.string()),
-    personal_finance_category_icon_url: v.optional(v.string()),
-    transaction_code: v.optional(v.string()),
-    transaction_type: v.optional(v.string()),
-    unauthorized_date: v.optional(v.string()),
-    unofficial_currency_code: v.optional(v.string()),
-    website: v.optional(v.string()),
+    type: v.optional(v.string()),
+    vendor_name: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -156,8 +116,8 @@ export const storeTransaction = mutation({
     // Check if this transaction already exists
     const existingTransaction = await ctx.db
       .query("transactions")
-      .withIndex("by_transaction_id", (q) => q.eq("transaction_id", args.transaction_id))
-      .unique();
+      .filter((q) => q.eq(q.field("transaction_id"), args.transaction_id))
+      .first();
 
     if (existingTransaction) {
       throw new Error("Transaction already exists");
@@ -165,7 +125,15 @@ export const storeTransaction = mutation({
 
     // Insert the new transaction
     return await ctx.db.insert("transactions", {
-      ...args,
+      transaction_id: args.transaction_id,
+      account_id: args.account_id,
+      date: args.date,
+      time: args.time ? args.time.trim() : undefined,
+      activity: args.activity ? args.activity.trim() : undefined,
+      amount: args.amount,
+      category: args.category.trim(),
+      type: args.type ? args.type.trim() : undefined,
+      vendor_name: args.vendor_name ? args.vendor_name.trim() : undefined,
       userId: user.userId,
     });
   },

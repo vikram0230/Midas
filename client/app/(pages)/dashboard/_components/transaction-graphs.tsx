@@ -2,6 +2,7 @@
 
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
+import { Id } from "@/convex/_generated/dataModel"
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -18,9 +19,9 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer,
-  ReferenceLine
+  ResponsiveContainer
 } from "recharts"
+import { formatCategory } from "@/lib/utils"
 
 // Default budget constants - will be overridden by user settings if available
 const DEFAULT_WEEKLY_BUDGET = 500
@@ -28,14 +29,18 @@ const DEFAULT_BIWEEKLY_BUDGET = 1000
 const DEFAULT_MONTHLY_BUDGET = 2000
 
 type Transaction = {
-  _id: string
-  transaction_id: string
+  _id: Id<"transactions">
+  _creationTime: number
+  transaction_id: number
   account_id: string
   amount: number
   date: string
   category: string
-  merchant_name?: string
-  name?: string
+  time?: string
+  activity?: string
+  type?: string
+  vendor_name?: string
+  userId?: string
 }
 
 type DailySpending = {
@@ -166,6 +171,11 @@ export default function TransactionGraphs() {
           }
         } else {
           dateObj = new Date(tx.date)
+        }
+
+        // Format the category if it exists
+        if (tx.category) {
+          tx.category = formatCategory(tx.category);
         }
 
         const date = format(dateObj, "yyyy-MM-dd")

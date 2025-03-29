@@ -16,6 +16,16 @@ import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
 import ConnectPlaidBanner from "./_components/connect-plaid-banner";
+import { CreditCard } from "lucide-react";
+
+// Utility function to format category strings
+const formatCategory = (category: string): string => {
+  // Replace underscores with spaces and capitalize each word
+  return category
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
 
 export default function Dashboard() {
   const { user } = useUser();
@@ -28,7 +38,9 @@ export default function Dashboard() {
   
   // Calculate spending by category
   const spendingByCategory = transactions?.reduce((categories, tx) => {
-    const category = tx.category.split(' > ')[0]; // Get top-level category
+    let category = tx.category.split(' > ')[0]; // Get top-level category
+    // Format the category
+    category = formatCategory(category);
     if (!categories[category]) {
       categories[category] = 0;
     }
@@ -127,26 +139,40 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             {transactions && transactions.length > 0 ? (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Merchant</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {transactions.slice(0, 5).map((tx) => (
-                    <TableRow key={tx._id}>
-                      <TableCell>{new Date(tx.date).toLocaleDateString()}</TableCell>
-                      <TableCell>{tx.merchant_name || tx.name || 'Unknown'}</TableCell>
-                      <TableCell>{tx.category}</TableCell>
-                      <TableCell className="text-right">${tx.amount.toFixed(2)}</TableCell>
-                    </TableRow>
+              <div className="space-y-4">
+                {transactions
+                  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                  .slice(0, 5)
+                  .map((transaction) => (
+                    <div
+                      key={transaction._id}
+                      className="flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                          <CreditCard className="w-5 h-5 text-gray-500" />
+                        </div>
+                        <div>
+                          <div className="font-medium">
+                            {formatCategory(transaction.category)}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {new Date(transaction.date).toLocaleDateString()}
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          transaction.amount < 0
+                            ? "text-green-500 font-medium"
+                            : "text-red-500 font-medium"
+                        }
+                      >
+                        ${Math.abs(transaction.amount).toFixed(2)}
+                      </div>
+                    </div>
                   ))}
-                </TableBody>
-              </Table>
+              </div>
             ) : (
               <p className="text-center py-4">No recent transactions</p>
             )}

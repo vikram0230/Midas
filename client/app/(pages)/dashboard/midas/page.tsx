@@ -100,7 +100,7 @@ export default function PlaygroundPage() {
         date: tx.date,
         amount: tx.amount,
         category: tx.category,
-        merchant: tx.merchant_name || tx.name || 'Unknown'
+        merchant: tx.vendor_name || 'Unknown'
       })),
       budgets: {
         weekly: userData?.weeklyBudget || 500,
@@ -120,7 +120,7 @@ export default function PlaygroundPage() {
     ${sortedCategories.map(([category, amount]) => `- ${category}: $${amount.toFixed(2)}`).join('\n')}
     
     Recent Transactions:
-    ${recentTransactions.map(tx => `- ${new Date(tx.date).toLocaleDateString()}: $${tx.amount.toFixed(2)} at ${tx.merchant_name || tx.name || 'Unknown'} (${tx.category})`).join('\n')}
+    ${recentTransactions.map(tx => `- ${new Date(tx.date).toLocaleDateString()}: $${tx.amount.toFixed(2)} at ${tx.vendor_name || 'Unknown'} (${tx.category})`).join('\n')}
     
     User's Budget Settings:
     - Weekly Budget: $${transactionData.budgets.weekly}
