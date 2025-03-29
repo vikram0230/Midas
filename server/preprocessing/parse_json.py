@@ -2,16 +2,26 @@ import json
 import csv
 import pandas as pd
 
+def remove_negative_transactions(transactions):
+    """
+    Filter out transactions with negative amounts.
+    Args:
+        transactions: List of transaction dictionaries
+    Returns:
+        List of transactions with only positive or zero amounts
+    """
+    return [tx for tx in transactions if tx.get('amount', 0) >= 0]
+
 def parse_transactions_to_csv():
     # Read the JSON file
     with open('server/data/test_data.json', 'r') as file:
         data = json.load(file)
     
-    # Extract transactions list
+    # Extract transactions list and remove negative amounts
     transactions = data['transactions']
+    transactions = remove_negative_transactions(transactions)
     
     # Define the columns we want to extract
-    # You can modify this list based on which fields you need
     # Extract all available columns from first transaction
     columns = list(transactions[0].keys())
     
@@ -20,7 +30,9 @@ def parse_transactions_to_csv():
     for transaction in transactions:
         row = {}
         for col in columns:
-            if col == 'personal_finance_category':
+            if col == 'authorized_datetime' or col == 'authorized_date':
+                continue  # Skip authorized_datetime column 
+            elif col == 'personal_finance_category':
                 # Handle nested personal_finance_category fields
                 pfc = transaction.get(col, {})
                 for pfc_key in pfc.keys():
@@ -54,7 +66,7 @@ def parse_transactions_to_csv():
     # Convert to DataFrame and save to CSV
     df = pd.DataFrame(processed_data)
     df.to_csv('server/data/transactions.csv', index=False)
-    print(f"CSV file created successfully with {len(processed_data)} transactions.")
+    print(f"CSV file created successfully with {len(processed_data)} transactions (negative amounts removed).")
 
 def parse_accounts_to_csv():
     # Read the JSON file
