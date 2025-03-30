@@ -31,21 +31,6 @@ const components: { title: string; href: string; description: string }[] = [
     href: "/dashboard",
     description: "Access your personal dashboard.",
   },
-  {
-    title: "Midas",
-    href: "/dashboard/midas",
-    description: "Access your financial assistant.",
-  },
-  {
-    title: "Oracle",
-    href: "/dashboard/oracle",
-    description: "Access financial predictions.",
-  },
-  {
-    title: "Settings",
-    href: "/dashboard/settings",
-    description: "Access your account settings.",
-  },
 ];
 
 export default function NavBar() {
@@ -150,10 +135,10 @@ export default function NavBar() {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
+
           <Link href="/dashboard" prefetch={true}>
             <Button variant="ghost">Dashboard</Button>
-          </Link>{" "}
-          */
+          </Link>
         </div>
 
         {/* Right Side */}
