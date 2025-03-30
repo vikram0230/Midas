@@ -660,8 +660,8 @@ export default function Midas() {
 
             <div className="flex-1 overflow-y-auto p-4">
               <TabsContent value="model" className="mt-0 space-y-4 h-full">
-                <div>
-                  <label className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
+                <div className="space-y-2">
+                  <label className="text-xs dark:text-zinc-400 text-zinc-600 block">
                     Model
                   </label>
                   <Select value={model} onValueChange={setModel}>
@@ -674,13 +674,16 @@ export default function Midas() {
                       </SelectItem>
                     </SelectContent>
                   </Select>
+                  <h1 className="text-xs dark:text-zinc-400 text-zinc-600">
+                    Midas can make mistakes, check for the accuracy of the response.
+                  </h1>
                 </div>
               </TabsContent>
 
               <TabsContent value="parameters" className="mt-0 space-y-4 h-full">
                 <div className="space-y-4">
                   <div>
-                    <label className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
+                    <label className="text-xs dark:text-zinc-400 text-zinc-600 block">
                       Temperature ({temperature})
                     </label>
                     <Slider

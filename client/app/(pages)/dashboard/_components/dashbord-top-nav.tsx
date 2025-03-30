@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { UserProfile } from '@/components/user-profile'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons'
-import { HomeIcon, Settings } from 'lucide-react'
+import { HomeIcon, Settings, Sparkles, WandSparkles } from 'lucide-react'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
@@ -34,6 +34,23 @@ export default function DashboardTopNav({ children }: { children: ReactNode }) {
                   <Button variant="outline" className="w-full">
                     <HomeIcon className="mr-2 h-4 w-4" />
                     Home
+                  </Button>
+                </Link>
+              </DialogClose>
+              <Separator className="my-3" />
+              <DialogClose asChild>
+                <Link href="/dashboard/midas">
+                  <Button variant="outline" className="w-full">
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Midas
+                  </Button>
+                </Link>
+              </DialogClose>
+              <DialogClose asChild>
+                <Link href="/dashboard/oracle">
+                  <Button variant="outline" className="w-full">
+                    <WandSparkles className="mr-2 h-4 w-4" />
+                    Oracle
                   </Button>
                 </Link>
               </DialogClose>
