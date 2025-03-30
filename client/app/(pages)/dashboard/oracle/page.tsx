@@ -110,7 +110,7 @@ export default function Oracle() {
           break
       }
 
-      const response = await fetch('http://172.16.5.57:8000/api/oracle/predict_params', {
+      const response = await fetch('https://c4e5-192-5-85-173.ngrok-free.app/api/oracle/predict_params', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

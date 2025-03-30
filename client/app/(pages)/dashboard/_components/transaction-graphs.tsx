@@ -295,7 +295,7 @@ export default function TransactionGraphs() {
           break
       }
 
-      const response = await fetch('http://172.16.5.57:8000/api/oracle/predict', {
+      const response = await fetch('https://c4e5-192-5-85-173.ngrok-free.app/api/oracle/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
