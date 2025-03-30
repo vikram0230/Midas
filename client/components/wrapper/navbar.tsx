@@ -31,6 +31,21 @@ const components: { title: string; href: string; description: string }[] = [
     href: "/dashboard",
     description: "Access your personal dashboard.",
   },
+  {
+    title: "Midas",
+    href: "/dashboard/midas",
+    description: "Access your financial assistant.",
+  },
+  {
+    title: "Oracle",
+    href: "/dashboard/oracle",
+    description: "Access financial predictions.",
+  },
+  {
+    title: "Settings",
+    href: "/dashboard/settings",
+    description: "Access your account settings.",
+  },
 ];
 
 export default function NavBar() {
@@ -118,7 +133,7 @@ export default function NavBar() {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+                <NavigationMenuTrigger>Dashboard</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                     {components.map((component) => (
@@ -135,10 +150,6 @@ export default function NavBar() {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-
-          <Link href="/dashboard" prefetch={true}>
-            <Button variant="ghost">Dashboard</Button>
-          </Link>
         </div>
 
         {/* Right Side */}
