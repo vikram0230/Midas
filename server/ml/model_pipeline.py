@@ -286,9 +286,60 @@ class ModelPipeline:
         self.feature_transformer.set_mode(training=True)
         
         # Create and save prediction plot
-        self._create_prediction_plot(predictions_by_date)
+        # self._create_prediction_plot(predictions_by_date)
         
         return predictions_by_date
+
+    def predict_by_category(self, dates):
+        """Make predictions for each category separately for given dates"""
+        if not isinstance(dates, pd.DataFrame):
+            dates = pd.DataFrame({'datetime': pd.to_datetime(dates)})
+        
+        # Set feature transformer to prediction mode
+        self.feature_transformer.set_mode(training=False)
+        transformed_data = self.feature_transformer.transform(dates)
+        
+        # Store predictions for each category
+        predictions_by_category = {}
+        
+        for category in self.models.keys():
+            predictions_by_category[category] = {}
+            try:
+                for date in transformed_data['datetime'].unique():
+                    date_data = transformed_data[transformed_data['datetime'] == date].copy()
+                    date_data['category'] = category
+                    
+                    # Get prediction for this category
+                    model = self.models[category]
+                    scalers = self.scalers[category]
+                    feature_columns = scalers['feature_columns']
+                    
+                    # Preprocess input data
+                    scaled_features = scalers['feature_scaler'].transform(date_data[feature_columns])
+                    
+                    # Create sequence
+                    X = torch.FloatTensor(scaled_features).unsqueeze(0).to(self.device)
+                    
+                    # Make prediction
+                    model.eval()
+                    with torch.no_grad():
+                        prediction = model(X)
+                        
+                    # Inverse transform prediction
+                    prediction = scalers['target_scaler'].inverse_transform(
+                        prediction.cpu().numpy().reshape(-1, 1)
+                    )
+                    
+                    predictions_by_category[category][date] = float(prediction[0][0])
+                    
+            except Exception as e:
+                print(f"Warning: Error predicting for category {category}: {str(e)}")
+                continue
+        
+        # Reset feature transformer to training mode
+        self.feature_transformer.set_mode(training=True)
+        
+        return predictions_by_category
 
     def _create_prediction_plot(self, predictions_by_date, save_dir='../models/oracle_v1'):
         """Create and save plot of predictions"""
