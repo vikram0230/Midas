@@ -207,13 +207,13 @@ export default function Dashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Spending</CardTitle>
+            <CardTitle className="text-sm font-medium">Total</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${totalSpending.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">
-              All time spending
+              All time total
             </p>
           </CardContent>
         </Card>
@@ -225,7 +225,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{topCategory}</div>
             <p className="text-xs text-muted-foreground">
-              ${topAmount.toFixed(2)} spent
+              {topCategory === "Income" ? "+" : "-"} ${topAmount.toFixed(2)}
             </p>
           </CardContent>
         </Card>
@@ -302,7 +302,7 @@ export default function Dashboard() {
               <div className="space-y-4">
                 {transactions
                   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                  .slice(0, 5)
+                  .slice(0, 10)
                   .map((transaction) => (
                     <div
                       key={transaction._id}
@@ -310,11 +310,15 @@ export default function Dashboard() {
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                          <CreditCard className="w-5 h-5 text-gray-500" />
+                          {transaction.category === "income" ? (
+                            <CreditCard className="w-5 h-5 text-green-500" />
+                          ) : (
+                            <CreditCard className="w-5 h-5 text-red-500" />
+                          )}
                         </div>
                         <div>
                           <div className="font-medium">
-                            {formatCategory(transaction.category)}
+                            {formatCategory(transaction?.vendor_name || transaction.category)}
                           </div>
                           <div className="text-sm text-gray-500">
                             {new Date(transaction.date).toLocaleDateString()}
@@ -323,9 +327,7 @@ export default function Dashboard() {
                       </div>
                       <div
                         className={
-                          transaction.amount < 0
-                            ? "text-green-500 font-medium"
-                            : "text-red-500 font-medium"
+                          transaction.category === "income" ? "text-green-500 font-medium" : "text-red-500 font-medium"
                         }
                       >
                         ${Math.abs(transaction.amount).toFixed(2)}

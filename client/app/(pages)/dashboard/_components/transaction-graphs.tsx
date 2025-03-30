@@ -48,9 +48,10 @@ type Transaction = {
 
 type DailySpending = {
   date: string
+  formattedDate: string
   amount: number
   cumulative: number
-  formattedDate: string
+  category?: string
   isPredicted?: boolean
 }
 
@@ -103,11 +104,59 @@ export default function TransactionGraphs() {
     const biweeklyBudget = userData?.biweeklyBudget || DEFAULT_BIWEEKLY_BUDGET
     const monthlyBudget = userData?.monthlyBudget || DEFAULT_MONTHLY_BUDGET
 
-    // Process transactions for different time periods
+    // Process transactions into daily data with running totals
+    const processTransactionData = (
+      transactions: Transaction[],
+      startDate: Date,
+      endDate: Date,
+      budget: number | undefined,
+      days: number
+    ) => {
+      const dailyData: DailySpending[] = []
+      let cumulativeAmount = 0
+
+      // Create a map of dates to transaction amounts
+      const dateToAmounts = new Map<string, number>()
+      transactions.forEach((tx) => {
+        const dateStr = tx.date
+        const amount = tx.category === "income" ? -tx.amount : tx.amount // Treat income as negative expense
+        dateToAmounts.set(dateStr, (dateToAmounts.get(dateStr) || 0) + amount)
+      })
+
+      // Fill in all dates in the range
+      let currentDate = startDate
+      while (currentDate <= endDate) {
+        const dateStr = format(currentDate, "yyyy-MM-dd")
+        const formattedDate = format(currentDate, "MMM dd")
+        const dailyAmount = dateToAmounts.get(dateStr) || 0
+        cumulativeAmount += dailyAmount
+
+        dailyData.push({
+          date: dateStr,
+          formattedDate,
+          amount: dailyAmount,
+          cumulative: cumulativeAmount,
+        })
+
+        currentDate = addDays(currentDate, 1)
+      }
+
+      return dailyData
+    }
+
+    // Calculate totals excluding income
+    const calculateTotal = (transactions: Transaction[]) => {
+      return transactions.reduce((sum, tx) => {
+        if (tx.category === "income") return sum
+        return sum + tx.amount
+      }, 0)
+    }
+
+    // Process data for each time period using the user's budget values
     const now = new Date()
-    const weekStart = subDays(now, 7) // Last 7 days
-    const biWeekStart = subDays(now, 14) // Last 14 days
-    const monthStart = subDays(now, 30) // Last 30 days
+    const weekStart = subDays(now, 7)
+    const biWeekStart = subDays(now, 14)
+    const monthStart = subDays(now, 30)
 
     // Filter transactions for each time period
     const weeklyTransactions = transactions.filter((tx) => {
@@ -145,10 +194,10 @@ export default function TransactionGraphs() {
     const biWeeklyByDate = processTransactionData(biWeeklyTransactions, biWeekStart, now, biweeklyBudget, 14)
     const monthlyByDate = processTransactionData(monthlyTransactions, monthStart, now, monthlyBudget, 30)
 
-    // Calculate totals
-    const weeklySum = weeklyTransactions.reduce((sum, tx) => sum + tx.amount, 0)
-    const biWeeklySum = biWeeklyTransactions.reduce((sum, tx) => sum + tx.amount, 0)
-    const monthlySum = monthlyTransactions.reduce((sum, tx) => sum + tx.amount, 0)
+    // Calculate totals excluding income
+    const weeklySum = calculateTotal(weeklyTransactions)
+    const biWeeklySum = calculateTotal(biWeeklyTransactions)
+    const monthlySum = calculateTotal(monthlyTransactions)
 
     // Update state with actual data
     setWeeklyData(weeklyByDate)
@@ -160,116 +209,6 @@ export default function TransactionGraphs() {
     setMonthlyData(monthlyByDate)
     setMonthlyTotal(monthlySum)
   }, [transactions, userData])
-
-  // Process transaction data to include all days in the range and calculate cumulative spending
-  const processTransactionData = (
-    transactions: Transaction[],
-    startDate: Date,
-    endDate: Date,
-    _budget: number, // Unused parameter
-    _days: number,  // Unused parameter
-  ): DailySpending[] => {
-    // Group transactions by date
-    const grouped: { [key: string]: number } = {}
-
-    transactions.forEach((tx) => {
-      try {
-        // Handle different date formats
-        let dateObj: Date
-        if (typeof tx.date === "string") {
-          if (tx.date.includes("T")) {
-            // ISO format
-            dateObj = new Date(tx.date)
-          } else {
-            // YYYY-MM-DD format
-            dateObj = parseISO(tx.date)
-          }
-        } else {
-          dateObj = new Date(tx.date)
-        }
-
-        // Format the category if it exists
-        if (tx.category) {
-          tx.category = formatCategory(tx.category)
-        }
-
-        const date = format(dateObj, "yyyy-MM-dd")
-        if (!grouped[date]) {
-          grouped[date] = 0
-        }
-        grouped[date] += tx.amount
-      } catch (e) {
-        console.error("Error processing transaction:", tx, e)
-      }
-    })
-
-    // Get all dates in range
-    const allDates = eachDayOfInterval({ start: startDate, end: endDate })
-
-    // Create daily spending data with cumulative amounts
-    let cumulative = 0
-    return allDates.map((date) => {
-      const dateStr = format(date, "yyyy-MM-dd")
-      const amount = grouped[dateStr] || 0
-      cumulative += amount
-      return {
-        date: dateStr,
-        amount,
-        cumulative,
-        formattedDate: format(date, "MMM dd"),
-      }
-    })
-  }
-
-  // Get the appropriate data based on selected time range
-  const getData = () => {
-    let data = [] as DailySpending[]
-
-    switch (timeRange) {
-      case "weekly":
-        data = weeklyData
-        break
-      case "biweekly":
-        data = biWeeklyData
-        break
-      case "monthly":
-        data = monthlyData
-        break
-      default:
-        data = weeklyData
-    }
-
-    // If predictions are enabled and we have predicted data, append it
-    if (showPredictions && predictedData?.predictedDailyData) {
-      // Get the last date from our actual data
-      const lastDate = data.length > 0 ? new Date(data[data.length - 1].date) : new Date()
-
-      // Filter predicted data to only include dates after our last actual date
-      const filteredPredictions = predictedData.predictedDailyData.filter((item) => {
-        const predDate = new Date(item.date)
-        return predDate > lastDate
-      })
-
-      // If we're showing cumulative data, adjust the cumulative values to continue from our last actual value
-      if (graphType === "cumulative" && data.length > 0 && filteredPredictions.length > 0) {
-        const lastCumulative = data[data.length - 1].cumulative
-
-        // Adjust each prediction's cumulative value
-        filteredPredictions.forEach((item, index) => {
-          if (index === 0) {
-            item.cumulative = lastCumulative + item.amount
-          } else {
-            item.cumulative = filteredPredictions[index - 1].cumulative + item.amount
-          }
-        })
-      }
-
-      // Combine actual and predicted data
-      return [...data, ...filteredPredictions]
-    }
-
-    return data
-  }
 
   // Function to generate sample predicted data
   // In a real implementation, this would be an API call to localhost:8000
@@ -401,6 +340,57 @@ export default function TransactionGraphs() {
     const timeRangeTitle = timeRange.charAt(0).toUpperCase() + timeRange.slice(1)
     const graphTypeTitle = graphType.charAt(0).toUpperCase() + graphType.slice(1)
     return `${timeRangeTitle} ${graphTypeTitle} Spending`
+  }
+
+  // Get the appropriate data based on selected time range
+  const getData = () => {
+    let data: DailySpending[] = []
+
+    switch (timeRange) {
+      case "weekly":
+        data = weeklyData
+        break
+      case "biweekly":
+        data = biWeeklyData
+        break
+      case "monthly":
+        data = monthlyData
+        break
+      default:
+        data = weeklyData
+    }
+
+    // If predictions are enabled and we have predicted data, append it
+    if (showPredictions && predictedData?.predictedDailyData) {
+      // Get the last date from our actual data
+      const lastDate = data.length > 0 ? new Date(data[data.length - 1].date) : new Date()
+
+      // Filter predicted data to only include dates after our last actual date
+      const filteredPredictions = predictedData.predictedDailyData.filter((item) => {
+        const predDate = new Date(item.date)
+        return predDate > lastDate
+      })
+
+      // If we're showing cumulative data, adjust the cumulative values to continue from our last actual value
+      if (graphType === "cumulative" && data.length > 0 && filteredPredictions.length > 0) {
+        const lastCumulative = data[data.length - 1].cumulative
+
+        // Adjust each prediction's cumulative value
+        filteredPredictions.forEach((item, index) => {
+          if (index === 0) {
+            item.cumulative = lastCumulative + (item.category === "income" ? -item.amount : item.amount)
+          } else {
+            item.cumulative = filteredPredictions[index - 1].cumulative + 
+              (item.category === "income" ? -item.amount : item.amount)
+          }
+        })
+      }
+
+      // Combine actual and predicted data
+      return [...data, ...filteredPredictions]
+    }
+
+    return data
   }
 
   const currentData = getData()
