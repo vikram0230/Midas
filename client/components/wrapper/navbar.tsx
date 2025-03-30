@@ -150,10 +150,10 @@ export default function NavBar() {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-
           <Link href="/dashboard" prefetch={true}>
             <Button variant="ghost">Dashboard</Button>
-          </Link> */}
+          </Link>{" "}
+          */
         </div>
 
         {/* Right Side */}
