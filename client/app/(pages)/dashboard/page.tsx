@@ -36,7 +36,7 @@ export default function Dashboard() {
   const [anomalies, setAnomalies] = useState<AnomalyData | null>(null);
   const [loadingAnomalies, setLoadingAnomalies] = useState(false);
   const sentEmailRef = useRef(false);
-  const [timePeriod, setTimePeriod] = useState<TimePeriod | null>("weekly");
+  const [timePeriod, setTimePeriod] = useState<TimePeriod | null>("biweekly");
   const lastTransactionCountRef = useRef(0);
 
   const transactions = useQuery(api.transactions.getTransactionsByUser, { userId });

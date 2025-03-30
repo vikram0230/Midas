@@ -37,15 +37,6 @@ export default function TransactionsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId) {
-      toast({
-        title: "Error",
-        description: "You must be signed in to add transactions",
-        variant: "destructive",
-      });
-      return;
-    }
-
     try {
       await addTransaction({
         accountId: "MzlkawJ9zZFookd9bynvc66GN1rGnxcLRpg8M",
