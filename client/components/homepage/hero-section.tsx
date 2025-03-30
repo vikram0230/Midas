@@ -271,7 +271,7 @@ export default function HeroSection() {
   }, []);
   
   return (
-    <section className="relative py-20 w-full bg-white dark:bg-black" aria-label="Midas Hero">
+    <section className="relative py-10 w-full bg-white dark:bg-black" aria-label="Midas Hero">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Hero Text - Left Side */}
