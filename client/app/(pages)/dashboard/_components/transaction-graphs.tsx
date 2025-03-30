@@ -482,7 +482,7 @@ export default function TransactionGraphs() {
             width={isMobile ? 40 : 60} // Narrower on mobile
           />
           <Tooltip formatter={formatTooltip} />
-          <Bar dataKey="amount" fill="currentColor" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="amount" fill="#d4af37" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     )
