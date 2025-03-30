@@ -11,6 +11,7 @@ import { useUser } from "@clerk/nextjs"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
+import { format } from "date-fns"
 
 // Categories that can be used in the what-if scenarios
 const CATEGORIES = [
@@ -55,6 +56,12 @@ interface WhatIfResponse {
     date: string
     category: string
   }>
+  predictions_without_param: {
+    [date: string]: number
+  }
+  predictions_with_param: {
+    [date: string]: number
+  }
 }
 
 type TimePeriod = "weekly" | "biweekly" | "monthly"
@@ -85,6 +92,67 @@ export default function Oracle() {
     },
   })
 
+  const fetchPrediction = async () => {
+    setLoading(true)
+    try {
+      // Calculate date range
+      const startDate = new Date()
+      const endDate = new Date()
+      switch (timePeriod) {
+        case "weekly":
+          endDate.setDate(endDate.getDate() + 7)
+          break
+        case "biweekly":
+          endDate.setDate(endDate.getDate() + 14)
+          break
+        case "monthly":
+          endDate.setDate(endDate.getDate() + 30)
+          break
+      }
+
+      const response = await fetch('http://172.16.5.57:8000/api/oracle/predict_params', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          time_range: `${format(startDate, 'yyyy-MM-dd')}_to_${format(endDate, 'yyyy-MM-dd')}`,
+          scenario: {
+            skip_expense: {
+              category: scenario.skip_expense.category,
+              active: scenario.skip_expense.active
+            },
+            new_expense: {
+              category: scenario.new_expense.category,
+              active: scenario.new_expense.active,
+              percent: scenario.new_expense.percent / 100 // Convert from percentage to decimal
+            },
+            reduce_expense: {
+              category: scenario.reduce_expense.category,
+              active: scenario.reduce_expense.active,
+              percent: scenario.reduce_expense.percent / 100 // Convert from percentage to decimal
+            }
+          }
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch predictions')
+      }
+
+      const data = await response.json()
+      console.log(data)
+      setPrediction(data)
+    } catch (error) {
+      console.error('Error fetching predictions:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSubmit = () => {
+    fetchPrediction()
+  }
+
   // Detect theme changes
   useEffect(() => {
     // Check if document is available (client-side)
@@ -109,86 +177,40 @@ export default function Oracle() {
     }
   }, [])
 
-  const handleSubmit = async () => {
-    setLoading(true)
-    try {
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // Generate sample data based on time period
-      const generateSampleData = () => {
-        const data = []
-        const startDate = new Date()
-        startDate.setMonth(startDate.getMonth() + 1)
-        startDate.setDate(1)
-
-        // Determine number of days based on time period
-        const days = timePeriod === "weekly" ? 7 : timePeriod === "biweekly" ? 14 : 30
-
-        for (let i = 0; i < days; i++) {
-          const date = new Date(startDate)
-          date.setDate(date.getDate() + i)
-
-          // Base amount between 50 and 200
-          const baseAmount = 50 + Math.random() * 150
-
-          data.push({
-            amount: baseAmount,
-            date: date.toISOString().split("T")[0],
-            category: "food_and_drink",
-          })
-        }
-        return data
-      }
-
-      // Generate baseline data
-      const baselineData = generateSampleData()
-
-      // Generate modified data based on the scenario
-      const modifiedData = baselineData.map((item) => {
-        let amount = item.amount
-
-        // Apply skip expense
-        if (scenario.skip_expense.active && item.category === scenario.skip_expense.category) {
-          amount = 0
-        }
-
-        // Apply new expense
-        if (scenario.new_expense.active && Math.random() > 0.7) {
-          // 30% chance of new expense
-          amount += amount * (scenario.new_expense.percent / 100)
-        }
-
-        // Apply reduce expense
-        if (scenario.reduce_expense.active) {
-          amount *= 1 - scenario.reduce_expense.percent / 100
-        }
-
-        return {
-          ...item,
-          amount,
-        }
-      })
-
-      setPrediction({
-        predicted_without_params: baselineData,
-        predicted_with_params: modifiedData,
-      })
-    } catch (error) {
-      console.error("Error generating prediction:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   // Prepare chart data
   const chartData = prediction
-    ? prediction.predicted_with_params.map((pred, index) => ({
-        date: new Date(pred.date).toLocaleDateString(),
-        baseline: prediction.predicted_without_params[index].amount,
-        modified: pred.amount,
+    ? Object.keys(prediction.predictions_without_param).map((date) => ({
+        date: format(new Date(date), "MMM dd"), // Format date for display
+        baseline: prediction.predictions_without_param[date],
+        modified: prediction.predictions_with_param[date],
       }))
     : []
+
+  // Calculate potential savings
+  const totalSavings = prediction
+    ? Object.keys(prediction.predictions_without_param).reduce(
+        (sum, date) =>
+          sum +
+          (prediction.predictions_without_param[date] -
+            prediction.predictions_with_param[date]),
+        0
+      )
+    : 0
+
+  // Calculate average daily spending for both scenarios
+  const avgBaselineSpending = prediction
+    ? Object.values(prediction.predictions_without_param).reduce(
+        (sum: number, val: number) => sum + val,
+        0
+      ) / Object.keys(prediction.predictions_without_param).length
+    : 0
+
+  const avgModifiedSpending = prediction
+    ? Object.values(prediction.predictions_with_param).reduce(
+        (sum: number, val: number) => sum + val,
+        0
+      ) / Object.keys(prediction.predictions_with_param).length
+    : 0
 
   // Determine baseline color based on theme
   const baselineColor = isDarkTheme ? "#FFFFFF" : "#000000"
@@ -384,99 +406,112 @@ export default function Oracle() {
 
       {/* Results Chart */}
       {prediction && (
-  <Card>
-    <CardHeader>
-      <CardTitle>Prediction Results</CardTitle>
-      <CardDescription>Compare your baseline spending forecast with the modified scenario</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div className="h-[400px] relative">
-        {/* Enhanced gold glowing effect */}
-        <style jsx>{`
-          @keyframes vibrate {
-            0% { 
-              transform: translate(0, 0);
-              filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.8)) drop-shadow(0 0 16px rgba(255, 204, 0, 0.4));
-            }
-            25% { 
-              transform: translate(1px, 1px);
-              filter: drop-shadow(0 0 12px rgba(255, 204, 0, 0.9)) drop-shadow(0 0 20px rgba(255, 204, 0, 0.5));
-            }
-            50% { 
-              transform: translate(0, -1px);
-              filter: drop-shadow(0 0 16px rgba(255, 204, 0, 1)) drop-shadow(0 0 24px rgba(255, 204, 0, 0.6));
-            }
-            75% { 
-              transform: translate(-1px, 1px);
-              filter: drop-shadow(0 0 12px rgba(255, 204, 0, 0.9)) drop-shadow(0 0 20px rgba(255, 204, 0, 0.5));
-            }
-            100% { 
-              transform: translate(0, 0);
-              filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.8)) drop-shadow(0 0 16px rgba(255, 204, 0, 0.4));
-            }
-          }
+        <Card>
+          <CardHeader>
+            <CardTitle>Prediction Results</CardTitle>
+            <CardDescription>
+              {totalSavings > 0 
+                ? `Your changes could save you $${totalSavings.toFixed(2)} over this period!` 
+                : "Compare your baseline spending forecast with the modified scenario"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 border rounded-lg">
+                  <div className="text-sm text-muted-foreground">Average Daily Spending (Baseline)</div>
+                  <div className="text-2xl font-bold">${avgBaselineSpending.toFixed(2)}</div>
+                </div>
+                <div className="p-4 border rounded-lg">
+                  <div className="text-sm text-muted-foreground">Average Daily Spending (Modified)</div>
+                  <div className="text-2xl font-bold text-amber-500">${avgModifiedSpending.toFixed(2)}</div>
+                </div>
+              </div>
+            </div>
+            <div className="h-[400px] relative">
+              {/* Enhanced gold glowing effect */}
+              <style jsx>{`
+                @keyframes vibrate {
+                  0% { 
+                    transform: translate(0, 0);
+                    filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.8)) drop-shadow(0 0 16px rgba(255, 204, 0, 0.4));
+                  }
+                  25% { 
+                    transform: translate(1px, 1px);
+                    filter: drop-shadow(0 0 12px rgba(255, 204, 0, 0.9)) drop-shadow(0 0 20px rgba(255, 204, 0, 0.5));
+                  }
+                  50% { 
+                    transform: translate(0, -1px);
+                    filter: drop-shadow(0 0 16px rgba(255, 204, 0, 1)) drop-shadow(0 0 24px rgba(255, 204, 0, 0.6));
+                  }
+                  75% { 
+                    transform: translate(-1px, 1px);
+                    filter: drop-shadow(0 0 12px rgba(255, 204, 0, 0.9)) drop-shadow(0 0 20px rgba(255, 204, 0, 0.5));
+                  }
+                  100% { 
+                    transform: translate(0, 0);
+                    filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.8)) drop-shadow(0 0 16px rgba(255, 204, 0, 0.4));
+                  }
+                }
 
-          .glow-effect {
-            animation: vibrate 1.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.8)) drop-shadow(0 0 20px rgba(255, 204, 0, 0.5));
-          }
+                .glow-effect {
+                  animation: vibrate 1.5s ease-in-out infinite;
+                  filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.8)) drop-shadow(0 0 20px rgba(255, 204, 0, 0.5));
+                }
 
-          /* Add this to make the SVG glow work better in all browsers */
-          .recharts-layer.recharts-line-chart {
-            filter: none !important;
-          }
-        `}</style>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "rgba(255, 255, 255, 0.95)",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-              }}
-            />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="baseline"
-              stroke={baselineColor}
-              name="Baseline Forecast"
-              strokeWidth={2}
-              dot={false}
-            />
-            <Line
-              className="glow-effect"
-              type="monotone"
-              dataKey="modified"
-              stroke="#FFCC00" // Lighter gold color
-              name="Modified Forecast"
-              strokeWidth={3}
-              dot={{
-                r: 6,
-                fill: "#FFCC00", // Lighter gold for dots
-                stroke: "#FFCC00",
-                strokeWidth: 2,
-              }}
-              activeDot={{
-                r: 10,
-                fill: "#FFCC00", // Lighter gold for active dot
-                stroke: "#fff", // White border for active dot
-                strokeWidth: 3,
-              }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </CardContent>
-  </Card>
-)}
-
-
+                /* Add this to make the SVG glow work better in all browsers */
+                .recharts-layer.recharts-line-chart {
+                  filter: none !important;
+                }
+              `}</style>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "rgba(255, 255, 255, 0.95)",
+                      border: "1px solid #ccc",
+                      borderRadius: "8px",
+                      boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+                    }}
+                  />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="baseline"
+                    stroke={baselineColor}
+                    name="Baseline Forecast"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Line
+                    className="glow-effect"
+                    type="monotone"
+                    dataKey="modified"
+                    stroke="#FFCC00" // Lighter gold color
+                    name="Modified Forecast"
+                    strokeWidth={3}
+                    dot={{
+                      r: 6,
+                      fill: "#FFCC00", // Lighter gold for dots
+                      stroke: "#FFCC00",
+                      strokeWidth: 2,
+                    }}
+                    activeDot={{
+                      r: 10,
+                      fill: "#FFCC00", // Lighter gold for active dot
+                      stroke: "#fff", // White border for active dot
+                      strokeWidth: 3,
+                    }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }
-

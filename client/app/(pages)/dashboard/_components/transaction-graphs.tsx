@@ -281,94 +281,64 @@ export default function TransactionGraphs() {
       const currentData = getData()
       const lastDate = currentData.length > 0 ? new Date(currentData[currentData.length - 1].date) : new Date()
 
-      // For now, we'll generate sample predicted data
-      // In a real implementation, this would be:
-      // const response = await fetch('http://localhost:8000/predict', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     userId,
-      //     timeRange,
-      //     startDate: lastDate.toISOString()
-      //   })
-      // });
-      // const data = await response.json();
-
-      // Generate sample predicted data
-      const predictedTransactions = []
-      const predictedDailyData = []
-      let cumulativeAmount = 0
-
-      // Determine number of days to predict based on timeRange
-      let daysToPredict = 7
-      if (timeRange === "biweekly") {
-        daysToPredict = 14
-      } else if (timeRange === "monthly") {
-        daysToPredict = 30
+      // Calculate the end date based on timeRange
+      let endDate = new Date(lastDate)
+      switch (timeRange) {
+        case "weekly":
+          endDate.setDate(endDate.getDate() + 7)
+          break
+        case "biweekly":
+          endDate.setDate(endDate.getDate() + 14)
+          break
+        case "monthly":
+          endDate.setDate(endDate.getDate() + 30)
+          break
       }
 
-      // Sample categories and amounts based on typical spending
-      const sampleCategories = [
-        { category: "Food & Dining", avgAmount: 25 },
-        { category: "Shopping", avgAmount: 50 },
-        { category: "Transportation", avgAmount: 15 },
-        { category: "Entertainment", avgAmount: 35 },
-        { category: "Bills & Utilities", avgAmount: 75 },
-      ]
-
-      for (let i = 0; i < daysToPredict; i++) {
-        const currentDate = addDays(lastDate, i + 1) // Start from the day after last date
-        const dateStr = format(currentDate, "yyyy-MM-dd")
-        const formattedDate = format(currentDate, "MMM dd")
-
-        // Randomly determine how many transactions to generate for this day (1-3)
-        const transactionsForDay = Math.floor(Math.random() * 3) + 1
-
-        let dailyTotal = 0
-
-        for (let j = 0; j < transactionsForDay; j++) {
-          // Randomly select a category
-          const randomCategory = sampleCategories[Math.floor(Math.random() * sampleCategories.length)]
-
-          // Add some randomness to the amount (±20%)
-          const randomFactor = 0.8 + Math.random() * 0.4 // Between 0.8 and 1.2
-          const amount = randomCategory.avgAmount * randomFactor
-
-          // Create a predicted transaction
-          predictedTransactions.push({
-            transaction_id: 10000 + predictedTransactions.length, // Use high IDs to avoid conflicts
-            account_id: userData?.accountId || "unknown",
-            date: dateStr,
-            amount: amount,
-            category: randomCategory.category,
-            vendor_name: `Predicted ${randomCategory.category}`,
-            isPredicted: true,
-          })
-
-          dailyTotal += amount
-        }
-
-        cumulativeAmount += dailyTotal
-
-        // Add to daily data for graphing
-        predictedDailyData.push({
-          date: dateStr,
-          formattedDate: formattedDate,
-          amount: dailyTotal,
-          cumulative: cumulativeAmount,
-          isPredicted: true,
+      const response = await fetch('http://172.16.5.57:8000/api/oracle/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          time_range: `${format(lastDate, 'yyyy-MM-dd')}_to_${format(endDate, 'yyyy-MM-dd')}`
         })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch predictions')
       }
 
-      // Set the predicted data
-      setPredictedData({
-        predictedTransactions,
-        predictedDailyData,
+      const data = await response.json()
+
+      // Transform predictions into the required format
+      const predictedDailyData: DailySpending[] = []
+      let cumulativeAmount = currentData[currentData.length - 1]?.cumulative || 0 // Start from last actual cumulative
+
+      // Sort dates to ensure chronological order
+      const dates = Object.keys(data.predictions).sort()
+      
+      dates.forEach(dateStr => {
+        const amount = data.predictions[dateStr]
+        cumulativeAmount += amount
+        
+        // Convert datetime string to date and format it
+        const date = new Date(dateStr)
+        predictedDailyData.push({
+          date: format(date, "yyyy-MM-dd"),
+          formattedDate: format(date, "MMM dd"),
+          amount: amount,
+          cumulative: cumulativeAmount,
+          isPredicted: true
+        })
       })
 
+      setPredictedData({
+        predictedTransactions: [], // We don't need individual transactions
+        predictedDailyData
+      })
       setShowPredictions(true)
     } catch (error) {
-      console.error("Error generating predictions:", error)
+      console.error('Error fetching predictions:', error)
     } finally {
       setIsPredicting(false)
     }
