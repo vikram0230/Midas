@@ -3,110 +3,45 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 
 export default function HeroSection() {
-  // Use state to ensure client-side only rendering for animations
-  const [isMounted, setIsMounted] = useState(false);
-  
-  // Set mounted state after component mounts on client
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-  
-  // Generate fixed positions for dollar signs (no randomness during render)
-  const dollarPositions = Array(30).fill(null).map((_, i) => ({
-    id: i,
-    x: `${(i % 10) * 10 + 5}%`,
-    y: `${Math.floor(i / 10) * 20 + 10}%`,
-    size: 24 + (i % 5) * 12,
-    delay: (i % 7) * 0.4,
-    duration: 3 + (i % 4),
-  }));
-
   return (
     <section
-      className="relative flex flex-col items-center justify-center py-20"
+      className="relative flex flex-col items-center justify-center py-20 w-full bg-white dark:bg-black"
       aria-label="Midas Hero"
     >
-      {/* Background gradient and grid */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
-        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-amber-400 dark:bg-amber-500 opacity-20 blur-[100px]"></div>
+      {/* Full-width background */}
+      <div className="absolute inset-0 w-screen bg-white dark:bg-black">
+        {/* Dollar signs with better distribution */}
+        <div className="absolute inset-0 w-screen pointer-events-none">
+          {/* Top and middle dollar signs */}
+          <div className="dollar-sign" style={{ left: "5%", top: "15%", fontSize: "30px", animationDelay: "0s" }}>$</div>
+          <div className="dollar-sign" style={{ left: "15%", top: "40%", fontSize: "35px", animationDelay: "0.8s" }}>$</div>
+          <div className="dollar-sign" style={{ left: "25%", top: "65%", fontSize: "28px", animationDelay: "1.6s" }}>$</div>
+          <div className="dollar-sign" style={{ left: "35%", top: "20%", fontSize: "32px", animationDelay: "2.4s" }}>$</div>
+          <div className="dollar-sign" style={{ left: "45%", top: "50%", fontSize: "30px", animationDelay: "3.2s" }}>$</div>
+          <div className="dollar-sign" style={{ left: "55%", top: "75%", fontSize: "34px", animationDelay: "4.0s" }}>$</div>
+          <div className="dollar-sign" style={{ left: "65%", top: "25%", fontSize: "29px", animationDelay: "0.4s" }}>$</div>
+          <div className="dollar-sign" style={{ left: "75%", top: "60%", fontSize: "36px", animationDelay: "1.2s" }}>$</div>
+          <div className="dollar-sign" style={{ left: "85%", top: "35%", fontSize: "31px", animationDelay: "2.0s" }}>$</div>
+          <div className="dollar-sign" style={{ left: "95%", top: "80%", fontSize: "33px", animationDelay: "2.8s" }}>$</div>
+        </div>
       </div>
 
-      {/* Gold dollar signs background - only shown after mount */}
-      {isMounted && (
-        <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
-          {/* Animated floating dollar signs */}
-          {dollarPositions.map((dollar) => (
-            <motion.div
-              key={`dollar-${dollar.id}`}
-              className="absolute text-amber-500 dark:text-amber-400 font-bold"
-              style={{
-                left: dollar.x,
-                top: dollar.y,
-                fontSize: dollar.size,
-              }}
-              initial={{ opacity: 0, scale: 0, y: 0 }}
-              animate={{
-                opacity: [0, 0.8, 0], 
-                scale: [0, 1, 0],
-                y: [0, -30],
-                rotate: [0, (dollar.id % 2 === 0 ? 20 : -20)]
-              }}
-              transition={{
-                duration: dollar.duration,
-                delay: dollar.delay,
-                repeat: Infinity,
-                repeatType: "loop"
-              }}
-            >
-              $
-            </motion.div>
-          ))}
-          
-          {/* Gold sparkles - similar to the LinkedIn hover effect */}
-          {Array(8).fill(null).map((_, i) => (
-            <motion.div
-              key={`sparkle-${i}`}
-              className="absolute text-amber-300"
-              style={{
-                top: `${20 + (i % 4) * 20}%`,
-                left: `${30 + (i % 3) * 20}%`,
-              }}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{
-                opacity: [0, 1, 0],
-                scale: [0, 1, 0],
-                rotate: [0, 180],
-                y: [0, -30]
-              }}
-              transition={{
-                duration: 3 + (i % 3),
-                delay: 1 + (i % 5) * 0.8,
-                repeat: Infinity,
-                repeatType: "loop"
-              }}
-            >
-              <Sparkles size={16 + (i % 3) * 8} />
-            </motion.div>
-          ))}
-          
-          {/* Golden glow effect */}
-          <motion.div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-r from-amber-300 to-yellow-500 opacity-20 blur-[100px]"
-            animate={{ 
-              scale: [1, 1.1, 1],
-              opacity: [0.1, 0.3, 0.1]
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-          />
-        </div>
-      )}
+      {/* Section transition - this is key for blending with the next section */}
+      <div className="absolute left-0 right-0 -bottom-12 h-24 pointer-events-none z-20">
+        {/* Transition dollar signs that appear to "swim" between sections */}
+        <div className="transition-dollar" style={{ left: "20%", fontSize: "36px", animationDelay: "0.5s" }}>$</div>
+        <div className="transition-dollar" style={{ left: "40%", fontSize: "32px", animationDelay: "1.1s" }}>$</div>
+        <div className="transition-dollar" style={{ left: "60%", fontSize: "38px", animationDelay: "1.7s" }}>$</div>
+        <div className="transition-dollar" style={{ left: "80%", fontSize: "34px", animationDelay: "2.3s" }}>$</div>
+        <div className="transition-dollar" style={{ left: "30%", fontSize: "30px", animationDelay: "2.9s" }}>$</div>
+        <div className="transition-dollar" style={{ left: "50%", fontSize: "35px", animationDelay: "3.5s" }}>$</div>
+        <div className="transition-dollar" style={{ left: "70%", fontSize: "33px", animationDelay: "4.1s" }}>$</div>
+        
+        {/* Subtle gradient connector to eliminate the "line" */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white to-white dark:via-black dark:to-black z-10"></div>
+      </div>
 
       <div className="space-y-6 text-center max-w-4xl px-4 relative z-10">
         {/* Pill badge */}
@@ -114,7 +49,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mx-auto w-fit rounded-full border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-900/30 px-4 py-1 mb-6"
+          className="mx-auto w-fit rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 px-4 py-1 mb-6"
         >
           <div className="flex items-center gap-2 text-sm font-medium text-amber-900 dark:text-amber-200">
             <Sparkles className="h-4 w-4" />
@@ -127,7 +62,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-200 dark:via-yellow-400 dark:to-amber-200 pb-2"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-400 dark:via-yellow-300 dark:to-amber-400 pb-2"
         >
           Turn Your Finances <br className="hidden sm:block" />
           Into Gold
@@ -166,7 +101,7 @@ export default function HeroSection() {
             <Button
               variant="outline"
               size="lg"
-              className="rounded-full px-8 h-12 border-2 border-amber-200 dark:border-amber-800"
+              className="rounded-full px-8 h-12 border-2 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 hover:bg-amber-50 dark:hover:bg-amber-900/30"
             >
               Watch Demo
               <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
@@ -174,6 +109,98 @@ export default function HeroSection() {
           </Link>
         </motion.div>
       </div>
+
+      {/* Updated animations with specialized transition dollars */}
+      <style jsx global>{`
+        @keyframes float-up {
+          0% {
+            transform: translateY(15px) scale(0.9);
+            opacity: 0;
+          }
+          20% {
+            opacity: 0.8;
+          }
+          80% {
+            opacity: 0.3;
+          }
+          100% {
+            transform: translateY(-70px) scale(1.05);
+            opacity: 0;
+          }
+        }
+        
+        .dollar-sign {
+          position: absolute;
+          color: #B45309;
+          font-weight: bold;
+          animation: float-up 6s infinite; /* Faster animation: 8s → 6s */
+          text-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
+        }
+        
+        @media (prefers-color-scheme: dark) {
+          .dollar-sign {
+            color: #EAB308;
+          }
+        }
+        
+        /* Special transition dollar signs that "swim" between sections */
+        .transition-dollar {
+          position: absolute;
+          color: #B45309;
+          font-weight: bold;
+          text-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
+          opacity: 0;
+          animation: swim-between 7s infinite; /* Faster animation: 10s → 7s */
+        }
+        
+        @media (prefers-color-scheme: dark) {
+          .transition-dollar {
+            color: #EAB308;
+          }
+        }
+        
+        @keyframes swim-between {
+          0% {
+            transform: translate(0, -5px) scale(0.9);
+            opacity: 0;
+          }
+          10% {
+            transform: translate(10px, 0) scale(1);
+            opacity: 0.8;
+          }
+          30% {
+            transform: translate(-5px, 10px) scale(1.1);
+            opacity: 0.6;
+          }
+          50% {
+            transform: translate(5px, 15px) scale(1);
+            opacity: 0.4;
+          }
+          70% {
+            transform: translate(-10px, 20px) scale(0.9);
+            opacity: 0.2;
+          }
+          100% {
+            transform: translate(0, 30px) scale(0.8);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes glow {
+          0%, 100% {
+            opacity: 0.1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.2;
+            transform: scale(1.1);
+          }
+        }
+        
+        .animate-glow {
+          animation: glow 4s ease-in-out infinite; /* Faster animation: 5s → 4s */
+        }
+      `}</style>
     </section>
   );
 }
