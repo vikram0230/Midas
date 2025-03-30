@@ -80,44 +80,7 @@ export default function NavBar() {
                   <h2 className="text-sm font-medium text-muted-foreground mb-2">
                     Links
                   </h2>
-                  <Link
-                    href="https://github.com/michaelshimeles/nextjs14-starter-template"
-                    target="_blank"
-                    prefetch={true}
-                  >
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start text-base font-normal h-11 border border-muted/40 mb-2 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50 dark:hover:text-blue-400 transition-colors"
-                    >
-                      <Github className="h-4 w-4 mr-2" />
-                      GitHub
-                    </Button>
-                  </Link>
-                  <Link
-                    href="https://twitter.com/rasmickyy"
-                    target="_blank"
-                    prefetch={true}
-                  >
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start text-base font-normal h-11 border border-muted/40 mb-2 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50 dark:hover:text-blue-400 transition-colors"
-                    >
-                      <Twitter className="h-4 w-4 mr-2" />X (Twitter)
-                    </Button>
-                  </Link>
-                  <Link
-                    href="https://youtube.com/@rasmickyy"
-                    target="_blank"
-                    prefetch={true}
-                  >
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start text-base font-normal h-11 border border-muted/40 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50 dark:hover:text-blue-400 transition-colors"
-                    >
-                      <Youtube className="h-4 w-4 mr-2" />
-                      YouTube
-                    </Button>
-                  </Link>
+                  
                 </div>
 
                 {!userId && (

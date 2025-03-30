@@ -5,7 +5,8 @@ import {
   HomeIcon,
   Settings,
   LucideIcon,
-  Sparkles
+  Sparkles,
+  WandSparkles
 } from "lucide-react"
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -27,6 +28,11 @@ const navItems: NavItem[] = [
     label: "Midas",
     href: "/dashboard/midas",
     icon: Sparkles
+  },
+  {
+    label: "Oracle",
+    href: "/dashboard/oracle",
+    icon: WandSparkles
   },
   {
     label: "Settings",

@@ -1,6 +1,15 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { mutation, query, action } from "./_generated/server";
 import { Doc, Id } from "./_generated/dataModel";
+import { api } from "./_generated/api";
+import { internal } from "./_generated/api";
+
+interface User {
+  email: string;
+  weeklyBudget?: number;
+  biweeklyBudget?: number;
+  monthlyBudget?: number;
+}
 
 /**
  * Get all transactions for a specific user
@@ -174,23 +183,17 @@ export const updateTransactionDatesToCurrentYear = mutation({
 
 export const getTransactions = query({
   args: {
-    userId: v.string(),
+    userId: v.string(), // Actually using this as account_id
     startDate: v.string(),
     endDate: v.string()
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
-      .first();
-    if (!user || !user.accountId) {
-      return [];
-    }
+    // Directly query transactions by account_id
     return await ctx.db
       .query("transactions")
       .filter((q) =>
         q.and(
-          q.eq(q.field("account_id"), user.accountId),
+          q.eq(q.field("account_id"), args.userId), // Use userId param as account_id
           q.gte(q.field("date"), args.startDate),
           q.lte(q.field("date"), args.endDate)
         )
@@ -199,3 +202,107 @@ export const getTransactions = query({
   },
 });
 
+export const addTransaction = mutation({
+  args: {
+    accountId: v.string(),
+    amount: v.number(),
+    category: v.string(),
+    date: v.string(),
+    vendorName: v.string(),
+    transactionId: v.number(),
+  },
+  handler: async (ctx, args) => {
+    // First, find the user with this account ID
+    const users = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("accountId"), args.accountId))
+      .collect();
+
+    if (users.length === 0) {
+      throw new Error("No user found with this account ID");
+    }
+
+    const user = users[0];
+
+    // Insert the transaction
+    await ctx.db.insert("transactions", {
+      userId: user._id,
+      account_id: args.accountId,
+      amount: args.amount,
+      category: args.category,
+      date: args.date,
+      vendor_name: args.vendorName,
+      transaction_id: args.transactionId,
+      time: new Date().toISOString(),
+    });
+
+    // Check budgets and send alerts if needed
+    if (user.email) {
+      const now = new Date();
+
+      // Check weekly budget
+      if (user.weeklyBudget) {
+        const weekStart = new Date(now);
+        weekStart.setDate(now.getDate() - now.getDay()); // Start of week (Sunday)
+        const weekTransactions = await ctx.db
+          .query("transactions")
+          .filter((q) => q.eq(q.field("account_id"), args.accountId))
+          .filter((q) => q.gte(q.field("date"), weekStart.toISOString().split("T")[0]))
+          .collect();
+
+        const weeklyTotal = weekTransactions.reduce((sum, t) => sum + (t.amount || 0), 0);
+        if (weeklyTotal > user.weeklyBudget) {
+          await ctx.scheduler.runAfter(0, api.email.sendBudgetAlertEmail, {
+            to: user.email,
+            budgetType: "weekly",
+            currentSpending: weeklyTotal,
+            budgetAmount: user.weeklyBudget,
+          });
+        }
+      }
+
+      // Check bi-weekly budget
+      if (user.biweeklyBudget) {
+        const biweekStart = new Date(now);
+        biweekStart.setDate(now.getDate() - 14);
+        const biweekTransactions = await ctx.db
+          .query("transactions")
+          .filter((q) => q.eq(q.field("account_id"), args.accountId))
+          .filter((q) => q.gte(q.field("date"), biweekStart.toISOString().split("T")[0]))
+          .collect();
+
+        const biweeklyTotal = biweekTransactions.reduce((sum, t) => sum + (t.amount || 0), 0);
+        if (biweeklyTotal > user.biweeklyBudget) {
+          await ctx.scheduler.runAfter(0, api.email.sendBudgetAlertEmail, {
+            to: user.email,
+            budgetType: "biweekly",
+            currentSpending: biweeklyTotal,
+            budgetAmount: user.biweeklyBudget,
+          });
+        }
+      }
+
+      // Check monthly budget
+      if (user.monthlyBudget) {
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        const monthTransactions = await ctx.db
+          .query("transactions")
+          .filter((q) => q.eq(q.field("account_id"), args.accountId))
+          .filter((q) => q.gte(q.field("date"), monthStart.toISOString().split("T")[0]))
+          .collect();
+
+        const monthlyTotal = monthTransactions.reduce((sum, t) => sum + (t.amount || 0), 0);
+        if (monthlyTotal > user.monthlyBudget) {
+          await ctx.scheduler.runAfter(0, api.email.sendBudgetAlertEmail, {
+            to: user.email,
+            budgetType: "monthly",
+            currentSpending: monthlyTotal,
+            budgetAmount: user.monthlyBudget,
+          });
+        }
+      }
+    }
+
+    return { success: true };
+  },
+});

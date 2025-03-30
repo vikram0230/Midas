@@ -3,7 +3,7 @@ from flask_cors import CORS
 from anomaly_detector import detect_spending_anomalies
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)  # Allow all origins, headers, methods, with credentials support
 
 @app.route('/api/anomalies', methods=['POST'])
 def get_anomalies():
@@ -33,4 +33,4 @@ def health_check():
     return jsonify({'status': 'ok'})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)
