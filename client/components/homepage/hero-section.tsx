@@ -8,7 +8,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 export default function HeroSection() {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -27,7 +27,7 @@ export default function HeroSection() {
     camera.position.y = 4;
     
     // Create renderer
-    const renderer = new THREE.WebGLRenderer({ 
+    const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ 
       antialias: true,
       alpha: true
     });
@@ -87,11 +87,11 @@ export default function HeroSection() {
     const textureLoader = new THREE.TextureLoader();
     
     // Function to load texture with correct flipY setting for glTF
-    const loadGltfTexture = (url) => {
+    const loadGltfTexture = (url: string): Promise<THREE.Texture> => {
       return new Promise((resolve, reject) => {
         textureLoader.load(
           url,
-          (texture) => {
+          (texture: THREE.Texture) => {
             // CRITICAL: Set flipY to false for glTF compatibility
             texture.flipY = false;
             // Make texture repeating to avoid seams during rotation
@@ -108,7 +108,7 @@ export default function HeroSection() {
     };
     
     // Material reference to be used in the animation loop
-    let materialMap = new Map(); // Store materials by mesh id
+    const materialMap = new Map<number, THREE.MeshStandardMaterial>();
     
     // Load the model
     const loader = new GLTFLoader();
@@ -140,7 +140,7 @@ export default function HeroSection() {
         pivot.add(model);
         
         // Try to load a marble texture for normal mapping
-        let marbleTexture = null;
+        let marbleTexture: THREE.Texture | null = null;
         try {
           // Load marble texture with proper flipY setting
           marbleTexture = await loadGltfTexture('/marble-texture.jpg');
@@ -156,7 +156,7 @@ export default function HeroSection() {
         
         // Apply gold material to model
         model.traverse((child) => {
-          if (child.isMesh) {
+          if (child instanceof THREE.Mesh) {
             // Create a realistic gold material
             const goldMaterial = new THREE.MeshStandardMaterial({
               color: 0xd4af37,      // Classic gold color
@@ -186,7 +186,11 @@ export default function HeroSection() {
             child.material = goldMaterial;
             
             // Ensure proper rendering during rotation
-            child.material.needsUpdate = true;
+            if (Array.isArray(child.material)) {
+              child.material.forEach((mat: THREE.Material) => mat.needsUpdate = true);
+            } else {
+              child.material.needsUpdate = true;
+            }
             child.geometry.computeVertexNormals();
           }
         });
@@ -199,7 +203,7 @@ export default function HeroSection() {
     );
     
     // Enhanced animation loop with environment map updates
-    const animate = function() {
+    const animate = (): void => {
       requestAnimationFrame(animate);
       
       // Rotate the pivot
@@ -267,7 +271,7 @@ export default function HeroSection() {
   }, []);
   
   return (
-    <section className="relative py-20 w-full bg-white dark:bg-black" aria-label="Midas Hero">
+    <section className="relative py-10 w-full bg-white dark:bg-black" aria-label="Midas Hero">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Hero Text - Left Side */}
@@ -342,7 +346,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="relative h-[600px] lg:h-[700px] flex items-center justify-center"
+            className="relative h-[600px] lg:h-[700px] items-center justify-center hidden md:flex"
           >
             <div 
               ref={containerRef} 
