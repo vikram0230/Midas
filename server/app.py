@@ -139,7 +139,7 @@ def predict_params():
             if category in predictions_by_category:
                 for date in dates:
                     date_str = str(date.date())
-                    predictions_with_param[date_str] += predictions_by_category[category].get(date, 0) * (percent/100)
+                    predictions_with_param[date_str] += predictions_by_category[category].get(date, 0) * percent
         
         # Handle reduce_expense
         if scenario.get('reduce_expense', {}).get('active'):
@@ -148,7 +148,7 @@ def predict_params():
             if category in predictions_by_category:
                 for date in dates:
                     date_str = str(date.date())
-                    predictions_with_param[date_str] -= predictions_by_category[category].get(date, 0) * (percent/100)
+                    predictions_with_param[date_str] -= predictions_by_category[category].get(date, 0) * percent
 
         # Format response
         response = {
