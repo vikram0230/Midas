@@ -1,10 +1,29 @@
 "use client";
-import { ArrowRight, Github, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function HeroSection() {
+  // Use state to ensure client-side only rendering for animations
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Set mounted state after component mounts on client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  // Generate fixed positions for dollar signs (no randomness during render)
+  const dollarPositions = Array(30).fill(null).map((_, i) => ({
+    id: i,
+    x: `${(i % 10) * 10 + 5}%`,
+    y: `${Math.floor(i / 10) * 20 + 10}%`,
+    size: 24 + (i % 5) * 12,
+    delay: (i % 7) * 0.4,
+    duration: 3 + (i % 4),
+  }));
+
   return (
     <section
       className="relative flex flex-col items-center justify-center py-20"
@@ -13,65 +32,83 @@ export default function HeroSection() {
       {/* Background gradient and grid */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
         <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-amber-400 dark:bg-amber-500 opacity-20 blur-[100px]"></div>
-
-        {/* Stock chart SVG - Updated for better visibility */}
-        <div className="absolute inset-0 -z-20 opacity-30 dark:opacity-20">
-          <svg
-            width="100%"
-            height="100%"
-            viewBox="0 0 1000 1000"
-            preserveAspectRatio="xMidYMid slice"
-            className="text-amber-500 dark:text-amber-400 transform scale-150"
-          >
-            <defs>
-              <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop
-                  offset="0%"
-                  style={{ stopColor: "rgb(217, 119, 6)", stopOpacity: 0.2 }}
-                />
-                <stop
-                  offset="100%"
-                  style={{ stopColor: "rgb(217, 119, 6)", stopOpacity: 0 }}
-                />
-              </linearGradient>
-            </defs>
-
-            {/* Area under the chart */}
-            <path
-              d="M0 1000 L0 650 C150 620, 300 550, 450 600 C600 650, 750 500, 900 400 L1000 350 L1000 1000 Z"
-              fill="url(#gradient)"
-            />
-
-            {/* Main stock trend line */}
-            <motion.path
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, ease: "easeInOut" }}
-              d="M0 650 C150 620, 300 550, 450 600 C600 650, 750 500, 900 400 L1000 350"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="6"
-              strokeLinecap="round"
-              className="animate-pulse"
-            />
-
-            {/* Data points */}
-            <motion.g
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 1.5 }}
-            >
-              <circle cx="150" cy="620" r="8" fill="currentColor" />
-              <circle cx="300" cy="550" r="8" fill="currentColor" />
-              <circle cx="450" cy="600" r="8" fill="currentColor" />
-              <circle cx="750" cy="500" r="8" fill="currentColor" />
-              <circle cx="900" cy="400" r="8" fill="currentColor" />
-            </motion.g>
-          </svg>
-        </div>
       </div>
 
-      <div className="space-y-6 text-center max-w-4xl px-4">
+      {/* Gold dollar signs background - only shown after mount */}
+      {isMounted && (
+        <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
+          {/* Animated floating dollar signs */}
+          {dollarPositions.map((dollar) => (
+            <motion.div
+              key={`dollar-${dollar.id}`}
+              className="absolute text-amber-500 dark:text-amber-400 font-bold"
+              style={{
+                left: dollar.x,
+                top: dollar.y,
+                fontSize: dollar.size,
+              }}
+              initial={{ opacity: 0, scale: 0, y: 0 }}
+              animate={{
+                opacity: [0, 0.8, 0], 
+                scale: [0, 1, 0],
+                y: [0, -30],
+                rotate: [0, (dollar.id % 2 === 0 ? 20 : -20)]
+              }}
+              transition={{
+                duration: dollar.duration,
+                delay: dollar.delay,
+                repeat: Infinity,
+                repeatType: "loop"
+              }}
+            >
+              $
+            </motion.div>
+          ))}
+          
+          {/* Gold sparkles - similar to the LinkedIn hover effect */}
+          {Array(8).fill(null).map((_, i) => (
+            <motion.div
+              key={`sparkle-${i}`}
+              className="absolute text-amber-300"
+              style={{
+                top: `${20 + (i % 4) * 20}%`,
+                left: `${30 + (i % 3) * 20}%`,
+              }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0],
+                rotate: [0, 180],
+                y: [0, -30]
+              }}
+              transition={{
+                duration: 3 + (i % 3),
+                delay: 1 + (i % 5) * 0.8,
+                repeat: Infinity,
+                repeatType: "loop"
+              }}
+            >
+              <Sparkles size={16 + (i % 3) * 8} />
+            </motion.div>
+          ))}
+          
+          {/* Golden glow effect */}
+          <motion.div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-r from-amber-300 to-yellow-500 opacity-20 blur-[100px]"
+            animate={{ 
+              scale: [1, 1.1, 1],
+              opacity: [0.1, 0.3, 0.1]
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+        </div>
+      )}
+
+      <div className="space-y-6 text-center max-w-4xl px-4 relative z-10">
         {/* Pill badge */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -90,7 +127,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-200 dark:via-yellow-400 dark:to-amber-200 animate-gradient-x pb-2"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-200 dark:via-yellow-400 dark:to-amber-200 pb-2"
         >
           Turn Your Finances <br className="hidden sm:block" />
           Into Gold
