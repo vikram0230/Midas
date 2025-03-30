@@ -70,7 +70,12 @@ export default function NavBar() {
             <SheetContent side="left" className="w-[300px]">
               <SheetHeader className="pb-6 border-b">
                 <SheetTitle className="flex items-center gap-2">
-                  <Image src="/midasLogo.png" alt="Midas" width={62} height={62} />
+                  <Image
+                    src="/midasLogo.png"
+                    alt="Midas"
+                    width={62}
+                    height={62}
+                  />
                   <span>Midas</span>
                 </SheetTitle>
               </SheetHeader>
@@ -95,7 +100,6 @@ export default function NavBar() {
                   <h2 className="text-sm font-medium text-muted-foreground mb-2">
                     Links
                   </h2>
-                  
                 </div>
 
                 {!userId && (
@@ -129,7 +133,7 @@ export default function NavBar() {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Dashboard</NavigationMenuTrigger>
+                <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                     {components.map((component) => (
@@ -147,7 +151,7 @@ export default function NavBar() {
             </NavigationMenuList>
           </NavigationMenu>
 
-          {/* <Link href="/dashboard" prefetch={true}>
+          <Link href="/dashboard" prefetch={true}>
             <Button variant="ghost">Dashboard</Button>
           </Link> */}
         </div>
