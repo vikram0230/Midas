@@ -55,7 +55,7 @@ export default function NavBar() {
             <SheetContent side="left" className="w-[300px]">
               <SheetHeader className="pb-6 border-b">
                 <SheetTitle className="flex items-center gap-2">
-                  <Image src="/midasLogo.png" alt="Midas" width={32} height={32} />
+                  <Image src="/midasLogo.png" alt="Midas" width={62} height={62} />
                   <span>Midas</span>
                 </SheetTitle>
               </SheetHeader>
@@ -133,16 +133,16 @@ export default function NavBar() {
             </SheetContent>
           </Dialog>
           <Link href="/" prefetch={true} className="flex items-center gap-2">
-            <Image src="/midasLogo.png" alt="Midas" width={32} height={32} />
-            <span className="font-semibold">Midas</span>
+            <Image src="/midasLogo.svg" alt="Midas" width={45} height={45} />
+            <span className="font-semibold text-xl">Midas</span>
           </Link>
         </div>
 
         {/* Logo - Desktop */}
         <div className="hidden lg:flex items-center gap-2">
           <Link href="/" prefetch={true} className="flex items-center gap-2">
-            <Image src="/midasLogo.png" alt="Midas" width={32} height={32} />
-            <span className="font-semibold">Midas</span>
+            <Image src="/midasLogo.svg" alt="Midas" width={45} height={45} />
+            <span className="font-semibold text-xl">Midas</span>
           </Link>
         </div>
 
