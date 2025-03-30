@@ -1,35 +1,44 @@
-'use client';
+"use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Activity, Code, Star, TrendingUp, Users, Zap } from "lucide-react";
 import Link from "next/link";
 import TransactionGraphs from "./_components/transaction-graphs";
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
+import { formatCategory } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertTriangle } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
 import ConnectPlaidBanner from "./_components/connect-plaid-banner";
 import { CreditCard } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Utility function to format category strings
-const formatCategory = (category: string): string => {
-  // Replace underscores with spaces and capitalize each word
-  return category
-    .split('_')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+interface Anomaly {
+  amount: number;
+  date: string;
+  normal_range: [number, number];
+  percent_deviation: number;
+  transaction_id: string;
 }
+
+interface AnomalyData {
+  high_spending_anomalies: Anomaly[];
+  low_spending_anomalies: Anomaly[];
+}
+
+type TimePeriod = "weekly" | "biweekly" | "monthly";
 
 export default function Dashboard() {
   const { user } = useUser();
   const userId = user?.id || "";
+  const [anomalies, setAnomalies] = useState<AnomalyData | null>(null);
+  const [loadingAnomalies, setLoadingAnomalies] = useState(false);
+  const sentEmailRef = useRef(false);
+  const [timePeriod, setTimePeriod] = useState<TimePeriod | null>("weekly");
+  const lastTransactionCountRef = useRef(0);
+
   const transactions = useQuery(api.transactions.getTransactionsByUser, { userId });
   const userData = useQuery(api.users.getUserById, { userId });
   
@@ -58,18 +67,141 @@ export default function Dashboard() {
       topAmount = amount;
     }
   });
-  
+
+  // Get date range based on time period
+  const getDateRange = (period: TimePeriod) => {
+    const now = new Date();
+    const endDate = now.toISOString().split("T")[0];
+    let startDate: string;
+
+    switch (period) {
+      case "weekly":
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        startDate = weekAgo.toISOString().split("T")[0];
+        break;
+      case "biweekly":
+        const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+        startDate = twoWeeksAgo.toISOString().split("T")[0];
+        break;
+      case "monthly":
+        const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        startDate = monthAgo.toISOString().split("T")[0];
+        break;
+    }
+
+    return { startDate, endDate };
+  };
+
+  // Fetch anomalies when time period is selected
+  const fetchAnomalies = async (period: TimePeriod) => {
+    if (!userId || !transactions?.[0]?.account_id) return;
+    
+    setLoadingAnomalies(true);
+    try {
+      const { startDate, endDate } = getDateRange(period);
+      const response = await fetch("http://localhost:8000/api/anomalies", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: transactions[0].account_id,
+          startDate,
+          endDate,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch anomalies");
+      }
+
+      const data = await response.json();
+      setAnomalies(data);
+
+      // Send email if any anomalies are detected and email hasn't been sent yet
+      if ((data.high_spending_anomalies.length > 0 || data.low_spending_anomalies.length > 0) && 
+          !sentEmailRef.current && 
+          user?.emailAddresses?.[0]?.emailAddress) {
+        try {
+          const emailResponse = await fetch('/api/send-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              to: user.emailAddresses[0].emailAddress,
+              highSpendingAnomalies: data.high_spending_anomalies,
+              lowSpendingAnomalies: data.low_spending_anomalies,
+            }),
+          });
+
+          if (!emailResponse.ok) {
+            throw new Error('Failed to send email');
+          }
+
+          sentEmailRef.current = true;
+        } catch (error) {
+          console.error("Failed to send anomaly alert email:", error);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching anomalies:", error);
+    } finally {
+      setLoadingAnomalies(false);
+    }
+  };
+
+  // Listen for new transactions and check for anomalies
+  useEffect(() => {
+    if (!transactions) return;
+
+    const currentTransactionCount = transactions.length;
+    
+    // Check if we have new transactions
+    if (currentTransactionCount > lastTransactionCountRef.current) {
+      // If we have a time period selected, automatically check for new anomalies
+      if (timePeriod) {
+        // Reset email sent flag so we can send a new email if anomalies are found
+        sentEmailRef.current = false;
+        fetchAnomalies(timePeriod);
+      }
+    }
+
+    // Update the transaction count reference
+    lastTransactionCountRef.current = currentTransactionCount;
+  }, [transactions, timePeriod]);
+
   return (
     <div className="flex flex-col gap-6 p-6">
       <div>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome to your financial dashboard
-        </p>
+        <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
+        <p className="text-gray-500">Welcome back, {user?.firstName}!</p>
       </div>
-      
+
       {/* Connect Plaid Banner - only shown if user hasn't connected */}
       <ConnectPlaidBanner />
+
+      {/* Time Period Selector */}
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-medium">Time Period:</span>
+        <Select 
+          value={timePeriod || ""} 
+          onValueChange={(value: TimePeriod) => {
+            setTimePeriod(value);
+            fetchAnomalies(value);
+          }}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select time period" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="weekly">Weekly</SelectItem>
+            <SelectItem value="biweekly">Biweekly</SelectItem>
+            <SelectItem value="monthly">Monthly</SelectItem>
+          </SelectContent>
+        </Select>
+        {loadingAnomalies && <span className="text-sm text-gray-500">Loading anomalies...</span>}
+      </div>
 
       {/* Quick Stats Row */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -127,6 +259,34 @@ export default function Dashboard() {
 
       {/* Transaction Graphs */}
       <TransactionGraphs />
+
+      {/* Anomaly Alerts */}
+      {anomalies?.high_spending_anomalies.length || anomalies?.low_spending_anomalies.length ? (
+        <div className="space-y-4">
+          {anomalies?.high_spending_anomalies.map((anomaly) => (
+            <Alert key={anomaly.transaction_id} variant="destructive">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertTitle>High Spending Anomaly Detected</AlertTitle>
+              <AlertDescription>
+                A transaction of ${anomaly.amount.toFixed(2)} on {new Date(anomaly.date).toLocaleDateString()} 
+                is {anomaly.percent_deviation.toFixed(2)}% above your normal spending pattern. 
+                Normal range for this period is ${anomaly.normal_range[0].toFixed(2)} - ${anomaly.normal_range[1].toFixed(2)}.
+              </AlertDescription>
+            </Alert>
+          ))}
+          {anomalies?.low_spending_anomalies.map((anomaly) => (
+            <Alert key={anomaly.transaction_id} variant="default" className="border-green-500 bg-green-50">
+              <AlertTriangle className="h-4 w-4 text-green-500" />
+              <AlertTitle className="text-green-700">Low Spending Anomaly Detected</AlertTitle>
+              <AlertDescription className="text-green-600">
+                A transaction of ${anomaly.amount.toFixed(2)} on {new Date(anomaly.date).toLocaleDateString()} 
+                is {anomaly.percent_deviation.toFixed(2)}% below your normal spending pattern. 
+                Normal range for this period is ${anomaly.normal_range[0].toFixed(2)} - ${anomaly.normal_range[1].toFixed(2)}.
+              </AlertDescription>
+            </Alert>
+          ))}
+        </div>
+      ) : null}
 
       {/* Featured Section */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">

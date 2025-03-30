@@ -1,0 +1,10 @@
+setup.py
+server.egg-info/PKG-INFO
+server.egg-info/SOURCES.txt
+server.egg-info/dependency_links.txt
+server.egg-info/top_level.txt
+services/__init__.py
+services/anomolydetector/__init__.py
+services/anomolydetector/anomaly_detector.py
+services/anomolydetector/test_anomaly.py
+services/anomolydetector/test_convex.py
