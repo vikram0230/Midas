@@ -1,36 +1,32 @@
-# 🔱 MIDAS
+# Midas - Your AI Financial Assistant 💰
 
-## 📝 Description
-MIDAS is your mystical companion in the realm of personal finance, transforming your financial chaos into golden opportunities. Just as King Midas turned everything he touched into gold, our intelligent system transmutes your raw financial data into crystal-clear insights and actionable wisdom. Through enchanting visualizations and AI-powered guidance, MIDAS helps you forge a path to financial prosperity, turning your monetary decisions into golden outcomes.
+## Overview
+Midas is a modern financial management platform that combines real-time transaction tracking with AI-powered insights. Using advanced data visualization and a conversational AI interface, Midas helps users understand their spending patterns and make better financial decisions.
 
-## ✨ Features
-- **Financial Alchemy**: Advanced AI analysis transforms complex financial data into clear, actionable insights
-- **Golden Visualizations**: Beautiful, interactive charts and graphs that bring your financial story to life
-- **Mystic Nudges**: Enchanted alerts that detect unusual spending patterns and guard your treasury from overspending
-- **Prosperity Tracking**: Real-time monitoring of your financial health with predictive insights
-- **Wealth Wisdom**: AI-powered suggestions for optimizing spending and maximizing savings
+## App Website
+https://midas-new.vercel.app/
 
-## 🛠️ Technologies Used
-- Frontend: Next.JS, ShadCN, TailwindCSS, ThreeJS
-- Backend: Flask API
-- Database: Convex DB
-- ML: PyTorch, LSTM
-- Authentication: Clerk
+## 🚀 Tech Stack
+- **Frontend**: Next.js 15, Shadcn UI, Tailwind CSS, Three.js, Radix UI, Chart.js
+- **Backend**: Convex, Flask, Next.js
+- **AI**: Gemini
+- **Authentication**: Clerk
+- **Banking Integration**: Plaid
+- **Machine Learning**: PyTorch
 
-## 🎯 Challenge Track
-- Web Development
-
-## 🏃‍♂️ Getting Started
+## 🛠️ Getting Started
 
 ### Prerequisites
-```bash
-# Required software and tools will be listed here
-```
+- Node.js (Latest LTS version)
+- npm or yarn
+- A Convex account
+- A Clerk account
+- A Plaid account (for banking integration)
 
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/ArslanKamchybekov/uncommonhacks
+git clone https://github.com/arslankamchybekov/uncommonhacks.git
 
 # Navigate to the project directory
 cd uncommonhacks
@@ -38,33 +34,76 @@ cd uncommonhacks
 # Install dependencies
 npm install
 
-# Start the development server
-npm run dev
+# Set up environment variables
+cp .env.local
 ```
 
-## 🎮 Usage
-[Provide examples and instructions on how to use your project]
+### Development
+```bash
+# Start the development server
+npm run dev
 
-## 📸 Screenshots
-[Add screenshots or GIFs of your project in action]
+# Start Convex development server
+npx convex dev
+```
 
-## 🤝 Team Members
-- Anirudh Kuppili
-- Arslan Kamchybekov 
-- Isaac Alazar
-- Joshua Jung
-- Vikram Harikrishnan
+### Production Deployment
+```bash
+# Build the application
+npm run build
 
-## 💡 Inspiration
-In a world where financial literacy often feels like an arcane art, we drew inspiration from the legendary King Midas. Just as he turned everything he touched into gold, we wanted to create a tool that transforms confusing financial data into golden insights. Our mission is to democratize financial wisdom and make prosperity accessible to everyone, not through a mythical touch, but through the power of modern technology and intelligent systems.
+# Start the production server
+npm start
+```
 
-## 🏆 Accomplishments
-[To be filled with hackathon achievements]
+## 🎮 Features
 
-## 📚 Lessons Learned
-[To be filled with team insights during development]
+### 1. Smart Financial Dashboard
+- Real-time transaction tracking
+- Dynamic spending analytics
+- Category-based expense breakdown
+- Interactive charts and graphs
 
-## 🙏 Acknowledgments
-- UncommonHacks 2025 organizers and volunteers
-- The University of Chicago
-- [Additional acknowledgments to be added]
+### 2. Midas AI Assistant
+- Natural language financial queries
+- Personalized financial insights
+- Budget recommendations
+- Anomaly detection in spending patterns
+
+### 3. Transaction Management
+- Automatic transaction categorization
+- Custom budget settings
+  - Weekly budget tracking
+  - Bi-weekly budget tracking
+  - Monthly budget tracking
+- Real-time transaction updates
+
+### 4. Data Visualization
+- Bar charts for category spending
+- Pie charts for expense distribution
+- Line charts for spending trends
+- Anomaly detection visualization
+
+## 💬 Using Midas AI
+
+Simply chat with Midas using natural language. Example queries:
+- "How are my finances looking?"
+- "Show me my spending by category"
+- "What's my biggest expense this month?"
+- "Am I staying within my budget?"
+- "Any unusual spending patterns?"
+
+## 🔒 Security
+- Secure authentication via Clerk
+- Encrypted banking connections through Plaid
+- Protected API endpoints
+- Secure data storage with Convex
+
+## 📊 Data Integration
+- Import transactions via CSV
+- Connect bank accounts through Plaid
+- Real-time transaction syncing
+- Automated categorization
+
+## 🤝 Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
