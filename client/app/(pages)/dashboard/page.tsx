@@ -99,7 +99,7 @@ export default function Dashboard() {
     setLoadingAnomalies(true);
     try {
       const { startDate, endDate } = getDateRange(period);
-      const response = await fetch("http://localhost:8000/api/anomalies", {
+      const response = await fetch("http://172.16.5.57:8000/api/anomalies", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
