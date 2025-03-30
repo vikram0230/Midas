@@ -336,6 +336,16 @@ export default function Midas() {
       initialMessages,
     });
 
+  // Chat scroll ref
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Autoscroll effect
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   // Check for graph generation requests in messages
   useEffect(() => {
     if (messages.length > 0) {
@@ -574,7 +584,7 @@ export default function Midas() {
               </motion.div>
             )}
 
-            {/* Only show loading when isLoading is true AND there's no message being streamed */}
+            {/* Loading indicator */}
             {isLoading &&
               messages[messages.length - 1]?.role !== "assistant" && (
                 <motion.div
@@ -608,6 +618,9 @@ export default function Midas() {
                   </div>
                 </motion.div>
               )}
+            
+            {/* Scroll anchor */}
+            <div ref={scrollRef} />
           </div>
         </ScrollArea>
 
