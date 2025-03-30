@@ -281,26 +281,6 @@ export const addTransaction = mutation({
           });
         }
       }
-
-      // Check monthly budget
-      if (user.monthlyBudget) {
-        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-        const monthTransactions = await ctx.db
-          .query("transactions")
-          .filter((q) => q.eq(q.field("account_id"), args.accountId))
-          .filter((q) => q.gte(q.field("date"), monthStart.toISOString().split("T")[0]))
-          .collect();
-
-        const monthlyTotal = monthTransactions.reduce((sum, t) => sum + (t.amount || 0), 0);
-        if (monthlyTotal > user.monthlyBudget) {
-          await ctx.scheduler.runAfter(0, api.email.sendBudgetAlertEmail, {
-            to: user.email,
-            budgetType: "monthly",
-            currentSpending: monthlyTotal,
-            budgetAmount: user.monthlyBudget,
-          });
-        }
-      }
     }
 
     return { success: true };
