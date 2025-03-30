@@ -1,10 +1,17 @@
+import sys
+sys.path.append('.')
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from anomaly_detector import detect_spending_anomalies
 import pandas as pd
-from ml.model_pipeline import ModelPipeline
-# from ml.model_inference import predict_future_amounts
 
+# Import the feature_transformer module and add it to sys.modules
+# This tells Python where to find it when unpickling
+from ml import feature_transformer
+sys.modules['feature_transformer'] = feature_transformer
+
+# Now import ModelPipeline and load the model
+from ml.model_pipeline import ModelPipeline
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)  # Allow all origins, headers, methods, with credentials support
@@ -56,20 +63,15 @@ def predict_spending():
                 'error': 'Invalid time_range format. Expected format: YYYY-MM-DD_to_YYYY-MM-DD'
             }), 400
             
-        # predictor = predict_future_amounts(dates, model_path)
-        
-        # Get predictions
+        # Get predictions - returns a dictionary with dates as keys
         predictions = predictor.predict(dates)
-        
-        # Convert DataFrame to dictionary format
-        predictions_dict = predictions.set_index('datetime')['amount'].to_dict()
         
         # Format response
         response = {
             'user_id': data['user_id'],
             'predictions': {
                 str(date): float(amount) 
-                for date, amount in predictions_dict.items()
+                for date, amount in predictions.items()
             }
         }
         
