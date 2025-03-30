@@ -419,8 +419,8 @@ export default function PlaygroundPage() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="system" className="mt-0 space-y-4 h-full">
-                <div>
+              <TabsContent value="system" className="mt-0 h-full">
+                <div className="h-full flex flex-col">
                   <label className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
                     System Prompt
                   </label>
@@ -428,7 +428,7 @@ export default function PlaygroundPage() {
                     placeholder="Enter a custom system prompt (leave empty to use default)"
                     value={systemPrompt}
                     onChange={(e) => setSystemPrompt(e.target.value)}
-                    className="h-[200px] dark:bg-zinc-900/50 bg-white border dark:border-zinc-800 border-zinc-200"
+                    className="flex-1 min-h-0 dark:bg-zinc-900/50 bg-white border dark:border-zinc-800 border-zinc-200"
                   />
                 </div>
               </TabsContent>

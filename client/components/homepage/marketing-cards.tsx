@@ -38,7 +38,7 @@ export default function MarketingCards() {
     <div className="py-16 px-4">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-200 dark:via-yellow-400 dark:to-amber-200 pb-2">
-          Powered by Golden Innovation
+          The Inner Workings of Midas
         </h2>
         <p className="text-gray-600 dark:text-gray-300 text-center mb-12 max-w-3xl mx-auto">
           Our financial platform leverages these cutting-edge technologies to deliver a secure, intelligent, and seamless experience.

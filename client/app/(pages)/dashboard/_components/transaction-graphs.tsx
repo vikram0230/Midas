@@ -51,7 +51,6 @@ type DailySpending = {
   amount: number
   cumulative: number
   formattedDate: string
-  budget?: number
   isPredicted?: boolean
 }
 
@@ -167,8 +166,8 @@ export default function TransactionGraphs() {
     transactions: Transaction[],
     startDate: Date,
     endDate: Date,
-    budget: number,
-    days: number,
+    _budget: number, // Unused parameter
+    _days: number,  // Unused parameter
   ): DailySpending[] => {
     // Group transactions by date
     const grouped: { [key: string]: number } = {}
@@ -200,38 +199,26 @@ export default function TransactionGraphs() {
         }
         grouped[date] += tx.amount
       } catch (e) {
-        console.error("Error processing transaction date:", tx.date, e)
+        console.error("Error processing transaction:", tx, e)
       }
     })
 
-    // Create an array with all days in the range
-    const allDays = eachDayOfInterval({ start: startDate, end: endDate })
+    // Get all dates in range
+    const allDates = eachDayOfInterval({ start: startDate, end: endDate })
 
-    // Create data array with all days, including days with no transactions
-    const data: DailySpending[] = allDays.map((day, index) => {
-      const dateStr = format(day, "yyyy-MM-dd")
+    // Create daily spending data with cumulative amounts
+    let cumulative = 0
+    return allDates.map((date) => {
+      const dateStr = format(date, "yyyy-MM-dd")
       const amount = grouped[dateStr] || 0
-
-      // Calculate daily budget (evenly distributed)
-      const dailyBudget = budget / days
-
+      cumulative += amount
       return {
         date: dateStr,
         amount,
-        cumulative: 0, // Will be calculated below
-        formattedDate: format(day, "MMM dd"),
-        budget: dailyBudget * (index + 1), // Cumulative budget line
+        cumulative,
+        formattedDate: format(date, "MMM dd"),
       }
     })
-
-    // Calculate cumulative spending
-    let runningTotal = 0
-    data.forEach((day, index) => {
-      runningTotal += day.amount
-      data[index].cumulative = runningTotal
-    })
-
-    return data
   }
 
   // Get the appropriate data based on selected time range
@@ -495,7 +482,7 @@ export default function TransactionGraphs() {
             width={isMobile ? 40 : 60} // Narrower on mobile
           />
           <Tooltip formatter={formatTooltip} />
-          <Bar dataKey="amount" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="amount" fill="currentColor" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     )
@@ -524,24 +511,24 @@ export default function TransactionGraphs() {
     return (
       <ResponsiveContainer width="100%" height={250}>
         <LineChart data={displayData} margin={{ top: 10, right: 10, left: isMobile ? -15 : 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis
             dataKey="formattedDate"
             tick={{ fontSize: isMobile ? 10 : 12 }}
             tickLine={false}
             axisLine={{ stroke: "#e5e7eb" }}
-            interval={isMobile ? 1 : 0} // Skip some labels on mobile
-            angle={isMobile ? -45 : 0} // Angle labels on mobile
+            interval={isMobile ? 1 : 0}
+            angle={isMobile ? -45 : 0}
             textAnchor={isMobile ? "end" : "middle"}
-            height={isMobile ? 50 : 30} // More space for angled labels
+            height={isMobile ? 50 : 30}
           />
           <YAxis
             tickFormatter={(value) => `$${value}`}
             tick={{ fontSize: isMobile ? 10 : 12 }}
             tickLine={false}
             axisLine={{ stroke: "#e5e7eb" }}
-            width={isMobile ? 40 : 60} // Narrower on mobile
+            width={isMobile ? 40 : 60}
           />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <Tooltip formatter={formatTooltip} />
           <Legend wrapperStyle={{ fontSize: isMobile ? 10 : 12 }} />
 
@@ -550,21 +537,10 @@ export default function TransactionGraphs() {
             type="monotone"
             dataKey="cumulative"
             name="Actual Spending"
-            stroke="#3b82f6"
+            stroke="currentColor"
             strokeWidth={2}
-            dot={isMobile ? false : { r: 3, fill: "#3b82f6", stroke: "#fff", strokeWidth: 1 }}
+            dot={isMobile ? false : { r: 3, fill: "currentColor", stroke: "#fff", strokeWidth: 1 }}
             activeDot={{ r: 5 }}
-          />
-
-          {/* Budget line */}
-          <Line
-            type="monotone"
-            dataKey="budget"
-            name="Budget"
-            stroke="#94a3b8"
-            strokeWidth={2}
-            strokeDasharray="5 5"
-            dot={false}
           />
 
           {/* Predicted spending line (only if we have predictions) */}
@@ -573,12 +549,11 @@ export default function TransactionGraphs() {
               type="monotone"
               dataKey="cumulative"
               name="Predicted Spending"
-              stroke="#f97316"
+              stroke="#d4af37"
               strokeWidth={2}
               strokeDasharray="3 3"
-              dot={isMobile ? false : { r: 3, fill: "#f97316", stroke: "#fff", strokeWidth: 1 }}
+              dot={isMobile ? false : { r: 3, fill: "#d4af37", stroke: "#fff", strokeWidth: 1 }}
               activeDot={{ r: 5 }}
-              // Only show this line for predicted data points
               isAnimationActive={true}
               connectNulls={true}
             />
@@ -675,4 +650,3 @@ export default function TransactionGraphs() {
     </div>
   )
 }
-
