@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from ml.model_pipeline import ModelPipeline
-from ml.model_pipeline import read_financial_transactions
+from model_pipeline import ModelPipeline
+from model_pipeline import read_financial_transactions
 
 def predict_future_amounts(dates, model_path='../models/oracle_v1'):
     """
@@ -94,9 +94,9 @@ def main():
     test_dates = pd.date_range(start='2025-04-01', end='2025-04-30', freq='D')
     
     # Make predictions and plot
-    # predictions = predict_and_plot(test_dates)
+    predictions = predict_and_plot(test_dates)
     
-    predictions = predict_future_amounts(test_dates)
+    # predictions = predict_future_amounts(test_dates)
     
 
 if __name__ == "__main__":
