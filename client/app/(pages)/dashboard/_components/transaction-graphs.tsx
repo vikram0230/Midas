@@ -277,9 +277,11 @@ export default function TransactionGraphs() {
     setIsPredicting(true)
 
     try {
-      // Get the current data to find the last date
+      // Get the current data to find the last date and cumulative amount
       const currentData = getData()
-      const lastDate = currentData.length > 0 ? new Date(currentData[currentData.length - 1].date) : new Date()
+      const lastActualData = currentData[currentData.length - 1]
+      const lastDate = lastActualData ? new Date(lastActualData.date) : new Date()
+      let cumulativeAmount = lastActualData ? lastActualData.cumulative : 0
 
       // Calculate the end date based on timeRange
       let endDate = new Date(lastDate)
@@ -309,27 +311,26 @@ export default function TransactionGraphs() {
       }
 
       const data = await response.json()
-
-      // Transform predictions into the required format
       const predictedDailyData: DailySpending[] = []
-      let cumulativeAmount = currentData[currentData.length - 1]?.cumulative || 0 // Start from last actual cumulative
 
       // Sort dates to ensure chronological order
       const dates = Object.keys(data.predictions).sort()
       
       dates.forEach(dateStr => {
-        const amount = data.predictions[dateStr]
-        cumulativeAmount += amount
-        
-        // Convert datetime string to date and format it
         const date = new Date(dateStr)
-        predictedDailyData.push({
-          date: format(date, "yyyy-MM-dd"),
-          formattedDate: format(date, "MMM dd"),
-          amount: amount,
-          cumulative: cumulativeAmount,
-          isPredicted: true
-        })
+        // Only include predictions for dates after the last actual transaction
+        if (date > lastDate) {
+          const amount = data.predictions[dateStr]
+          cumulativeAmount += amount
+          
+          predictedDailyData.push({
+            date: format(date, "yyyy-MM-dd"),
+            formattedDate: format(date, "MMM dd"),
+            amount: amount,
+            cumulative: cumulativeAmount,
+            isPredicted: true
+          })
+        }
       })
 
       setPredictedData({
@@ -460,74 +461,38 @@ export default function TransactionGraphs() {
 
   // Render line chart using Recharts
   const renderLineChart = () => {
-    if (currentData.length < 2) {
-      return (
-        <div className="flex flex-col h-[300px] items-center justify-center">
-          <p className="text-muted-foreground">Not enough data for a line chart</p>
-        </div>
-      )
-    }
+    const data = getData()
 
-    // Calculate daily budget
-    const dailyBudget = getBudget() / currentData.length
-
-    // Identify where actual data ends and predictions begin
-    const predictedStartIndex = currentData.findIndex((item) => item.isPredicted)
-    const hasPredictions = predictedStartIndex !== -1
-
-    // For monthly view on mobile, show fewer data points
-    const displayData = isMobile && timeRange === "monthly" ? currentData.filter((_, i) => i % 3 === 0) : currentData
+    // Use either actual data or predictions, not both
+    const chartData = showPredictions && predictedData?.predictedDailyData 
+      ? predictedData.predictedDailyData 
+      : data
 
     return (
-      <ResponsiveContainer width="100%" height={250}>
-        <LineChart data={displayData} margin={{ top: 10, right: 10, left: isMobile ? -15 : 0, bottom: 0 }}>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="formattedDate"
-            tick={{ fontSize: isMobile ? 10 : 12 }}
-            tickLine={false}
-            axisLine={{ stroke: "#e5e7eb" }}
-            interval={isMobile ? 1 : 0}
-            angle={isMobile ? -45 : 0}
-            textAnchor={isMobile ? "end" : "middle"}
-            height={isMobile ? 50 : 30}
+            interval="preserveStartEnd"
+            width={isMobile ? 40 : 60} // Narrower on mobile
           />
-          <YAxis
-            tickFormatter={(value) => `$${value}`}
-            tick={{ fontSize: isMobile ? 10 : 12 }}
-            tickLine={false}
-            axisLine={{ stroke: "#e5e7eb" }}
-            width={isMobile ? 40 : 60}
-          />
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+          <YAxis />
           <Tooltip formatter={formatTooltip} />
-          <Legend wrapperStyle={{ fontSize: isMobile ? 10 : 12 }} />
-
-          {/* Actual spending line */}
           <Line
             type="monotone"
             dataKey="cumulative"
-            name="Actual Spending"
-            stroke="currentColor"
+            name={showPredictions ? "Predicted Spending" : "Actual Spending"}
+            stroke={showPredictions ? "#d4af37" : "currentColor"}
             strokeWidth={2}
-            dot={isMobile ? false : { r: 3, fill: "currentColor", stroke: "#fff", strokeWidth: 1 }}
+            dot={isMobile ? false : { 
+              r: 3, 
+              fill: showPredictions ? "#d4af37" : "currentColor", 
+              stroke: "#fff", 
+              strokeWidth: 1 
+            }}
             activeDot={{ r: 5 }}
           />
-
-          {/* Predicted spending line (only if we have predictions) */}
-          {hasPredictions && (
-            <Line
-              type="monotone"
-              dataKey="cumulative"
-              name="Predicted Spending"
-              stroke="#d4af37"
-              strokeWidth={2}
-              strokeDasharray="3 3"
-              dot={isMobile ? false : { r: 3, fill: "#d4af37", stroke: "#fff", strokeWidth: 1 }}
-              activeDot={{ r: 5 }}
-              isAnimationActive={true}
-              connectNulls={true}
-            />
-          )}
         </LineChart>
       </ResponsiveContainer>
     )

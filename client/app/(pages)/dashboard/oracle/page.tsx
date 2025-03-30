@@ -36,12 +36,12 @@ interface Scenario {
   new_expense: {
     category: Category
     active: boolean
-    percent: number
+    amount: number
   }
   reduce_expense: {
     category: Category
     active: boolean
-    percent: number
+    amount: number
   }
 }
 
@@ -83,14 +83,24 @@ export default function Oracle() {
     new_expense: {
       category: "business",
       active: false,
-      percent: 20,
+      amount: 100,
     },
     reduce_expense: {
       category: "auto",
       active: false,
-      percent: 20,
+      amount: 100,
     },
   })
+
+  // Calculate average monthly spending for percentage conversion
+  const calculateAverageMonthlySpending = (category: string) => {
+    if (!transactions) return 0
+    const categoryTransactions = transactions.filter(t => t.category === category)
+    if (categoryTransactions.length === 0) return 0
+    
+    const totalSpending = categoryTransactions.reduce((sum, t) => sum + t.amount, 0)
+    return totalSpending / (categoryTransactions.length / 30) // Assuming transactions span multiple months
+  }
 
   const fetchPrediction = async () => {
     setLoading(true)
@@ -110,6 +120,10 @@ export default function Oracle() {
           break
       }
 
+      // Convert dollar amounts to percentages based on average spending
+      const newExpenseAvg = calculateAverageMonthlySpending(scenario.new_expense.category)
+      const reduceExpenseAvg = calculateAverageMonthlySpending(scenario.reduce_expense.category)
+
       const response = await fetch('https://c4e5-192-5-85-173.ngrok-free.app/api/oracle/predict_params', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -124,12 +138,12 @@ export default function Oracle() {
             new_expense: {
               category: scenario.new_expense.category,
               active: scenario.new_expense.active,
-              percent: scenario.new_expense.percent / 100 // Convert from percentage to decimal
+              percent: newExpenseAvg > 0 ? scenario.new_expense.amount / newExpenseAvg : 0.2 // Default to 20% if no history
             },
             reduce_expense: {
               category: scenario.reduce_expense.category,
               active: scenario.reduce_expense.active,
-              percent: scenario.reduce_expense.percent / 100 // Convert from percentage to decimal
+              percent: reduceExpenseAvg > 0 ? scenario.reduce_expense.amount / reduceExpenseAvg : 0.2 // Default to 20% if no history
             }
           }
         })
@@ -320,20 +334,19 @@ export default function Oracle() {
                   <Input
                     type="number"
                     disabled={!scenario.new_expense.active}
-                    value={scenario.new_expense.percent}
+                    value={scenario.new_expense.amount}
                     onChange={(e) =>
                       setScenario((prev) => ({
                         ...prev,
                         new_expense: {
                           ...prev.new_expense,
-                          percent: Number.parseFloat(e.target.value) || 0,
+                          amount: Number.parseFloat(e.target.value) || 0,
                         },
                       }))
                     }
                     min="0"
-                    max="100"
                   />
-                  <span>%</span>
+                  <span>$</span>
                 </div>
               </div>
             </div>
@@ -379,20 +392,19 @@ export default function Oracle() {
                   <Input
                     type="number"
                     disabled={!scenario.reduce_expense.active}
-                    value={scenario.reduce_expense.percent}
+                    value={scenario.reduce_expense.amount}
                     onChange={(e) =>
                       setScenario((prev) => ({
                         ...prev,
                         reduce_expense: {
                           ...prev.reduce_expense,
-                          percent: Number.parseFloat(e.target.value) || 0,
+                          amount: Number.parseFloat(e.target.value) || 0,
                         },
                       }))
                     }
                     min="0"
-                    max="100"
                   />
-                  <span>%</span>
+                  <span>$</span>
                 </div>
               </div>
             </div>
