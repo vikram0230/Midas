@@ -11,7 +11,7 @@ import json
 import pickle
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 import pandas as pd
-from ml.feature_transformer import FeatureTransformer
+from feature_transformer import FeatureTransformer
 import matplotlib.pyplot as plt
 
 
@@ -124,14 +124,55 @@ class ModelPipeline:
         feature_transformer = FeatureTransformer()
         df_train = feature_transformer.fit_transform(df_train)
         
+        # Store all unique dates and get all columns except 'amount', 'category', and 'datetime'
+        feature_cols = [col for col in df_train.columns if col not in ['amount', 'category', 'datetime']]
+        all_dates = df_train['datetime'].unique()
+        
         if categories is None:
             categories = df_train['category'].unique()
             
         for category in categories:
             print(f"\nTraining model for category: {category}")
             
+            # Create base DataFrame with all dates
+            full_dates_df = pd.DataFrame({'datetime': all_dates})
+            # print(f"Full dates df shape: {full_dates_df.shape}")
+            # print(f"Full dates df columns: {full_dates_df.columns}")
+            # print(f"Full dates df: {full_dates_df}")
+            # First merge with df_train to get all feature values for each datetime
+            full_dates_df = full_dates_df.merge(
+                df_train[['datetime'] + feature_cols].drop_duplicates(),
+                on='datetime',
+                how='left'
+            )
+            
+            # Then merge with category specific data to get amounts
+            category_data = df_train[df_train['category'] == category]
+            category_df = full_dates_df.merge(
+                category_data[['datetime', 'amount']],
+                on='datetime',
+                how='left'
+            )
+            # print(f"Category df shape: {category_df.shape}")
+            # print(f"Category df columns: {category_df.columns}")
+            # print(f"Category df: {category_df}")
+            
+            # Sort by datetime to ensure temporal order
+            category_df = category_df.sort_values('datetime')
+            
+            # Fill missing amount with 0
+            category_df['amount'] = category_df['amount'].fillna(0)
+            
+            # print(f"Missing values:{category_df[category_df.isna().any(axis=1)]}")
+            
+            # Add category column back
+            category_df['category'] = category
+            
+            # print(f'Category columns: {category_df.columns}')
+            # print(f"Category df shape: {category_df.shape}")
+            
             # Preprocess data
-            scaled_data = self.preprocess_data(df_train, category)
+            scaled_data = self.preprocess_data(category_df, category)
             n_features = scaled_data.shape[1] - 1  # Exclude target column
             
             # Create sequences
@@ -159,6 +200,9 @@ class ModelPipeline:
             train_dataset = TensorDataset(X_train_tensor, y_train_tensor)
             train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
             
+            print(f"Starting training with {len(X_train)} training samples")
+            print(f"Input feature size: {n_features}")
+            
             for epoch in range(num_epochs):
                 model.train()
                 epoch_loss = 0.0
@@ -184,13 +228,24 @@ class ModelPipeline:
                     y_val_tensor_reshaped = y_val_tensor.view(-1, 1)
                     val_loss = criterion(val_outputs, y_val_tensor_reshaped)
                 
-                if val_loss < best_val_loss:
+                print(f"Epoch {epoch+1}/{num_epochs}, "
+                      f"Training Loss: {epoch_loss/len(train_loader):.4f}, "
+                      f"Validation Loss: {val_loss:.4f}")
+            
+                # Always save the first state
+                if best_model_state is None:
+                    best_val_loss = val_loss
+                    best_model_state = model.state_dict().copy()
+                    print("Saved initial model state")
+                elif val_loss < best_val_loss:
                     best_val_loss = val_loss
                     best_model_state = model.state_dict().copy()
                     counter = 0
+                    print("Found better model state")
                 else:
                     counter += 1
                     if counter >= patience:
+                        print(f"Early stopping triggered after {epoch+1} epochs")
                         break
             
             # Save best model
