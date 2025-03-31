@@ -26,7 +26,7 @@ https://midas-new.vercel.app/
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/arslankamchybekov/uncommonhacks.git
+git clone https://github.com/ArslanKamchybekov/midas.git
 
 # Navigate to the project directory
 cd uncommonhacks
