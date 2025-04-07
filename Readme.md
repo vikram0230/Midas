@@ -1,5 +1,7 @@
 # Midas - Your AI Financial Assistant 💰
 
+<img src="client/public/midasLogo.png" alt="Midas Logo" height="200">
+
 ## Overview
 Midas is a modern financial management platform that combines real-time transaction tracking with AI-powered insights. Using advanced data visualization and a conversational AI interface, Midas helps users understand their spending patterns and make better financial decisions.
 
